@@ -98,36 +98,6 @@ const ResponsiveDrawer = props => {
           )}
         </Toolbar>
       </AppBar>
-      {/* <nav className={classes.drawer} aria-label="mailbox folders">
-        <Hidden smUp implementation="css">
-          <Drawer
-            container={container}
-            variant="temporary"
-            anchor={theme.direction === 'rtl' ? 'right' : 'left'}
-            open={mobileOpen}
-            onClose={handleDrawerToggle}
-            classes={{
-              paper: classes.drawerPaper,
-            }}
-            ModalProps={{
-              keepMounted: true, // Better open performance on mobile.
-            }}
-          >
-            {drawer}
-          </Drawer>
-        </Hidden>
-        <Hidden xsDown implementation="css">
-          <Drawer
-            classes={{
-              paper: classes.drawerPaper,
-            }}
-            variant="permanent"
-            open
-          >
-            {drawer}
-          </Drawer>
-        </Hidden>
-      </nav> */}
         <SideDrawer 
           theme={theme}
           container={container}
@@ -136,8 +106,9 @@ const ResponsiveDrawer = props => {
           setMobileOpen={setMobileOpen}
         />
       <main className={classes.content}>
-        <div className={classes.toolbar} />
-        {props.children}
+        <div style={{ marginTop: "70px" }}>
+            {props.children}
+        </div>
       </main>
     </div>
   );

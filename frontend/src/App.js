@@ -15,6 +15,7 @@ import { createMuiTheme } from '@material-ui/core/styles';
 
 import ResponsiveDrawer from './components/utils/ResponsiveDrawer';
 import Signin from './components/auth/Signin';
+import Store from './components/database/Store';
 import Signup from './components/auth/Signup';
 import Landing from './components/utils/Landing';
 
@@ -56,8 +57,11 @@ const App = () => {
           <Route path="/" exact>
               <Landing />
           </Route>
-          <Route path="/signin" exact>
-              <Signin />
+          <Route path="/store" exact>
+              <Store />
+          </Route>
+          <Route path="/sigin" exact>
+            <Signin />
           </Route>
           <Route path="/signup" exact>
             <Signup />

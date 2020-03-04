@@ -9,7 +9,7 @@ const Landing = () => {
     return (
         <React.Fragment>
             <CssBaseline />
-            <Container maxWidth="lg">
+            <Container maxWidth="xl">
                 <AutoGrid />
                 
             </Container>

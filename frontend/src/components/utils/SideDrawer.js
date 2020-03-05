@@ -19,6 +19,7 @@ import InsertChartIcon from '@material-ui/icons/InsertChart';
 import MapIcon from '@material-ui/icons/Map';
 import PersonPinIcon from '@material-ui/icons/PersonPin';
 import StreetviewIcon from '@material-ui/icons/Streetview';
+import ImageSearchIcon from '@material-ui/icons/ImageSearch';
 
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import { Typography } from '@material-ui/core';
@@ -67,7 +68,7 @@ const SideDrawer = props => {
               </ListItem>
           <Divider />
           <List>
-            <ListItem button onClick={() => {pushLink('/signin')}}>
+            <ListItem button onClick={() => {pushLink('/')}}>
                 <ListItemIcon><DashboardIcon /></ListItemIcon>
                 <ListItemText primary="Dashboard" />
               </ListItem>
@@ -94,8 +95,12 @@ const SideDrawer = props => {
           <List>
           <ListSubheader component="div">
             TOOLS
-          </ListSubheader>  
-          <ListItem button>
+          </ListSubheader>
+              <ListItem button onClick={() => {pushLink('/search')}}>
+                <ListItemIcon><ImageSearchIcon /></ListItemIcon>
+                <ListItemText primary="Search" />
+              </ListItem>  
+              <ListItem button onClick={() => {pushLink('/videoquality')}}>
                 <ListItemIcon><CameraEnhanceIcon /></ListItemIcon>
                 <ListItemText primary="Video Quality" />
               </ListItem>

@@ -18,6 +18,8 @@ import Signin from './components/auth/Signin';
 import Store from './components/database/Store';
 import Signup from './components/auth/Signup';
 import Landing from './components/utils/Landing';
+import Search from './components/tools/Search';
+import VideoQuality from './components/tools/VideoQuality';
 
 const theme = createMuiTheme(customTheme);
 
@@ -60,8 +62,14 @@ const App = () => {
           <Route path="/store" exact>
               <Store />
           </Route>
-          <Route path="/sigin" exact>
-            <Signin />
+          <Route path="/search" exact>
+              <Search />
+          </Route>
+          <Route path="/videoquality" exact>
+              <VideoQuality />
+          </Route>
+          <Route path="/signin" exact>
+              <Signin />
           </Route>
           <Route path="/signup" exact>
             <Signup />

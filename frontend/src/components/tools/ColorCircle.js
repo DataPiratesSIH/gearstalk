@@ -2,31 +2,32 @@ import React, { useState } from 'react';
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
 import Popover from '@material-ui/core/Popover';
-import Button from '@material-ui/core/Button';
 import { SketchPicker } from 'react-color';
 
 const useStyles = makeStyles(theme => ({
+    root: {
+      boxShadow: 'none !important',
+    },
     shape: {
-        width: 40,
-        height: 40,
+        width: 30,
+        height: 30,
     },
     shapeCircle: {
         borderRadius: '50%',
     },
     typography: {
         padding: theme.spacing(2),
-    },
+    }, 
 }));
 
 const ColorCircle = () => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
-  const [bg, setBg] = useState('red');
+  const [bg, setBg] = useState({ "hex": "#000" });
 
   const handleChangeColor = (color) => {
-    setBg(color.hex);
-    console.log(bg);
-}
+    setBg(color);
+  }
 
   const handleClick = event => {
     setAnchorEl(event.currentTarget);
@@ -41,11 +42,7 @@ const ColorCircle = () => {
 
   return (
     <div>
-      <Button aria-describedby={id} variant="contained" color="primary" onClick={handleClick}>
-        Open Popover
-      </Button>
-      <div style={{ backgroundColor: `rgba(${bg},)` }} onClick={handleClick}>hi</div>
-      {bg}
+      <div className={clsx(classes.shape, classes.shapeCircle)} style={{ backgroundColor: `${ bg.hex }` }} onClick={handleClick} />
       <Popover
         id={id}
         open={open}

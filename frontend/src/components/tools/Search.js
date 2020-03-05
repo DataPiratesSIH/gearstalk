@@ -1,28 +1,33 @@
 import React from 'react';
-// import { makeStyles } from '@material-ui/core/styles';
+import { AttributeProvider } from '../context/attribute-context';
+
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Container from '@material-ui/core/Container';
-// import Paper from '@material-ui/core/Paper';
-// import Grid from '@material-ui/core/Grid';
-// import SearchTabs from './SearchTabs';
 import SearchGrid from './SearchGrid';
 
-// const useStyles = makeStyles(theme => ({
-//     root: {
-//         flexGrow: 1,
-//     },
-// }));
-
 const Search = () => {
-    // const classes = useStyles();
+    const initialAtribute = {attributes: []}
+      
+    const reducer = (state, action) => {
+        switch (action.type) {
+          case 'changeAttribute':
+            return {
+              ...state,
+              attributes: [action.newAttribute]
+            };
+            
+          default:
+            return state;
+        }
+    };
 
     return (
-        <React.Fragment>
+        <AttributeProvider initialAttribute={initialAtribute} reducer={reducer} >
             <CssBaseline />
             <Container maxWidth="xl">
             <SearchGrid />
             </Container>
-        </React.Fragment>
+        </AttributeProvider>
     )
 }
 

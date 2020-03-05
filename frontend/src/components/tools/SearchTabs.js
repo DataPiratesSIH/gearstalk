@@ -6,7 +6,7 @@ import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
-import ColorCircle from './ColorCircle';
+import AttributeSelector from './AttributeSelector';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -67,20 +67,17 @@ const SearchTabs = () => {
             scrollButtons="auto"
             aria-label="scrollable auto tabs example"
             >
-            <Tab label="Item One" {...a11yProps(0)} />
-            <Tab label="Item Two" {...a11yProps(1)} />
-            <Tab label="Item Three" {...a11yProps(2)} />
-            <Tab label="Item Four" {...a11yProps(3)} />
-            <Tab label="Item Five" {...a11yProps(4)} />
-            <Tab label="Item Six" {...a11yProps(5)} />
-            <Tab label="Item Seven" {...a11yProps(6)} />
+            <Tab label="Photo" {...a11yProps(0)} />
+            <Tab label="Select Attributes" {...a11yProps(1)} />
+            <Tab label="Select from Video" {...a11yProps(2)} />
+            <Tab label="Type" {...a11yProps(3)} />
             </Tabs>
         </AppBar>
         <TabPanel value={value} index={0}>
             Item One
         </TabPanel>
         <TabPanel value={value} index={1}>
-            <ColorCircle />
+            <AttributeSelector />
         </TabPanel>
         <TabPanel value={value} index={2}>
             Item Three

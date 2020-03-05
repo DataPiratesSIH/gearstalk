@@ -1,5 +1,8 @@
 import React from 'react';
+import { useAttribute } from '../context/attribute-context';
+
 import { makeStyles } from '@material-ui/core/styles';
+import Button from '@material-ui/core/Button';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import SearchTabs from './SearchTabs';
@@ -17,6 +20,8 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const SearchGrid = () => {
+    // eslint-disable-next-line
+    const [{ attributes }, dispatch] = useAttribute();
     const classes = useStyles();
 
     return (
@@ -35,6 +40,14 @@ const SearchGrid = () => {
             <Grid item xl={12} lg={12} md={12} xs={12} sm={12}>
             <SearchTabs />
             </Grid>
+            <Button
+                onClick={() => dispatch({
+                    type: 'changeAttribute',
+                    newAttribute: { primary: 'blue'}
+                })}
+            >
+                Make me blue!
+            </Button>
         </Grid>
         </div>
     );

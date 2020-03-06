@@ -1,4 +1,6 @@
 import React from 'react';
+import { useAttribute } from '../context/attribute-context';
+
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
@@ -6,10 +8,6 @@ import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
-import AttributeSelector from './AttributeSelector';
-import AttributeList from './AttributeList';
-import { useAttribute } from '../context/attribute-context';
-import Button from '@material-ui/core/Button';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -82,15 +80,10 @@ const SearchTabs = () => {
             Item One
         </TabPanel>
         <TabPanel value={value} index={1}>
-            <AttributeSelector />
-            
+            Item Two
         </TabPanel>
         <TabPanel value={value} index={2}>
-            <AttributeList items={attributes} />
-            <Button onClick={() => dispatch({
-                type: 'addPerson'
-            })
-            }>Add</Button>
+            Item Three
         </TabPanel>
         <TabPanel value={value} index={3}>
             Item Four

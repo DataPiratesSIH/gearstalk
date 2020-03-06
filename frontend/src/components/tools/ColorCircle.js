@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { useAttribute } from '../context/attribute-context';
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
 import Popover from '@material-ui/core/Popover';
@@ -9,8 +10,8 @@ const useStyles = makeStyles(theme => ({
       boxShadow: 'none !important',
     },
     shape: {
-        width: 30,
-        height: 30,
+        width: 25,
+        height: 25,
     },
     shapeCircle: {
         borderRadius: '50%',
@@ -20,13 +21,19 @@ const useStyles = makeStyles(theme => ({
     }, 
 }));
 
-const ColorCircle = () => {
+const ColorCircle = props => {
   const classes = useStyles();
+  // eslint-disable-next-line
+  const [{ attributes }, dispatch] = useAttribute();
   const [anchorEl, setAnchorEl] = React.useState(null);
-  const [bg, setBg] = useState({ "hex": "#000" });
 
-  const handleChangeColor = (color) => {
-    setBg(color);
+  const handleColorChange = (color) => {
+    dispatch({
+      type: 'updateFeature',
+      field: 'color',
+      value: color,
+      uid: props.id
+    })
   }
 
   const handleClick = event => {
@@ -42,7 +49,7 @@ const ColorCircle = () => {
 
   return (
     <div>
-      <div className={clsx(classes.shape, classes.shapeCircle)} style={{ backgroundColor: `${ bg.hex }` }} onClick={handleClick} />
+      <div className={clsx(classes.shape, classes.shapeCircle)} style={{ backgroundColor: `${ props.color.hex }` }} onClick={handleClick} />
       <Popover
         id={id}
         open={open}
@@ -58,8 +65,8 @@ const ColorCircle = () => {
         }}
       >
         <SketchPicker
-          color={bg}
-          onChangeComplete={handleChangeColor}
+          color={props.color}
+          onChangeComplete={handleColorChange}
         />
       </Popover>
     </div>

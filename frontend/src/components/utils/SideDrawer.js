@@ -114,7 +114,7 @@ const SideDrawer = props => {
           <ListSubheader component="div">
             REALTIME MAPPING
           </ListSubheader>  
-            <ListItem button>
+            <ListItem button onClick={() => {pushLink('/maps')}}>
                 <ListItemIcon><MapIcon /></ListItemIcon>
                 <ListItemText primary="Maps" />
               </ListItem>
@@ -132,7 +132,7 @@ const SideDrawer = props => {
 
     return (
       <nav className={classes.drawer} aria-label="mailbox folders">
-        <Hidden mdUp>
+        <Hidden lgUp>
           <Drawer
             container={props.container}
             variant="temporary"

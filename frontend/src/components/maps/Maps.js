@@ -1,18 +1,17 @@
 import React from 'react';
-import AutoGrid from './AutoGrid';
+import AreaSelector from './AreaSelector';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Container from '@material-ui/core/Container';
 
-const Landing = () => {
+const Maps = () => {
     return (
         <React.Fragment>
             <CssBaseline />
             <Container maxWidth="xl">
-                <AutoGrid />
-                
+                <AreaSelector />
             </Container>
         </React.Fragment>
     )
 }
 
-export default Landing;
+export default Maps;

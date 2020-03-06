@@ -1,14 +1,27 @@
 import React from 'react';
 import { useAttribute } from '../context/attribute-context';
+import { makeStyles } from '@material-ui/core/styles';
+import InputLabel from '@material-ui/core/InputLabel';
 import IconButton from '@material-ui/core/IconButton';
 import Grid from '@material-ui/core/Grid';
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
+import FormControl from '@material-ui/core/FormControl';
 import Typography from '@material-ui/core/Typography';
 import CloseIcon from '@material-ui/icons/Close';
 import AddBoxIcon from '@material-ui/icons/AddBox';
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 import ColorCircle from './ColorCircle';
+
+const useStyles = makeStyles(theme => ({
+    formControl: {
+      margin: theme.spacing(1),
+      minWidth: 120,
+    },
+    selectEmpty: {
+      marginTop: theme.spacing(2),
+    },
+}));
 
 const FeatureItem = props => {
     // eslint-disable-next-line
@@ -80,6 +93,7 @@ const FeatureList = props => {
 }
 
 const AttributeItem = props => {
+    const classes = useStyles();
     // eslint-disable-next-line
     const [{ attributes }, dispatch] = useAttribute();
 
@@ -96,13 +110,17 @@ const AttributeItem = props => {
         <React.Fragment>
             <Grid container spacing={2}>
                 <Grid item xl={4} lg={4} md={4} xs={4} sm={4}>
-                    <Typography variant="h6">
+                    <Typography color='primary' variant="h6">
                         Person {props.index + 1}
                     </Typography>
                 </Grid>
                 <Grid item xl={6} lg={6} md={6} xs={6} sm={6}>
+                <FormControl className={classes.formControl}>
+                    <InputLabel id="demo-simple-select-label">Gender</InputLabel>
                     <Select
-                        style={{ width: "100px "}}
+                        style={{ width: "100px" }}
+                        labelId="demo-simple-select-label"
+                        id="demo-simple-select"
                         value={props.gender}
                         onChange={handleGenderChange}
                     >
@@ -110,13 +128,14 @@ const AttributeItem = props => {
                         <MenuItem value="Female">Female</MenuItem>
                         <MenuItem value="Any">Any</MenuItem>
                     </Select>
+                    </FormControl>
                 </Grid>
                 <Grid item xl={2} lg={2} md={2} xs={2} sm={2}>
-                    <IconButton onClick={() => dispatch({
+                    <IconButton style={{ padding: "1px" }} onClick={() => dispatch({
                         type: 'deletePerson',
                         pid: props.id
                     })}>
-                        <DeleteForeverIcon color='error' />
+                        <DeleteForeverIcon color='error' fontSize='large' />
                     </IconButton>
                 </Grid>
             </Grid>
@@ -127,7 +146,7 @@ const AttributeItem = props => {
                         flexDirection: 'column',
                         alignItems: 'center' 
                     }}>
-                        <IconButton style={{ paddingTop: "0px" }} onClick={() => dispatch({
+                        <IconButton style={{ padding: "1px" }} onClick={() => dispatch({
                             type: 'addFeature',
                             pid: props.id
                         })}>
@@ -139,6 +158,7 @@ const AttributeItem = props => {
                     <FeatureList items={props.features} />
                 </Grid>
             </Grid>
+            <hr></hr>
         </React.Fragment>
     )
 }

@@ -1,6 +1,7 @@
 import React from 'react';
 import { useAttribute } from '../context/attribute-context';
 
+import QueryField from './QueryField';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
@@ -8,6 +9,7 @@ import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
+
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -42,7 +44,7 @@ function a11yProps(index) {
 const useStyles = makeStyles(theme => ({
   root: {
     [theme.breakpoints.down('md')]: {
-        width: '90vw',
+        width: '100%',
       }, 
     backgroundColor: theme.palette.background.paper,
   },
@@ -86,16 +88,7 @@ const SearchTabs = () => {
             Item Three
         </TabPanel>
         <TabPanel value={value} index={3}>
-            Item Four
-        </TabPanel>
-        <TabPanel value={value} index={4}>
-            Item Five
-        </TabPanel>
-        <TabPanel value={value} index={5}>
-            Item Six
-        </TabPanel>
-        <TabPanel value={value} index={6}>
-            Item Seven
+            <QueryField />
         </TabPanel>
         </div>
     );

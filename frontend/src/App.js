@@ -20,6 +20,7 @@ import Signup from './components/auth/Signup';
 import Landing from './components/utils/Landing';
 import Search from './components/tools/Search';
 import VideoQuality from './components/tools/VideoQuality';
+import Maps from './components/maps/Maps';
 
 const theme = createMuiTheme(customTheme);
 
@@ -67,6 +68,9 @@ const App = () => {
           </Route>
           <Route path="/videoquality" exact>
               <VideoQuality />
+          </Route>
+          <Route path="/maps" exact>
+              <Maps />
           </Route>
           <Route path="/signin" exact>
               <Signin />

@@ -7,6 +7,9 @@ import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import AttributeSelector from './AttributeSelector';
+import AttributeList from './AttributeList';
+import { useAttribute } from '../context/attribute-context';
+import Button from '@material-ui/core/Button';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -50,6 +53,8 @@ const useStyles = makeStyles(theme => ({
 const SearchTabs = () => {
     const classes = useStyles();
     const [value, setValue] = React.useState(0);
+    // eslint-disable-next-line
+    const [{ attributes }, dispatch] = useAttribute();
 
     const handleChange = (event, newValue) => {
         setValue(newValue);
@@ -78,9 +83,14 @@ const SearchTabs = () => {
         </TabPanel>
         <TabPanel value={value} index={1}>
             <AttributeSelector />
+            
         </TabPanel>
         <TabPanel value={value} index={2}>
-            Item Three
+            <AttributeList items={attributes} />
+            <Button onClick={() => dispatch({
+                type: 'addPerson'
+            })
+            }>Add</Button>
         </TabPanel>
         <TabPanel value={value} index={3}>
             Item Four

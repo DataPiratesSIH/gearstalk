@@ -1,6 +1,7 @@
 import React from 'react';
 import { useAttribute } from '../context/attribute-context';
 
+import ImageCrop from './ImageCrop';
 import QueryField from './QueryField';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
@@ -9,6 +10,7 @@ import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
+
 
 
 function TabPanel(props) {
@@ -79,7 +81,7 @@ const SearchTabs = () => {
             </Tabs>
         </AppBar>
         <TabPanel value={value} index={0}>
-            Item One
+            <ImageCrop />
         </TabPanel>
         <TabPanel value={value} index={1}>
             Item Two

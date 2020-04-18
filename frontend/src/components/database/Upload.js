@@ -1,10 +1,15 @@
-import React from 'react';
+import React, { useState } from 'react';
+import DateFnsUtils from '@date-io/date-fns';
 import MagicDropzone from 'react-magic-dropzone';
+import { MuiPickersUtilsProvider, KeyboardDateTimePicker } from "@material-ui/pickers";
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import Paper from '@material-ui/core/Paper';
+import IconButton from '@material-ui/core/IconButton';  
+import CancelIcon from '@material-ui/icons/Cancel';
 import upload from './upload.svg';
+import { Typography } from '@material-ui/core';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -47,16 +52,42 @@ const useStyles = makeStyles(theme => ({
         color: '#0a045e',
         fontSize: '15px',
         fontWeight: '400',
+    },
+    filePaper: {
+        background: '#2a3f73',
+        border: '1px solid #4f619a',    
+    },
+    verticalText: {
+        minHeight: '60px',
+        lineHeight: '60px',
+        textAlign: 'center',
+    },
+    verticalSpan: {
+        display: 'inline-block',
+        verticalAlign: 'middle',
+        lineHeight: 'normal',
     }
 }));
 
 const Upload = () => {
     const classes = useStyles();
+    const [videoFile, setVideoFile] = useState();
+    const [selectedDate, setSelectedDate] = useState(new Date());
 
     const onDrop = (accepted, rejected, links) => {
         if (accepted && accepted.length > 0) {
+            setVideoFile(null)
             console.log(accepted[0])
+            setVideoFile(accepted[0])
         }
+    }
+
+    const clearVideoFile = () => {
+        setVideoFile(null);
+    }
+
+    const handleDateChange = (date) => {
+        setSelectedDate(date)
     }
 
     return (
@@ -83,7 +114,49 @@ const Upload = () => {
                         </div>
                     </Grid>
                     <Grid item md={5} sm={12} xs={12}>
-                        <h1>h</h1>
+                        <div style={{ padding: '20px' }}>
+                            <Paper className={classes.filePaper} variant="outlined" square>
+                                    {videoFile ? (
+                                        <Grid container>
+                                            <Grid className={classes.verticalText} item xs={10}>
+                                                <span className={classes.verticalSpan}>
+                                                    {videoFile.name}
+                                                </span>
+                                            </Grid>
+                                            <Grid className={classes.verticalText} item xs={2}>
+                                                <IconButton aria-label="clear" onClick={clearVideoFile}>
+                                                    <CancelIcon />
+                                                </IconButton>
+                                            </Grid>
+                                        </Grid>
+                                    ) : (
+                                        <Grid container>
+                                            <Grid className={classes.verticalText} item xs={12}>
+                                                No video uploaded
+                                            </Grid>
+                                        </Grid>
+                                    )}
+                            </Paper>
+                        </div>
+                        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                            <div>
+                                <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                                    <Typography variant='h5' style={{ color: '#758cd1' }}>Date</Typography>
+                                    <KeyboardDateTimePicker
+                                        variant="inline"
+                                        ampm={false}
+                                        label="Select Date and Timestamp"
+                                        value={selectedDate}
+                                        onChange={handleDateChange}
+                                        onError={console.log}
+                                        disablePast
+                                        format="yyyy/MM/dd HH:mm"
+                                    />
+                                   
+                                </MuiPickersUtilsProvider>
+                            </div>
+                        </div>
+
 
                     </Grid>
                 </Grid>

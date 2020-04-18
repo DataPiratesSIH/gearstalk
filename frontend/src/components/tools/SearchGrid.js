@@ -32,17 +32,17 @@ const SearchGrid = () => {
         <div className={classes.root}>
         <Grid container spacing={4}>
             <Grid item xl={9} lg={9} md={9} xs={12} sm={12}>
-            <Paper className={classes.paper}>
+            <Paper className={classes.paper} square>
                 Video
             </Paper>
             </Grid>
             <Grid item xl={3} lg={3} md={3} xs={12} sm={12}>
-            <Paper className={classes.paper}>
+            <Paper className={classes.paper} square>
                 Features
             </Paper>
             </Grid>
             <Grid item xl={6} lg={6} md={6} xs={12} sm={12}>
-            <Paper className={classes.paper}>
+            <Paper className={classes.paper} square>
                 <AttributeList items={attributes} />
                 <Button
                     variant="contained"

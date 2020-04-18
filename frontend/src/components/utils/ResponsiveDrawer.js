@@ -14,12 +14,14 @@ import MenuIcon from '@material-ui/icons/Menu';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
+import cctv from './cctv.svg';
 
 const useStyles = makeStyles(theme => ({
   root: {
     display: 'flex',
   },
   appBar: {
+    background: 'linear-gradient(90deg, rgba(36,44,78,1) 0%, rgba(49,61,100,1) 29%, rgba(63,78,128,1) 51%, rgba(47,58,98,1) 75%, rgba(36,44,78,1) 100%)',
     zIndex: theme.zIndex.drawer + 1,
   },
   menuButton: {
@@ -63,6 +65,9 @@ const ResponsiveDrawer = props => {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" className={classes.title}>
+            <span style={{ marginRight: '20px' }}>
+              <img width="30" src={cctv} alt="cctv" />
+            </span>
             gearStalk
           </Typography>
           {!auth.isLoggedIn && (

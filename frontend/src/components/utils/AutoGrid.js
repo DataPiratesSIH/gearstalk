@@ -22,18 +22,18 @@ const AutoGrid = () => {
         <div className={classes.root}>
         <Grid container spacing={4}>
             <Grid item xl={4} lg={4} md={4} xs={12} sm={12}>
-            <Paper className={classes.paper}>
+            <Paper className={classes.paper} square>
             </Paper>
             </Grid>
             <Grid item xl={4} lg={4} md={4} xs={12} sm={12}>
-            <Paper style={{ margin: 'auto' }} className={classes.paper}>
+            <Paper style={{ margin: 'auto' }} className={classes.paper} square>
                 <div style={{ marginTop: "50px" }}>
                 <h1>BLANK</h1>
                 </div>
             </Paper>
             </Grid>
             <Grid item xl={4} lg={4} md={4} xs={12} sm={12}>
-            <Paper className={classes.paper}>
+            <Paper className={classes.paper} square>
                 <div style={{ marginTop: "50px" }}>
                 <h1>BLANK</h1>
                 </div>

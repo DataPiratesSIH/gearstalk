@@ -4,6 +4,7 @@ import { useHistory } from 'react-router-dom';
 import Divider from '@material-ui/core/Divider';
 import Drawer from '@material-ui/core/Drawer';
 import Hidden from '@material-ui/core/Hidden';
+import Avatar from '@material-ui/core/Avatar';
 import List from '@material-ui/core/List';
 import ListSubheader from '@material-ui/core/ListSubheader';
 import ListItem from '@material-ui/core/ListItem';
@@ -46,6 +47,12 @@ const useStyles = makeStyles(theme => ({
       paddingTop: "64px",
     },
   },  
+  divider: {
+    backgroundColor: '#505c94',
+  },
+  red: {
+    color: 'red'
+  }
 }));
 
 const SideDrawer = props => {
@@ -59,71 +66,71 @@ const SideDrawer = props => {
     }
 
     const drawer = (
-        <div>
+        <div style={{ background: 'linear-gradient(90deg, rgba(45,55,90,1) 4%, rgba(37,47,80,1) 18%, rgba(33,40,66,1) 38%, rgba(28,35,62,1) 82%)'}}>
             <ListItem classes={{root: classes.root}} button>
                 <ListItemIcon><AppsIcon color="primary" fontSize="large" /></ListItemIcon>
                 <Typography color="primary" style={{ fontSize: '25px', fontWeight: '500' }}>
                     Console
                 </Typography>
               </ListItem>
-          <Divider />
+          <Divider className={classes.divider} />
           <List>
             <ListItem button onClick={() => {pushLink('/')}}>
-                <ListItemIcon><DashboardIcon /></ListItemIcon>
+                <ListItemIcon><Avatar><DashboardIcon fontSize='small' /></Avatar></ListItemIcon>
                 <ListItemText primary="Dashboard" />
               </ListItem>
               <ListItem button>
-                <ListItemIcon><AccessibilityIcon /></ListItemIcon>
+                <ListItemIcon><Avatar><AccessibilityIcon fontSize='small' /></Avatar></ListItemIcon>
                 <ListItemText primary="Activity" />
               </ListItem>
           </List>
-          <Divider />
+          <Divider className={classes.divider} />
           <List>
           <ListSubheader component="div">
             DATABASE
           </ListSubheader>  
           <ListItem button onClick={() => {pushLink('/store')}}>
-                <ListItemIcon><StorageIcon /></ListItemIcon>
+                <ListItemIcon><Avatar><StorageIcon fontSize='small' /></Avatar></ListItemIcon>
                 <ListItemText primary="Store" />
               </ListItem>
-              <ListItem button>
-                <ListItemIcon><AddPhotoAlternateIcon /></ListItemIcon>
+              <ListItem button onClick={() => {pushLink('/upload')}}>
+                <ListItemIcon><Avatar><AddPhotoAlternateIcon fontSize='small' /></Avatar></ListItemIcon>
                 <ListItemText primary="Add Video" />
               </ListItem>
           </List>
-          <Divider />
+          <Divider className={classes.divider} />
           <List>
           <ListSubheader component="div">
             TOOLS
           </ListSubheader>
               <ListItem button onClick={() => {pushLink('/search')}}>
-                <ListItemIcon><ImageSearchIcon /></ListItemIcon>
+                <ListItemIcon><Avatar><ImageSearchIcon fontSize='small' /></Avatar></ListItemIcon>
                 <ListItemText primary="Search" />
               </ListItem>  
               <ListItem button onClick={() => {pushLink('/videoquality')}}>
-                <ListItemIcon><CameraEnhanceIcon /></ListItemIcon>
-                <ListItemText primary="Video Quality" />
+                <ListItemIcon><Avatar><CameraEnhanceIcon /></Avatar></ListItemIcon>
+                <ListItemText primary="Video Quality" fontSize='small' />
               </ListItem>
               <ListItem button>
-                <ListItemIcon><InsertChartIcon /></ListItemIcon>
-                <ListItemText primary="Visualization" />
+                <ListItemIcon><Avatar><InsertChartIcon /></Avatar></ListItemIcon>
+                <ListItemText primary="Visualization" fontSize='small' />
               </ListItem>
           </List>
-          <Divider />
+          <Divider className={classes.divider} />
           <List>
           <ListSubheader component="div">
             REALTIME MAPPING
           </ListSubheader>  
             <ListItem button onClick={() => {pushLink('/maps')}}>
-                <ListItemIcon><MapIcon /></ListItemIcon>
+                <ListItemIcon><Avatar><MapIcon fontSize='small' /></Avatar></ListItemIcon>
                 <ListItemText primary="Maps" />
               </ListItem>
               <ListItem button>
-                <ListItemIcon><StreetviewIcon /></ListItemIcon>
+                <ListItemIcon><Avatar><StreetviewIcon fontSize='small' /></Avatar></ListItemIcon>
                 <ListItemText primary="Streetview" />
               </ListItem>
               <ListItem button>
-                <ListItemIcon><PersonPinIcon /></ListItemIcon>
+                <ListItemIcon><Avatar><PersonPinIcon fontSize='small' /></Avatar></ListItemIcon>
                 <ListItemText primary="Pinpoint" />
               </ListItem>
           </List>

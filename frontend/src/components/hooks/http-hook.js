@@ -17,7 +17,8 @@ export const useHttpClient = () => {
           method,
           body,
           headers,
-          signal: httpAbortCtrl.signal
+          signal: httpAbortCtrl.signal,
+          redirect: 'follow'
         });
 
         const responseData = await response.json();

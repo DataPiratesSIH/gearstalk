@@ -1,5 +1,6 @@
 import os
 from flask import Flask, request, jsonify, make_response, render_template, Response, Flask, flash, redirect, url_for
+from flask_cors import CORS
 import json,requests
 import cv2
 import numpy as np
@@ -16,6 +17,7 @@ GOOGLEMAPS_KEY = os.getenv("GOOGLE_MAPS_KEY")
 CONNECTION_STRING = os.getenv("MONGODB_STRING")
 
 app = Flask(__name__)
+CORS(app)
 app.config['UPLOAD_FOLDER'] = 'saves'
 
 client = pymongo.MongoClient(CONNECTION_STRING)

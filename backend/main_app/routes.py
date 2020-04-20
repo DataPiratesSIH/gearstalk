@@ -10,6 +10,8 @@ import datetime
 from flask_pymongo import pymongo
 from webapp import rabbitmq
 import base64
+from geopy.geocoders import Nominatim
+
 
 app = Flask(__name__)
 
@@ -35,7 +37,7 @@ def getFrame(vidcap,sec,filename):
 
     if hasFrames:
         string = base64.b64encode(cv2.imencode('.png', image)[1]).decode()
-        rabbitmq.rabbitmq(string,filename)
+        rabbitmq.rabbitmq_upload(string,filename)
         # print(result)
     return hasFrames
 
@@ -75,32 +77,56 @@ def detect():
                 sec = sec + frameRate
                 sec = round(sec, 2)
                 success = getFrame(vidcap,sec,filename)
-        return jsonify({"success": "path"}), 200
+        return jsonify({"success": path}), 200
     except Exception as e:
         return f"An Error Occured: {e}"
 
 
-# def liveframe(url):
-#     #datetime
-#     currentDT = datetime.datetime.now()
-#     frame_time = currentDT.strftime("%I:%M:%S %p")
-#     frame_date = currentDT.strftime("%b %d, %Y")
-#     frame_day = currentDT.strftime("%a")
-    
-#     #storage path/url
-#     path = os.path.join(app.instance_path, 'live_data')
+@app.route("/register_cam", methods=['POST'])
+def register():
+    try:
+        geolocator = Nominatim(user_agent="gearstalk")                #google map api key
+        web_url = request.data['url']
+        web_addr = request.data['addr']
+        location = geolocator.geocode(web_addr)
+        print("qwertyu")
+        web_lat = location.latitude
+        web_lng = location.longitude
+        print((location.latitude, location.longitude))
 
-#     #status
-#     status = requests.get(url).status_code
-#     #image
-#     image = cv2.cvtColor(io.imread(url), cv2.COLOR_BGR2RGB)
-#     return status, image
+        record = {
+                'url' : web_url,
+                'lat' : web_lat,
+                'lng' : web_lng,
+                'addr' : web_addr
+                }
+        db.cams.insert(json.dumps(record))
+        return jsonify({"status": "Record Sucessfully Added!!"}), 200
+    except Exception as e:
+        return f"An Error Occured: {e}"
+
+
+def liveframe(url):
+    #status
+    status = requests.get(url).status_code
+
+    return status
+
+# @app.route("/online_cams", methods=['GET'])
+# def online():
+#     try:
+
+
 
 
 @app.route('/livestream', methods=['GET'])
 def livestream():
     try:
-        webcams = ["http://192.168.0.103:8080/shot.jpg"]
+        webcams = ["http://192.168.0.103:8080"]
+
+        for i in webcams:
+            rabbitmq.rabbitmq_live(i)
+
         present,image = DetectStream().liveframe(webcams[0])
         while present == 200:
             time.sleep(2)
@@ -114,7 +140,8 @@ def livestream():
             present,image = DetectStream().liveframe(webcams[0])
             result = DetectStream().detect(image)
             print(result,frame_time,frame_date,frame_day)
-        return jsonify({"connection status": "closed"}), 200
+
+        return jsonify({"status": "Getting Live Data"}), 200
     except Exception as e:
         return f"An Error Occured: {e}"
 

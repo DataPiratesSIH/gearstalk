@@ -187,7 +187,9 @@ const LocationItem = props => {
 const LocationDialog = props => {
     const classes = useStyles();
     const [locationData, setLocationData] = useState();
+    const [searchData, setSearchData] = useState();
     const [title, setTitle] = useState("Choose a Location")
+    const [searchText, setSearchText] = useState('')
 
     // eslint-disable-next-line
     const { isLoading, error, sendRequest, clearError } = useHttpClient();
@@ -199,6 +201,7 @@ const LocationDialog = props => {
                     process.env.REACT_APP_BACKEND_URL + '/getcctv'
                 );
                 setLocationData(responseData)
+                setSearchData(responseData)
             } catch (err) {
                 console.log(err)
             }
@@ -213,6 +216,26 @@ const LocationDialog = props => {
         setTitle('Choose a Location')
     }
     
+    const searchHandler = (event) => {
+        setSearchText(event.target.value);
+        let search = event.target.value
+        let items = locationData;
+        if (search) {
+            let filterItems = []
+            for (let i=0; i< items.length; i++) {
+                if (items[i].formatted_address.toLowerCase().includes(search.toLowerCase()) 
+                    || items[i].latitude.toString().includes(search)
+                    || items[i].longitude.toString().includes(search)
+                ) {
+                    filterItems.push(items[i])
+                }
+            }
+            setSearchData(filterItems)
+        } else {
+            setSearchData(items)
+        }
+    }
+
     return (
         <Dialog
             fullWidth={true}
@@ -232,6 +255,8 @@ const LocationDialog = props => {
                         className={classes.margin}
                         id="input-with-icon-textfield"
                         label="Search"
+                        value={searchText}
+                        onChange={searchHandler}
                         InputProps={{
                         startAdornment: (
                             <InputAdornment position="start">
@@ -250,7 +275,7 @@ const LocationDialog = props => {
                 </div>
             )}
             <Grid container>
-                {locationData && locationData.map((location, index) => 
+                {searchData && searchData.map((location, index) => 
                     <LocationItem
                         key={index}
                         oid={location._id.$oid}

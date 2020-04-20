@@ -16,6 +16,7 @@ import { createMuiTheme } from '@material-ui/core/styles';
 import ResponsiveDrawer from './components/utils/ResponsiveDrawer';
 import Signin from './components/auth/Signin';
 import Store from './components/database/Store';
+import Camera from './components/database/Camera';
 import Upload from './components/database/Upload';
 import Signup from './components/auth/Signup';
 import Landing from './components/utils/Landing';
@@ -76,6 +77,9 @@ const App = () => {
           </Route>
           <Route path="/upload" exact>
               <Upload />
+          </Route>
+          <Route path="/cctv" exact>
+              <Camera />
           </Route>
           <Route path="/signin" exact>
               <Signin />

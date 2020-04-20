@@ -21,6 +21,7 @@ import MapIcon from '@material-ui/icons/Map';
 import PersonPinIcon from '@material-ui/icons/PersonPin';
 import StreetviewIcon from '@material-ui/icons/Streetview';
 import ImageSearchIcon from '@material-ui/icons/ImageSearch';
+import VideocamIcon from '@material-ui/icons/Videocam';
 
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import { Typography } from '@material-ui/core';
@@ -96,6 +97,10 @@ const SideDrawer = props => {
               <ListItem button onClick={() => {pushLink('/upload')}}>
                 <ListItemIcon><Avatar><AddPhotoAlternateIcon fontSize='small' /></Avatar></ListItemIcon>
                 <ListItemText primary="Add Video" />
+              </ListItem>
+              <ListItem button onClick={() => {pushLink('/cctv')}}>
+                <ListItemIcon><Avatar><VideocamIcon fontSize='small' /></Avatar></ListItemIcon>
+                <ListItemText primary="Camera" />
               </ListItem>
           </List>
           <Divider className={classes.divider} />

@@ -1,25 +1,16 @@
-  import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import CircularProgress from '@material-ui/core/CircularProgress';
-
-const useStyles = makeStyles(theme => ({
-  root: {
-    display: 'flex',
-    color: '#352961',
-    '& > * + *': {
-      marginLeft: theme.spacing(2),
-    },
-  },
-}));
+import React from 'react';
+import './LoadingSpinner.css';
 
 const LoadingSpinner = props => {
-  const classes = useStyles();
-
   return (
-    <div className={classes.root}>
-      <CircularProgress color="inherit" size={props.size} thickness={props.thickness} />
+    <div style={{ textAlign: 'center' }}>
+      <div className={`${props.asOverlay && 'loading-spinner__overlay'}`}>
+        <div className="lds-grid">
+          <div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>
+        </div>
+      </div>
     </div>
   );
-}
+};
 
 export default LoadingSpinner;

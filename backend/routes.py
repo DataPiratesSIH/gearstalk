@@ -108,6 +108,21 @@ def register():
 
 
 
+@app.route('/livestream', methods=['GET'])
+def livestream():
+    try:
+        cams = db.cams.find({})
+        total_cams = db.cams.count_documents({})
+
+        cam_list = []
+        for i in cams:
+            cam_list.append(str(i['url'] + "/video"))
+
+        return jsonify({"cams" : cam_list, "total_cams" : total_cams}), 200
+    except Exception as e:
+        return f"An Error Occured: {e}"  
+
+
 def online(url):
     try:
         r = requests.head(url)
@@ -119,7 +134,7 @@ def online(url):
 
 
 @app.route('/livestream', methods=['POST'])
-def livestream():
+def livedata():
     try:
         cams = db.cams.find({})
         total_cams = db.cams.count_documents({})

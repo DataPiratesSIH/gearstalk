@@ -6,21 +6,22 @@ import cv2
 import numpy as np
 import threading
 from werkzeug.utils import secure_filename
-import datetime
 from flask_pymongo import pymongo
 from webapp import rabbitmq
 import base64
-from geopy.geocoders import Nominatim
+import googlemaps
 
 
 app = Flask(__name__)
+
+GOOGLE_API_KEY = 'AIzaSyCMADuWmaxW-M9kzcQsPSouM1_sZKrE7sQ'               #google map api key
 
 CONNECTION_STRING = 'mongodb+srv://admin:admin@cluster0-jnsfh.mongodb.net/test?retryWrites=true&w=majority'
 client = pymongo.MongoClient(CONNECTION_STRING)
 db = client.get_database('gearstalk')
 
 
-ALLOWED_EXTENSIONS = [ 'mp4', 'avi','jpeg']
+ALLOWED_EXTENSIONS = [ 'mp4', 'avi','jpeg','png']
 
 '''-----------------------------------
             yolo-detection
@@ -64,12 +65,12 @@ def detect():
             filename = secure_filename(file.filename)
             # create the folders when setting up your app
             os.makedirs(os.path.join(app.instance_path, 'UPLOAD_FOLDER'), exist_ok=True)
-            path = os.path.join(app.instance_path, 'UPLOAD_FOLDER', filename)
-            file.save(path)
+            file_path = os.path.join(app.instance_path, 'UPLOAD_FOLDER', filename)
+            print(file_path)
+            file.save(file_path)
 
             # path = "C:\\Users\\Lenovo\\Downloads\\Documents\\GitHub\\yolo_textiles\\Object-detection\\videos\\airport.mp4"
-            print(path)
-            vidcap = cv2.VideoCapture(path)
+            vidcap = cv2.VideoCapture(file_path)
             sec = 0
             frameRate = 0.5                                              #it will capture image in each 0.5 second
             success = getFrame(vidcap,sec,filename)
@@ -77,7 +78,7 @@ def detect():
                 sec = sec + frameRate
                 sec = round(sec, 2)
                 success = getFrame(vidcap,sec,filename)
-        return jsonify({"success": path}), 200
+        return jsonify({"success": file_path}), 200
     except Exception as e:
         return f"An Error Occured: {e}"
 
@@ -85,14 +86,14 @@ def detect():
 @app.route("/register_cam", methods=['POST'])
 def register():
     try:
-        geolocator = Nominatim(user_agent="gearstalk")                #google map api key
-        web_url = request.data['url']
-        web_addr = request.data['addr']
-        location = geolocator.geocode(web_addr)
-        print("qwertyu")
-        web_lat = location.latitude
-        web_lng = location.longitude
-        print((location.latitude, location.longitude))
+        req_data = request.get_json()
+        web_url = req_data['url']
+        web_addr = req_data['addr']
+        gmaps = googlemaps.Client(key=GOOGLE_API_KEY)
+        location = gmaps.geocode(web_addr)
+        web_lat = location[0]['geometry']['location']['lat']
+        web_lng = location[0]['geometry']['location']['lng']
+        print(web_lat,web_lng)
 
         record = {
                 'url' : web_url,
@@ -100,46 +101,39 @@ def register():
                 'lng' : web_lng,
                 'addr' : web_addr
                 }
-        db.cams.insert(json.dumps(record))
+        db.cams.insert_one(record)
         return jsonify({"status": "Record Sucessfully Added!!"}), 200
     except Exception as e:
         return f"An Error Occured: {e}"
 
 
-def liveframe(url):
-    #status
-    status = requests.get(url).status_code
 
-    return status
-
-# @app.route("/online_cams", methods=['GET'])
-# def online():
-#     try:
-
-
+def online(url):
+    try:
+        r = requests.head(url)
+        if r.status_code == 200:
+            return 1
+        # prints the int of the status code. Find more at httpstatusrappers.com :)
+    except requests.ConnectionError:
+        return 0
 
 
-@app.route('/livestream', methods=['GET'])
+@app.route('/livestream', methods=['POST'])
 def livestream():
     try:
-        webcams = ["http://192.168.0.103:8080"]
+        cams = db.cams.find({})
+        total_cams = db.cams.count_documents({})
 
-        for i in webcams:
-            rabbitmq.rabbitmq_live(i)
-
-        present,image = DetectStream().liveframe(webcams[0])
-        while present == 200:
-            time.sleep(2)
-
-            #datetime
-            currentDT = datetime.datetime.now()
-            frame_time = currentDT.strftime("%I:%M:%S %p")
-            frame_date = currentDT.strftime("%b %d, %Y")
-            frame_day = currentDT.strftime("%a")
-
-            present,image = DetectStream().liveframe(webcams[0])
-            result = DetectStream().detect(image)
-            print(result,frame_time,frame_date,frame_day)
+        online_cams = 0
+        while (total_cams != online_cams):
+            online_cams = 0
+            for i in cams:
+                print(i['_id'])
+                if online(i['url']) == 1:
+                    rabbitmq.rabbitmq_live(i['_id'],i['lat'],i['lng'],i['url'])
+                else:
+                    online_cams+=1
+            # time.sleep(0.5)                                           #to get frame in every 0.5sec
 
         return jsonify({"status": "Getting Live Data"}), 200
     except Exception as e:

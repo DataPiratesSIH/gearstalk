@@ -17,7 +17,7 @@ GOOGLEMAPS_KEY = os.getenv("GOOGLE_MAPS_KEY")
 CONNECTION_STRING = os.getenv("MONGODB_STRING")
 
 app = Flask(__name__)
-CORS(app)
+cors = CORS(app, resources={r"*": {"origins": "*"}}, expose_headers='Access-Control-Allow-Origin')
 app.config['UPLOAD_FOLDER'] = 'saves'
 
 client = pymongo.MongoClient(CONNECTION_STRING)
@@ -168,7 +168,7 @@ def deleteVideo(oid):
 @app.route('/getcctv', methods=['GET'])
 def getCCTV():
     if "cctv" not in db.list_collection_names():
-        return jsonify({"success": False, "msg": "No Collection cctv"}), 404
+        return [], 200
     else:
         cctvs = list(db.cctv.find({}))
         return dumps(cctvs), 200
@@ -200,33 +200,35 @@ def addCCTV():
 # Update CCTV by id
 @app.route('/updatecctv', methods=['POST'])
 def updateCCTV():
-    location = request.get_json()
-    oid = location.get("oid")
-    lat = location.get("lat")
-    lon = location.get("lon")
-    if lat == None or lon == None:
-            return jsonify({"success": False, "msg": "Coordinate fields are empty."}), 400
-    try:
-        data = address_resolver(lat, lon)
-    except Exception as e:
-        return jsonify({"success": False, "msg": "Please enter valid coordinates."}), 400
-    if data['country'] == "India":
+    if request.method == 'POST':
+        location = request.get_json()
+        print(location)
+        oid = location.get("oid")
+        lat = location.get("lat")
+        lon = location.get("lon")
+        if lat == None or lon == None:
+                return jsonify({"success": False, "msg": "Coordinate fields are empty."}), 400
         try:
-            newvalues = { "$set": data }
-            result = db.cctv.update_one({ "_id": ObjectId(oid)}, newvalues )
-            if result.matched_count == 0:
-                return jsonify({"success": False, "msg": "ObjectId cannot be found."}), 400
-            elif result.modified_count == 0:
-                return jsonify({"success": False, "msg": "Failed to modify document."}), 400
-            else:
-                return jsonify({"success": True, "msg": "CCTV successfully updated"}), 200
+            data = address_resolver(lat, lon)
         except Exception as e:
-            print(e)
-            return jsonify({"success": False, "msg": "ObjectId is invalid."}), 400
-    else:
-        print(data['country'])
-        msg = "Entered coordinates are from " + data['country'] + ". Please select coordinates from within the country."
-        return jsonify({"success": False, "msg": msg}), 400
+            return jsonify({"success": False, "msg": "Please enter valid coordinates."}), 400
+        if data['country'] == "India":
+            try:
+                newvalues = { "$set": data }
+                result = db.cctv.update_one({ "_id": ObjectId(oid)}, newvalues )
+                if result.matched_count == 0:
+                    return jsonify({"success": False, "msg": "ObjectId cannot be found."}), 400
+                elif result.modified_count == 0:
+                    return jsonify({"success": False, "msg": "Failed to modify document."}), 400
+                else:
+                    return jsonify({"success": True, "msg": "CCTV successfully updated"}), 200
+            except Exception as e:
+                print(e)
+                return jsonify({"success": False, "msg": "ObjectId is invalid."}), 400
+        else:
+            print(data['country'])
+            msg = "Entered coordinates are from " + data['country'] + ". Please select coordinates from within the country."
+            return jsonify({"success": False, "msg": msg}), 400
 
 # Delete CCTV by id
 @app.route('/deletecctv/<oid>', methods=['GET'])

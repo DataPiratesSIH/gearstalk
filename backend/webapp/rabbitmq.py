@@ -21,7 +21,7 @@ def rabbitmq_upload(string,filename):
     connection.close()
 
 
-def rabbitmq_live(domain,lat,lng):
+def rabbitmq_live(cam_id, lat, lng, url):
     credentials = pika.PlainCredentials('test', 'test')
 
     connection = pika.BlockingConnection(
@@ -31,9 +31,10 @@ def rabbitmq_live(domain,lat,lng):
     channel.queue_declare(queue='live_data')
 
     data = {
-        "domain": str(domain + "/shot.jpg"),
+        "cam_id" : cam_id,
         "lat" : lat,
-        "lng" : lng
+        "lng" : lng,
+        "url" : url
     }
     message = json.dumps(data, ensure_ascii=False, indent=4)
     

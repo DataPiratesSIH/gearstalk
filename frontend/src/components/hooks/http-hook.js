@@ -17,6 +17,7 @@ export const useHttpClient = () => {
           method,
           body,
           headers,
+          mode: 'cors',
           signal: httpAbortCtrl.signal,
           redirect: 'follow'
         });
@@ -46,6 +47,10 @@ export const useHttpClient = () => {
     setError(null);
   };
 
+  const setErrorText = (message) => {
+    setError(message)
+  }
+
   useEffect(() => {
     return () => {
       // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -53,5 +58,5 @@ export const useHttpClient = () => {
     };
   }, []);
 
-  return { isLoading, error, sendRequest, clearError };
+  return { isLoading, error, sendRequest, clearError, setErrorText };
 };

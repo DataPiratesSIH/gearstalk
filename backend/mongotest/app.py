@@ -17,10 +17,9 @@ GOOGLEMAPS_KEY = os.getenv("GOOGLE_MAPS_KEY")
 CONNECTION_STRING = os.getenv("MONGODB_STRING")
 
 app = Flask(__name__)
-cors = CORS(app, resources={r"*": {"origins": "*"}}, expose_headers='Access-Control-Allow-Origin')
-# cors = CORS(app, resources="*")
-# cors = CORS(app, resources=r"/api/*") originate all routes as /api/<route-name>
 app.config['UPLOAD_FOLDER'] = 'saves'
+app.config['CORS_HEADERS'] = 'Content-Type'
+CORS(app)
 
 client = pymongo.MongoClient(CONNECTION_STRING)
 db = client.get_database('gearstalk')
@@ -110,7 +109,7 @@ def addVideo():
     try:
         thumbnail = getFirstFrame('saves/test.mp4')
     except Exception as e:
-        return jsonify({"success": False, "msg": "Failed to process video"}), 500
+        return jsonify({"success": False, "message": "Failed to process video"}), 500
 
     thumbnail_oid = fs.upload_from_stream(str(oid), thumbnail)
     # To check if image is saved
@@ -119,7 +118,7 @@ def addVideo():
     # f_img.close()
     return jsonify({
         "success": True, 
-        "msg": "Video successfully uploaded",
+        "message": "Video successfully uploaded",
         "video": str(oid),
         "thumbnail": str(thumbnail_oid)
     }), 200
@@ -140,12 +139,12 @@ def updateVideo():
     try:
         thumbnail = getFirstFrame('saves/test.mp4')
     except Exception as e:
-        return jsonify({"success": False, "msg": "Failed to process video"}), 500
+        return jsonify({"success": False, "message": "Failed to process video"}), 500
 
     thumbnail_oid = fs.upload_from_stream(str(oid), thumbnail)
     return jsonify({
         "success": True, 
-        "msg": "Video successfully uploaded",
+        "message": "Video successfully uploaded",
         "video": str(oid),
         "thumbnail": str(thumbnail_oid)
     }), 200
@@ -154,10 +153,10 @@ def updateVideo():
 @app.route('/deletevideo/<oid>', methods=['GET'])
 def deleteVideo(oid):
     if oid == None:
-            return jsonify({"success": False, "msg": "No Object Id in param."}), 400
+            return jsonify({"success": False, "message": "No Object Id in param."}), 400
     else:
         if "video" not in db.list_collection_names():
-            return jsonify({"success": False, "msg": "No Collection video."}), 404
+            return jsonify({"success": False, "message": "No Collection video."}), 404
         else:
             return jsonify("TBD")
 '''
@@ -181,71 +180,90 @@ def getCCTV():
 # {"lat": 23.45, "lon": 45.67}
 @app.route('/addcctv', methods=['POST'])
 def addCCTV():
-    location = request.get_json()
+    location = json.loads(request.data)
+    print(location)
     lat = location.get("lat")
     lon = location.get("lon")
     print(lat,lon)
     if lat == None or lon == None:
-        return jsonify({"success": False, "msg": "Coordinate fields are empty."}), 400
+        return jsonify({"success": False, "message": "Coordinate fields are empty."}), 400
+    data = {}
     try:
         data = address_resolver(lat, lon)
     except Exception as e:
-        return jsonify({"success": False, "msg": "Please enter valid coordinates."}), 400
+        print(e)
+    if data == {}:
+        return jsonify({"success": False, "message": "Please enter valid coordinates."}), 401
     if data['country'] == "India":
-        db.cctv.insert_one(data)
-        return jsonify({"success": True, "msg": "CCTV successfully added."}), 200
+        res = db.cctv.insert_one(data)
+        oid = res.inserted_id
+        doc = db.cctv.find_one({ "_id": oid })
+        print(doc)
+        return dumps([doc]), 200
     else:
         print(data['country'])
-        msg = "Entered coordinates are from " + data['country'] + ". Please select coordinates from within the country."
-        return jsonify({"success": False, "msg": msg}), 400
+        message = "Entered coordinates are from " + data['country'] + ". Please select coordinates from within the country."
+        return jsonify({"success": False, "message": message}), 405
     
 # Update CCTV by id
-@app.route('/updatecctv', methods=['POST'])
+@app.route('/updatecctv', methods=['PATCH'])
 def updateCCTV():
-    if request.method == 'POST':
-        location = request.get_json()
-        print(location)
-        oid = location.get("oid")
-        lat = location.get("lat")
-        lon = location.get("lon")
-        if lat == None or lon == None:
-                return jsonify({"success": False, "msg": "Coordinate fields are empty."}), 400
+    location = json.loads(request.data)
+    print(location)
+    oid = location.get("oid")
+    lat = location.get("lat")
+    lon = location.get("lon")
+    if lat == None or lon == None:
+            return jsonify({"success": False, "message": "Coordinate fields are empty."}), 401
+    try:
+        data = address_resolver(lat, lon)
+    except Exception as e:
+        print(e)
+    if data == {}:
+        return jsonify({"success": False, "message": "Please enter valid coordinates."}), 400
+    if data['country'] == "India":
         try:
-            data = address_resolver(lat, lon)
+            newvalues = { "$set": data }
+            result = db.cctv.update_one({ "_id": ObjectId(oid)}, newvalues )
+            if result.matched_count == 0:
+                return jsonify({"success": False, "message": "ObjectId cannot be found."}), 404
+            elif result.modified_count == 0:
+                return jsonify({"success": False, "message": "Failed to modify document as no changes were made."}), 400
+            else:
+                return data, 202
         except Exception as e:
-            return jsonify({"success": False, "msg": "Please enter valid coordinates."}), 400
-        if data['country'] == "India":
-            try:
-                newvalues = { "$set": data }
-                result = db.cctv.update_one({ "_id": ObjectId(oid)}, newvalues )
-                if result.matched_count == 0:
-                    return jsonify({"success": False, "msg": "ObjectId cannot be found."}), 400
-                elif result.modified_count == 0:
-                    return jsonify({"success": False, "msg": "Failed to modify document."}), 400
-                else:
-                    return jsonify({"success": True, "msg": "CCTV successfully updated"}), 200
-            except Exception as e:
-                print(e)
-                return jsonify({"success": False, "msg": "ObjectId is invalid."}), 400
-        else:
-            print(data['country'])
-            msg = "Entered coordinates are from " + data['country'] + ". Please select coordinates from within the country."
-            return jsonify({"success": False, "msg": msg}), 400
+            return jsonify({"success": False, "message": "ObjectId is invalid."}), 404
+    else:
+        print(data['country'])
+        message = "Entered coordinates are from " + data['country'] + ". Please select coordinates from within the country."
+        return jsonify({"success": False, "message": message}), 406
 
 # Delete CCTV by id
-@app.route('/deletecctv/<oid>', methods=['GET'])
+@app.route('/deletecctv/<oid>', methods=['DELETE'])
 def deleteCCTV(oid):
     if oid == None:
-            return jsonify({"success": False, "msg": "No Object Id in param."}), 400
+            return jsonify({"success": False, "message": "No Object Id in param."}), 400
     else:
         if "cctv" not in db.list_collection_names():
-            return jsonify({"success": False, "msg": "No Collection cctv."}), 404
+            return jsonify({"success": False, "message": "No Collection cctv."}), 404
         else:
             result = db.cctv.delete_one({"_id": ObjectId(oid)})
             if (result.deleted_count) > 0:
-                return jsonify({"success": True, "msg": "CCTV successfully deleted."}), 200
+                return jsonify({"success": True, "message": "CCTV successfully deleted."}), 200
             else: 
-                return jsonify({"success": False, "msg": "CCTV with provided id doesn't exist."}), 404
+                return jsonify({"success": False, "message": "CCTV with provided id doesn't exist."}), 404
+
+# Delete all CCTVs in the collection
+@app.route('/deleteallcctv', methods=['DELETE'])
+def deletAllCCTV():
+    if "cctv" not in db.list_collection_names():
+        return jsonify({"success": False, "message": "No Collection cctv."}), 404
+    else:
+        result = db.cctv.delete_many({})
+        if (result.deleted_count) > 0:
+            return jsonify({"success": True, "message": "All CCTVs successfully deleted."}), 200
+        else: 
+            return jsonify({"success": True, "message": "CCTVs collection is already empty"}), 204
 
 
 if __name__ == '__main__':

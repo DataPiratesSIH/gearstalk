@@ -5,6 +5,7 @@ import { FlyToInterpolator } from 'react-map-gl';
 import TestMap from './TestMap';
 import LoadingSpinner from '../utils/LoadingSpinner';
 import Alert from '@material-ui/lab/Alert';
+import AlertTitle from '@material-ui/lab/AlertTitle';
 import Grid from '@material-ui/core/Grid';
 import Popover from '@material-ui/core/Popover';
 import Button from '@material-ui/core/Button';
@@ -26,6 +27,8 @@ import CameraAltIcon from '@material-ui/icons/CameraAlt';
 import DeleteIcon from '@material-ui/icons/Delete';
 import RoomIcon from '@material-ui/icons/Room';
 import InfoOutlinedIcon from '@material-ui/icons/InfoOutlined';
+import UtilDialog from '../utils/UtilDialog';
+import AddCamera from './AddCamera';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -142,6 +145,8 @@ const LocationPopover = props => {
     const [searchText, setSearchText] = useState('')
     const [searchData, setSearchData] = useState()
 
+    const { sendRequest } = useHttpClient();
+
     useEffect(() => {
         if (props.open && props.locationData) {
             setSearchData(props.locationData)
@@ -178,6 +183,29 @@ const LocationPopover = props => {
         }
     }
 
+    const [deleteOpen, setDeleteOpen] = useState(false);
+
+    const handleDeleteOpen = () => {
+        setDeleteOpen(true);
+    };
+
+    const handleDeleteClose = () => {
+        setDeleteOpen(false);
+    };
+
+    const deleteAllCameraHandler = async () => {
+        try {
+            const responseData = await sendRequest(process.env.REACT_APP_BACKEND_URL + '/deleteallcctv', 'DELETE')
+            console.log(responseData)
+            props.setLocationData([])
+            props.setCamera(null)
+        } catch (err) {
+            console.log(err.message)
+        }
+        handleDeleteClose();
+        handleCloseMenu();
+    }
+
     return (
         <Popover
             id={props.id}
@@ -193,6 +221,14 @@ const LocationPopover = props => {
                 horizontal: 'center',
             }}
         >
+            <UtilDialog 
+                open={deleteOpen}
+                title="Delete Camera?"
+                operationHandler={deleteAllCameraHandler} 
+                handleClose={handleDeleteClose}
+            >
+                This will delete all camera and their details from the database. Please confirm if you want to delete all the CCTV cameras.
+            </UtilDialog>
             <Grid container>
                 <Grid item md={10} sm={8}>
                     <TextField
@@ -223,7 +259,7 @@ const LocationPopover = props => {
                         open={Boolean(anchorMenu)}
                         onClose={handleCloseMenu}
                     >
-                        <MenuItem onClick={handleCloseMenu}>Delete All</MenuItem>
+                        <MenuItem onClick={handleDeleteOpen}>Delete All</MenuItem>
                         <MenuItem onClick={handleCloseMenu}>Close</MenuItem>
                     </Menu>
                 </Grid>
@@ -251,6 +287,7 @@ const LocationPopover = props => {
 
 const EditPopper = props => {
     const classes = useStyles();
+    const [success, setSuccess] = useState(false)
     const [newCamera, setNewCamera] = useState({
         oid: '',
         latitude: '',
@@ -264,23 +301,29 @@ const EditPopper = props => {
                 latitude: props.camera.latitude.toString(),
                 longitude: props.camera.longitude.toString()
             })
+        } else {
+            setNewCamera({
+                oid: '',
+                latitude: '',
+                longitude: ''
+            })
         }
     }, [props.open, props.camera])
 
-    // eslint-disable-next-line
-    const { isLoading, error, sendRequest, clearError } = useHttpClient();
+    useEffect(() => {
+        if (props.open) {
+            setSuccess(false)
+        }
+    }, [props.open])
+
+    const { error, sendRequest, clearError } = useHttpClient();
 
     const updateHandler = async () => {
         if (newCamera.oid && newCamera.latitude && newCamera.longitude) {
-            console.log(JSON.stringify({
-                'oid': newCamera.oid,
-                'lat': parseFloat(newCamera.latitude),
-                'lon': parseFloat(newCamera.longitude)
-            }))
             try {
                 const responseData = await sendRequest(
                     process.env.REACT_APP_BACKEND_URL + '/updatecctv',
-                    'POST',
+                    'PATCH',
                     JSON.stringify({
                         'oid': newCamera.oid,
                         'lat': parseFloat(newCamera.latitude),
@@ -288,10 +331,32 @@ const EditPopper = props => {
                     })
                 )
                 console.log(responseData)
+                props.setLocationData(location => {
+                    let items = location;
+                    for (let i=0; i<items.length; i++) {
+                        if (items[i]._id.$oid === props.camera._id.$oid) {
+                            items[i] = {
+                                ...items[i],
+                                ...responseData,
+                            }
+                            break;
+                        }
+                    }
+                    return items
+                })
+                props.setCamera({
+                    ...props.camera,
+                    ...responseData
+                })
+                setSuccess(true)
             } catch(err) {
-                console.log(error)
+                console.log(err.message)
             }
         }
+    }
+
+    const clearSuccess = () => {
+        props.setEditOpen((prev) => !prev)
     }
 
     return (
@@ -299,38 +364,52 @@ const EditPopper = props => {
         {({ TransitionProps }) => (
           <Fade {...TransitionProps} timeout={350}>
             <Paper>
-                <div style={{ padding: '10px' }}>
-                    <TextField 
-                        InputProps={{className: classes.multilineColor}} 
-                        value={newCamera.latitude} 
-                        type="number"
-                        onChange={event => setNewCamera({
-                            ...newCamera,
-                            latitude: event.target.value
-                        })}
-                        label="Latitude" 
-                    />
-                </div>
-                <div style={{ padding: '10px' }}> 
-                    <TextField 
-                        InputProps={{className: classes.multilineColor}} 
-                        value={newCamera.longitude}
-                        type="number"
-                        onChange={event => setNewCamera({
-                            ...newCamera,
-                            longitude: event.target.value
-                        })} 
-                        label="Longitude" 
-                    />
-                </div>
-                <Grid style={{ textAlign: 'center' }} container>
-                    <Grid item xs={6}>
-                        <Button onClick={updateHandler}>Update</Button>
-                    </Grid>
-                    <Grid item xs={6}>
-                        <Button onClick={() => {props.setEditOpen((prev) => !prev)}}>Cancel</Button>
-                    </Grid>
-                </Grid>
+                {success ? (
+                    <Alert severity="success" onClose={clearSuccess}>
+                        <AlertTitle>Success</AlertTitle>
+                        <span><strong>Camera</strong></span> location has been succesfully updated.
+                    </Alert>
+                ) : (
+                    <div>
+                        {error && (
+                            <Alert variant="outlined" style={{ color: '#f44336', marginBottom: '10px' }} severity="error" onClose={clearError}>
+                                {error}
+                            </Alert>
+                        )}
+                        <div style={{ padding: '10px' }}>
+                            <TextField 
+                                InputProps={{className: classes.multilineColor}} 
+                                value={newCamera.latitude} 
+                                type="number"
+                                onChange={event => setNewCamera({
+                                    ...newCamera,
+                                    latitude: event.target.value
+                                })}
+                                label="Latitude" 
+                            />
+                        </div>
+                        <div style={{ padding: '10px' }}> 
+                            <TextField 
+                                InputProps={{className: classes.multilineColor}} 
+                                value={newCamera.longitude}
+                                type="number"
+                                onChange={event => setNewCamera({
+                                    ...newCamera,
+                                    longitude: event.target.value
+                                })} 
+                                label="Longitude" 
+                            />
+                        </div>
+                        <Grid style={{ textAlign: 'center' }} container>
+                            <Grid item xs={6}>
+                                <Button disabled={!newCamera.latitude || !newCamera.longitude} onClick={updateHandler}>Update</Button>
+                            </Grid>
+                            <Grid item xs={6}>
+                                <Button onClick={() => {props.setEditOpen((prev) => !prev)}}>Cancel</Button>
+                            </Grid>
+                        </Grid>
+                    </div>
+                )}
             </Paper>
           </Fade>
         )}
@@ -343,10 +422,7 @@ const Camera = () => {
     const [locationData, setLocationData] = useState([]);
     const [camera, setCamera] = useState();
 
-    // eslint-disable-next-line
-    const { isLoading, error, sendRequest, clearError } = useHttpClient();
-
-    const [errorText, setErrorText] = useState('')
+    const { isLoading, error, sendRequest, clearError, setErrorText } = useHttpClient();
 
     const [viewState, setViewState] = useState({
         latitude: 19.0760,
@@ -355,6 +431,16 @@ const Camera = () => {
         pitch: 40.5,
         bearing: 0.7,
     })
+
+    const [deleteOpen, setDeleteOpen] = useState(false);
+
+    const handleDeleteOpen = () => {
+        setDeleteOpen(true);
+    };
+
+    const handleDeleteClose = () => {
+        setDeleteOpen(false);
+    };
 
     const classes = useStyles();
 
@@ -365,7 +451,7 @@ const Camera = () => {
                     process.env.REACT_APP_BACKEND_URL + '/getcctv'
                 );
                 setLocationData(responseData)
-                if (responseData.length > 1) {
+                if (responseData.length > 0) {
                     setCamera(responseData[0])
                 }
             } catch (err) {
@@ -376,8 +462,8 @@ const Camera = () => {
 
     }, [sendRequest])
 
-    const [editEl, setEditEl] = React.useState(null);
-    const [editOpen, setEditOpen] = React.useState(false);
+    const [editEl, setEditEl] = useState(null);
+    const [editOpen, setEditOpen] = useState(false);
 
     const handleEdit = (event) => {
         setEditEl(event.currentTarget);
@@ -411,24 +497,27 @@ const Camera = () => {
     const optionHandler = (event) => {
         if (locationData.length === 0 && !camera) {
             setErrorText('No camera found in the database. Start with inserting one.')
-        }
-        let option = event.target.getAttribute("value")
-        switch(option) {
-            case "locate":
-                console.log("Locate")
-                break;
-            case "edit":
-                console.log("edit")
-                handleEdit(event)
-                break;
-            case "change":
-                handleClick(event)
-                break;
-            case "delete":
-                console.log("delete")
-                break;
-            default:
-                setErrorText('Some random error occurred. Please have a bit of patience.')
+        } else {
+            let option = event.target.getAttribute("value")
+            switch(option) {
+                case "locate":
+                    handleFlyTo({
+                        latitude: camera.latitude, 
+                        longitude: camera.longitude
+                    })
+                    break;
+                case "edit":
+                    handleEdit(event)
+                    break;
+                case "change":
+                    handleClick(event)
+                    break;
+                case "delete":
+                    handleDeleteOpen()
+                    break;
+                default:
+                    setErrorText('Some random error occurred. Please have a bit of patience.')
+            }
         }
     }
 
@@ -443,10 +532,38 @@ const Camera = () => {
         handleClose();
     }
 
+    const deleteCameraHandler = async () => {
+        console.log(camera._id.$oid)
+        try {
+            const responseData = await sendRequest(process.env.REACT_APP_BACKEND_URL + '/deletecctv/'+ camera._id.$oid, 'DELETE')
+            let items = locationData;
+            items = items.filter(item => item._id.$oid !== camera._id.$oid)
+            setLocationData(items)
+            if (items.length > 0) {
+                setCamera(items[0])
+            } else {
+                setCamera(null)
+            }
+            console.log(responseData)
+        } catch (err) {
+            setErrorText(err.message)
+        }
+        handleDeleteClose();
+    }
+
     return (
         <React.Fragment>
+            <UtilDialog 
+                open={deleteOpen}
+                title="Delete Camera?"
+                operationHandler={deleteCameraHandler} 
+                handleClose={handleDeleteClose}
+            >
+                This will delete selected camera and its details from the database. Please confirm if you want to delete the selected CCTV camera.
+            </UtilDialog>
             <Grid className={classes.container} container>
                 <Grid item md={6} xs={12}>
+                    <AddCamera setLocationData={setLocationData} camera={camera} setCamera={setCamera} />
                     <Grid container>
                         <Grid value="locate" className={classes.option} item xs={3} onClick={optionHandler}>
                             <RoomIcon />
@@ -460,7 +577,14 @@ const Camera = () => {
                                 Edit Details
                             </Typography>
                         </Grid>
-                        <EditPopper open={editOpen} anchorEl={editEl} camera={camera} setEditOpen={setEditOpen} />
+                        <EditPopper     
+                            open={editOpen} 
+                            anchorEl={editEl} 
+                            camera={camera} 
+                            setEditOpen={setEditOpen} 
+                            setLocationData={setLocationData} 
+                            setCamera={setCamera}
+                        />
                         <Grid aria-describedby={id} value="change" className={classes.option} item xs={3}  onClick={optionHandler}>
                             <CameraAltIcon />
                             <Typography className={classes.optionTitle}>
@@ -471,7 +595,9 @@ const Camera = () => {
                             id={id} open={open} 
                             anchorEl={anchorEl} 
                             handleClose={handleClose} 
-                            locationData={locationData} 
+                            locationData={locationData}
+                            setLocationData={setLocationData}
+                            setCamera={setCamera} 
                             changeCameraHandler={changeCameraHandler}
                         />
                         <Grid value="delete" className={classes.option} item xs={3} onClick={optionHandler}>
@@ -482,21 +608,20 @@ const Camera = () => {
                         </Grid>
                     </Grid>
                     <Grid className={classes.locationDetails} container>
-                        {errorText && (
-                            <Alert variant="outlined" style={{ color: '#f44336', marginBottom: '10px' }} severity="error" onClose={() => {setErrorText('')}}>
-                                {errorText}
+                        {error && (
+                            <Alert variant="outlined" style={{ color: '#f44336', marginBottom: '10px' }} severity="error" onClose={clearError}>
+                                {error}
                             </Alert>
                         )}
-                        {isLoading && (
+                        {isLoading ? (
                             <Grid item xs={12} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                                 <div style={{ padding: '30px' }}>
                                     <LoadingSpinner />
                                 </div>
                             </Grid>
-                        )}
-                        {!isLoading && (
+                        ) : (
                             <div style={{ width: '100%' }}>
-                                {locationData.length > 1 ? (
+                                {locationData.length > 0 ? (
                                         <div style={{ padding: '10px', textAlign: 'center'}}>
                                             {camera && (
                                                 <Grid container>
@@ -569,21 +694,15 @@ const Camera = () => {
                     </Grid>
                 </Grid>
                 <Grid item md={6} xs={12}>
-                    {/* <button 
-                        onClick={() => {handleFlyTo({ latitude: 12.9718871, longitude: 77.59367089999999 })}}>
-                        GO
-                    </button>
-                    <button 
-                        onClick={() => {handleFlyTo({ latitude: 22.5626151, longitude: 88.3629926 })}}>
-                        GO
-                    </button>
-                    <TestMap 
-                        width="100%" 
-                        height="80vh" 
-                        viewState={viewState}
-                        onViewStateChange={handleChangeViewState}
-                        libraries={locationData}
-                    /> */}
+                    <div style={{ paddingLeft: '10px' }}>
+                        <TestMap 
+                            width="100%" 
+                            height="80vh" 
+                            viewState={viewState}
+                            onViewStateChange={handleChangeViewState}
+                            libraries={locationData}
+                        />
+                    </div>
                 </Grid>
             </Grid>
         </React.Fragment>

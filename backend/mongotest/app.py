@@ -18,6 +18,8 @@ CONNECTION_STRING = os.getenv("MONGODB_STRING")
 
 app = Flask(__name__)
 cors = CORS(app, resources={r"*": {"origins": "*"}}, expose_headers='Access-Control-Allow-Origin')
+# cors = CORS(app, resources="*")
+# cors = CORS(app, resources=r"/api/*") originate all routes as /api/<route-name>
 app.config['UPLOAD_FOLDER'] = 'saves'
 
 client = pymongo.MongoClient(CONNECTION_STRING)

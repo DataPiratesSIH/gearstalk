@@ -16,6 +16,23 @@ Run this command on Windows Powershell
 Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy RemoteSigned
 ```
 
+## Change MongoDB connection String from local to cloud and vice-versa
+Navigate to backend/utils/connect.py
+### For Cloud
+```bash
+CONNECTION_STRING = os.getenv("MONGODB_STRING_CLOUD")
+```
+
+### For Local
+```bash
+CONNECTION_STRING = os.getenv("MONGODB_STRING")
+```
+
+## Change MongoDB connection String to local
+```bash
+CONNECTION_STRING = os.getenv("MONGODB_STRING")
+```
+
 ## Create a virtual environment
 ```bash
 cd backend

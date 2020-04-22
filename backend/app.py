@@ -79,7 +79,7 @@ def detect():
 @app.route("/register_cam", methods=['POST'])
 def register():
     try:
-        req_data = request.get_json()
+        req_data = json.loads(request.data)
         web_url = req_data['url']
         web_addr = req_data['addr']
         location = geocode_address(web_addr)

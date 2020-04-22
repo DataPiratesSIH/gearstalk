@@ -1,4 +1,5 @@
 from utils.connect import gmaps
+from datetime import datetime
 
 def address_resolver(lat, lon):
     # Reverse Geocoding with latitude and longitude
@@ -32,20 +33,15 @@ def address_resolver(lat, lon):
         # print(final)
     return final 
 
-def geocode_address():
+def geocode_address(web_addr):
     # from geopy.geocoders import Nominatim
     # x = "Sanpada,Navi Mumbai"
     # geolocator = Nominatim(user_agent="gearstalk")
     # location = geolocator.geocode(x)
     # print(location.latitude)
-
-    from datetime import datetime
-    import googlemaps
-    gmaps = googlemaps.Client(key='AIzaSyCMADuWmaxW-M9kzcQsPSouM1_sZKrE7sQ')
-    geocode_result = gmaps.geocode('Gayatri chs,Sanpada,Navi Muumbai')
-    location = gmaps.geocode(web_addr)
-    web_lat = location[0]['geometry']['location']['lat']
-    web_lng = location[0]['geometry']['location']['lng']
+    geocode_result = gmaps.geocode(web_addr)
+    web_lat = geocode_result[0]['geometry']['location']['lat']
+    web_lng = geocode_result[0]['geometry']['location']['lng']
 
     # now = datetime.now()
     # directions_result = gmaps.directions("Sydney Town Hall",

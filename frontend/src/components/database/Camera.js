@@ -1,9 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
+import { useHistory } from 'react-router-dom';
 import { useHttpClient } from '../hooks/http-hook';
 import { makeStyles } from '@material-ui/core/styles';
 import { FlyToInterpolator } from 'react-map-gl';
-import TestMap from './TestMap';
+import CamMap from './CamMap';
+import AddCamera from './AddCamera';
 import LoadingSpinner from '../utils/LoadingSpinner';
+import UtilDialog from '../utils/UtilDialog';
 import Alert from '@material-ui/lab/Alert';
 import AlertTitle from '@material-ui/lab/AlertTitle';
 import Grid from '@material-ui/core/Grid';
@@ -27,8 +30,8 @@ import CameraAltIcon from '@material-ui/icons/CameraAlt';
 import DeleteIcon from '@material-ui/icons/Delete';
 import RoomIcon from '@material-ui/icons/Room';
 import InfoOutlinedIcon from '@material-ui/icons/InfoOutlined';
-import UtilDialog from '../utils/UtilDialog';
-import AddCamera from './AddCamera';
+import LiveTvIcon from '@material-ui/icons/LiveTv';
+import VideoLibraryIcon from '@material-ui/icons/VideoLibrary';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -101,6 +104,12 @@ const useStyles = makeStyles(theme => ({
     },
     multilineColor:{
         color:'#ffffff'
+    },
+    mapContainer: {
+        boxShadow: '-3px 6px 34px 6px rgba(18,25,41,1)',
+        border: '1px solid #4f619a', 
+        position: 'relative', 
+        marginLeft: '10px',
     }
 }));
 
@@ -422,12 +431,14 @@ const Camera = () => {
     const [locationData, setLocationData] = useState([]);
     const [camera, setCamera] = useState();
 
+    let history = useHistory();
+
     const { isLoading, error, sendRequest, clearError, setErrorText } = useHttpClient();
 
     const [viewState, setViewState] = useState({
         latitude: 19.0760,
         longitude: 72.8777,
-        zoom: 10,
+        zoom: 11,
         pitch: 40.5,
         bearing: 0.7,
     })
@@ -472,14 +483,17 @@ const Camera = () => {
 
     const handleChangeViewState = ({ viewState }) => setViewState(viewState)
 
-    const handleFlyTo = destination => {
-        setViewState({ 
-            ...viewState, 
-            ...destination, 
-            transitionDuration: 2000,
-            transitionInterpolator: new FlyToInterpolator()
+    const handleFlyTo = useCallback(destination => {
+        setViewState(v => { 
+            return {
+                ...v, 
+                ...destination, 
+                zoom: 11,
+                transitionDuration: 2000,
+                transitionInterpolator: new FlyToInterpolator()
+            }
         })
-    }
+    }, [])
 
     const [anchorEl, setAnchorEl] = useState(null);
 
@@ -514,6 +528,12 @@ const Camera = () => {
                     break;
                 case "delete":
                     handleDeleteOpen()
+                    break;
+                case "live":
+                    history.push("/")
+                    break;
+                case "video":
+                    history.push("/")
                     break;
                 default:
                     setErrorText('Some random error occurred. Please have a bit of patience.')
@@ -550,6 +570,15 @@ const Camera = () => {
         }
         handleDeleteClose();
     }
+
+    useEffect(() => {
+        if (camera) {
+            handleFlyTo({
+                latitude: camera.latitude, 
+                longitude: camera.longitude
+            })
+        }
+    }, [camera, handleFlyTo])
 
     return (
         <React.Fragment>
@@ -692,10 +721,24 @@ const Camera = () => {
                             </div>
                         )}
                     </Grid>
+                    <Grid style={{ paddingBottom: '20px' }} container>
+                        <Grid option="live" className={classes.option} item xs={6}>
+                            <LiveTvIcon />
+                            <Typography className={classes.optionTitle}>
+                                Live Feed
+                            </Typography>
+                        </Grid>
+                        <Grid option="video" className={classes.option} item xs={6}>
+                            <VideoLibraryIcon />
+                            <Typography className={classes.optionTitle}>
+                                View All Videos
+                            </Typography>
+                        </Grid>
+                    </Grid>       
                 </Grid>
                 <Grid item md={6} xs={12}>
-                    <div style={{ paddingLeft: '10px' }}>
-                        <TestMap 
+                    <div className={classes.mapContainer}>
+                        <CamMap
                             width="100%" 
                             height="80vh" 
                             viewState={viewState}

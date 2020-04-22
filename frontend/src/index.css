@@ -28,3 +28,24 @@ code {
     monospace;
 }
 
+
+.mapboxgl-popup-close-button {
+  color: #ffffff;
+}
+
+.mapboxgl-popup-content {
+  border: 2px solid #2db1e1;
+  background: #2a3f73 !important;
+  color: #ffffff;
+  font: 400 15px/22px 'Source Sans Pro', 'Helvetica Neue', Sans-serif;
+  padding: 0;
+  width: 180px;
+}
+
+.mapboxgl-popup-content-wrapper {
+  padding: 1%;
+}
+
+.mapboxgl-popup-tip {
+  border-top-color: #2db1e1 !important;
+}

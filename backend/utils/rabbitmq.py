@@ -31,13 +31,14 @@ def rabbitmq_live(cam_id, lat, lng, url):
     channel.queue_declare(queue='live_data')
 
     data = {
-        "cam_id" : cam_id,
+        "cam_id" : str(cam_id),
         "lat" : lat,
         "lng" : lng,
         "url" : url
     }
     message = json.dumps(data, ensure_ascii=False, indent=4)
-    
+    print(message)
+
     channel.basic_publish(exchange='', routing_key='live_data', body=message)
     print(" [x] Sent The JSON Data")
     connection.close()

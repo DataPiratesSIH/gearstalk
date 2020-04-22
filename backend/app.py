@@ -17,6 +17,7 @@ import threading
 from werkzeug.utils import secure_filename
 import base64
 from utils.utils import getFirstFrame, allowed_file, getFrame, online
+from utils.rabbitmq import rabbitmq_live
 
 try:
     os.mkdir('saves')
@@ -124,11 +125,12 @@ def livedata():
         while (total_cams != online_cams):
             online_cams = 0
             for i in cams:
-                print(i['_id'])
-                if online(i['url']) == 1:
-                    rabbitmq.rabbitmq_live(i['_id'],i['lat'],i['lng'],i['url'])
-                else:
-                    online_cams+=1
+                rabbitmq_live(i['_id'],i['lat'],i['lng'],i['url'])
+                # if total_cams != online_cams:
+                #     print(i['_id'])
+                #     rabbitmq_live(i['_id'],i['lat'],i['lng'],i['url'])
+                # else:
+                #     online_cams+=1
             # time.sleep(0.5)                                           #to get frame in every 0.5sec
 
         return jsonify({"status": "Getting Live Data"}), 200

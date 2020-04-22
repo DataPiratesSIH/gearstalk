@@ -1,5 +1,7 @@
 import json,requests
 import cv2
+import base64
+from .rabbitmq import rabbitmq_upload
 
 ALLOWED_EXTENSIONS = [ 'mp4', 'avi','jpeg','png']
 
@@ -14,7 +16,7 @@ def getFrame(vidcap,sec,filename):
 
     if hasFrames:
         string = base64.b64encode(cv2.imencode('.png', image)[1]).decode()
-        rabbitmq.rabbitmq_upload(string,filename)
+        rabbitmq_upload(string,filename)
         # print(result)
     return hasFrames
 

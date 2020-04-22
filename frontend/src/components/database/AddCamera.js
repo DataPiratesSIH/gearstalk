@@ -50,7 +50,7 @@ const AddCamera = props => {
         if (location.latitude && location.longitude) {
             try {
                 const responseData = await sendRequest(
-                    process.env.REACT_APP_BACKEND_URL + '/addcctv',
+                    process.env.REACT_APP_BACKEND_URL + '/cctv/addcctv',
                     'POST',
                     JSON.stringify({
                         'lat': parseFloat(location.latitude),

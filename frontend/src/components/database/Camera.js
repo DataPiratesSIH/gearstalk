@@ -195,7 +195,7 @@ const LocationPopover = props => {
 
     const deleteAllCameraHandler = async () => {
         try {
-            const responseData = await sendRequest(process.env.REACT_APP_BACKEND_URL + '/deleteallcctv', 'DELETE')
+            const responseData = await sendRequest(process.env.REACT_APP_BACKEND_URL + '/cctv/deleteallcctv', 'DELETE')
             console.log(responseData)
             props.setLocationData([])
             props.setCamera(null)
@@ -322,7 +322,7 @@ const EditPopper = props => {
         if (newCamera.oid && newCamera.latitude && newCamera.longitude) {
             try {
                 const responseData = await sendRequest(
-                    process.env.REACT_APP_BACKEND_URL + '/updatecctv',
+                    process.env.REACT_APP_BACKEND_URL + '/cctv/updatecctv',
                     'PATCH',
                     JSON.stringify({
                         'oid': newCamera.oid,
@@ -448,7 +448,7 @@ const Camera = () => {
         const fetchLocations = async () => {
             try {
                 const responseData = await sendRequest(
-                    process.env.REACT_APP_BACKEND_URL + '/getcctv'
+                    process.env.REACT_APP_BACKEND_URL + '/cctv/getcctv'
                 );
                 setLocationData(responseData)
                 if (responseData.length > 0) {
@@ -535,7 +535,7 @@ const Camera = () => {
     const deleteCameraHandler = async () => {
         console.log(camera._id.$oid)
         try {
-            const responseData = await sendRequest(process.env.REACT_APP_BACKEND_URL + '/deletecctv/'+ camera._id.$oid, 'DELETE')
+            const responseData = await sendRequest(process.env.REACT_APP_BACKEND_URL + '/cctv/deletecctv/'+ camera._id.$oid, 'DELETE')
             let items = locationData;
             items = items.filter(item => item._id.$oid !== camera._id.$oid)
             setLocationData(items)

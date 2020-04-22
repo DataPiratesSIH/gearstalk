@@ -198,7 +198,7 @@ const LocationDialog = props => {
         const fetchLocations = async () => {
             try {
                 const responseData = await sendRequest(
-                    process.env.REACT_APP_BACKEND_URL + '/getcctv'
+                    process.env.REACT_APP_BACKEND_URL + '/cctv/getcctv'
                 );
                 setLocationData(responseData)
                 setSearchData(responseData)

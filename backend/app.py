@@ -1,47 +1,40 @@
 import os
-from flask import Flask, request, jsonify, make_response, render_template, Response, Flask, flash, redirect
+from flask import Flask, request, jsonify, make_response, render_template, Response, Flask, flash, redirect, url_for
+from flask_cors import CORS
 import json,requests
-import time
 import cv2
 import numpy as np
+from bson import ObjectId
+from datetime import datetime
+from bson.json_util import dumps
+from utils.geocode import address_resolver, geocode_address
+from routes.cctv import cctv
+from routes.video import video
+from routes.helpers import helpers
+from utils.connect import client, db, fs
+
 import threading
 from werkzeug.utils import secure_filename
-from flask_pymongo import pymongo
-from webapp import rabbitmq
 import base64
-import googlemaps
+from utils.utils import getFirstFrame, allowed_file, getFrame, online
 
+try:
+    os.mkdir('saves')
+except FileExistsError as e:
+    pass
 
 app = Flask(__name__)
+app.config['UPLOAD_FOLDER'] = 'saves'
+app.config['CORS_HEADERS'] = 'Content-Type'
+CORS(app)
 
-GOOGLE_API_KEY = 'AIzaSyCMADuWmaxW-M9kzcQsPSouM1_sZKrE7sQ'               #google map api key
-
-CONNECTION_STRING = 'mongodb+srv://admin:admin@cluster0-jnsfh.mongodb.net/test?retryWrites=true&w=majority'
-client = pymongo.MongoClient(CONNECTION_STRING)
-db = client.get_database('gearstalk')
-
-
-ALLOWED_EXTENSIONS = [ 'mp4', 'avi','jpeg','png']
+app.register_blueprint(cctv, url_prefix="/cctv")
+app.register_blueprint(video, url_prefix="/video")
+app.register_blueprint(helpers, url_prefix="/helpers")
 
 '''-----------------------------------
-            yolo-detection
+            merged-routes
 -----------------------------------'''
-
-def allowed_file(filename):
-    return '.' in filename and \
-           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
-
-
-def getFrame(vidcap,sec,filename):
-    vidcap.set(cv2.CAP_PROP_POS_MSEC,sec*1000)
-    hasFrames,image = vidcap.read()
-
-    if hasFrames:
-        string = base64.b64encode(cv2.imencode('.png', image)[1]).decode()
-        rabbitmq.rabbitmq_upload(string,filename)
-        # print(result)
-    return hasFrames
-
 
 @app.route('/')
 def index():
@@ -89,10 +82,9 @@ def register():
         req_data = request.get_json()
         web_url = req_data['url']
         web_addr = req_data['addr']
-        gmaps = googlemaps.Client(key=GOOGLE_API_KEY)
-        location = gmaps.geocode(web_addr)
-        web_lat = location[0]['geometry']['location']['lat']
-        web_lng = location[0]['geometry']['location']['lng']
+        location = geocode_address(web_addr)
+        web_lat = location[0]
+        web_lng = location[1]
         print(web_lat,web_lng)
 
         record = {
@@ -122,17 +114,6 @@ def livestream():
     except Exception as e:
         return f"An Error Occured: {e}"  
 
-
-def online(url):
-    try:
-        r = requests.head(url)
-        if r.status_code == 200:
-            return 1
-        # prints the int of the status code. Find more at httpstatusrappers.com :)
-    except requests.ConnectionError:
-        return 0
-
-
 @app.route('/livestream', methods=['POST'])
 def livedata():
     try:
@@ -154,6 +135,9 @@ def livedata():
     except Exception as e:
         return f"An Error Occured: {e}"
 
+'''-----------------------------------
+            merged-routes
+-----------------------------------'''
 
 if __name__ == '__main__':
     app.run(debug=True, use_reloader=True, threaded=True)

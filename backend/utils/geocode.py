@@ -43,7 +43,9 @@ def geocode_address():
     import googlemaps
     gmaps = googlemaps.Client(key='AIzaSyCMADuWmaxW-M9kzcQsPSouM1_sZKrE7sQ')
     geocode_result = gmaps.geocode('Gayatri chs,Sanpada,Navi Muumbai')
-    print(geocode_result[0]['geometry']['location'])
+    location = gmaps.geocode(web_addr)
+    web_lat = location[0]['geometry']['location']['lat']
+    web_lng = location[0]['geometry']['location']['lng']
 
     # now = datetime.now()
     # directions_result = gmaps.directions("Sydney Town Hall",
@@ -52,3 +54,5 @@ def geocode_address():
     #                                      departure_time=now)
 
     # print(directions_result)
+
+    return [web_lat, web_lng]

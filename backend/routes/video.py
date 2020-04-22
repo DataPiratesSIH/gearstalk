@@ -5,7 +5,7 @@ from utils.geocode import address_resolver
 from bson import ObjectId
 from datetime import datetime
 from bson.json_util import dumps
-from utils.cv import getFirstFrame
+from utils.utils import getFirstFrame
 
 video = Blueprint("video", __name__)
 

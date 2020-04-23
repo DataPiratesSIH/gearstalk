@@ -3,7 +3,7 @@ import cv2
 import base64
 from .rabbitmq import rabbitmq_upload
 
-ALLOWED_EXTENSIONS = [ 'mp4', 'avi','jpeg','png']
+ALLOWED_EXTENSIONS = ['mp4','avi','jpeg','png']
 
 def allowed_file(filename):
     return '.' in filename and \

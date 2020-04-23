@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import { useHttpClient } from '../hooks/http-hook';
 import DateFnsUtils from '@date-io/date-fns';
 import MagicDropzone from 'react-magic-dropzone';
@@ -9,6 +10,7 @@ import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import Paper from '@material-ui/core/Paper';
 import Alert from '@material-ui/lab/Alert';
+import AlertTitle from '@material-ui/lab/AlertTitle';
 import IconButton from '@material-ui/core/IconButton';  
 import CancelIcon from '@material-ui/icons/Cancel';
 import upload from './upload.svg';
@@ -23,6 +25,11 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import TextField from '@material-ui/core/TextField';
+import FormGroup from '@material-ui/core/FormGroup';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Switch from '@material-ui/core/Switch';
+
+import './Upload.css';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -135,6 +142,17 @@ const useStyles = makeStyles(theme => ({
     loader: {
         paddingTop: '50px',
         paddingBottom: '50px',
+    },
+    progressContainer: {
+        height: '50px',
+        position: 'relative',
+    },
+    progressDiv: {
+        margin: 0,
+        position: 'absolute',
+        top: '50%',
+        msTransform: 'translateY(-50%)',
+        transform: 'translateY(-50%)',
     }
 }));
 
@@ -303,11 +321,14 @@ const LocationDialog = props => {
 const Upload = () => {
     const classes = useStyles();
     const [videoFile, setVideoFile] = useState();
+    const [progress, setProgress] = useState(0);
+    const [processVideo, setProcessVideo] = useState(false)
+    const [uploading, setUploading] = useState(false);
+    const [success, setSuccess] = useState(false);
     const [selectedDate, setSelectedDate] = useState(new Date());
     const [location, setLocation] = useState();
-    const [errorText, setErrorText] = useState('')
     const [open, setOpen] = React.useState(false);
-
+    const { error, clearError, setErrorText } = useHttpClient();
     const handleClickOpen = () => {
         setOpen(true);
     };
@@ -316,6 +337,10 @@ const Upload = () => {
         setOpen(false);
     };
 
+    const toggleProcess = () => {
+        setProcessVideo(p => !p)
+    }
+    
     const onDrop = (accepted, rejected, links) => {
         if (accepted && accepted.length > 0) {
             setVideoFile(null)
@@ -333,11 +358,44 @@ const Upload = () => {
     }
 
     const uploadHandler = () => {
-        if (videoFile && selectedDate && location) {
-            console.log('maaal')
+        if (videoFile && selectedDate && location && typeof(processVideo) === "boolean") {
+            setUploading(true)
+            setProgress(0)
+            const config = {
+                onUploadProgress: function(progressEvent) {
+                    let percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total)
+                    setProgress(percentCompleted)
+                }
+            }
+            
+            let data = new FormData()
+            data.append('video', videoFile)
+            data.append('time', selectedDate)
+            data.append('location', location.oid)
+            data.append('process', processVideo)
+            
+            axios.post(process.env.REACT_APP_BACKEND_URL + '/video/addvideo', data, config)
+                .then(res => {
+                    console.log(res)
+                    clearError()
+                    setLocation(null)
+                    setVideoFile(null)
+                    setSuccess(true)
+                    setProcessVideo(false)
+                })
+                .catch(err => {
+                    setErrorText(err.message)
+                    setUploading(false)
+                })
         } else {
             setErrorText('Fields are empty! Please recheck provided params.')
         }
+    }
+
+    const clearSuccess = () => {
+        setUploading(false);
+        setSuccess(false)
+        setProgress(0)
     }
 
     return (
@@ -442,21 +500,50 @@ const Upload = () => {
                                         </Paper>
                                     </Grid>
                                 </Grid>
+                                <FormGroup style={{ padding: '20px', paddingTop: '0px' }} row>
+                                    <FormControlLabel
+                                        control={<Switch checked={processVideo} onChange={toggleProcess} name="process" color="primary" />}
+                                        label="Process video after uploading"
+                                    />
+                                </FormGroup>
                             </div>
                             <div style={{ paddingLeft: '20px', paddingRight: '20px' }}>
-                                {errorText && (
-                                    <Alert variant="outlined" style={{ color: '#f44336', marginBottom: '10px' }} severity="error" onClose={() => {setErrorText('')}}>
-                                        {errorText}
+                                {error && (
+                                    <Alert variant="outlined" style={{ color: '#f44336', marginBottom: '10px' }} severity="error" onClose={clearError}>
+                                        {error}
+                                    </Alert>
+                                )}
+                                {success && (
+                                    <Alert severity="success" onClose={clearSuccess}>
+                                        <AlertTitle>Success</AlertTitle>
+                                        <span><strong>Camera</strong></span> location has been succesfully updated.
                                     </Alert>
                                 )}
                             </div>
-                            <div style={{ paddingLeft: '20px', paddingRight: '20px', marginBottom: '5px', textAlign: 'center' }}>
+                            {uploading && (
+                                <Grid style={{ padding: '20px' }} container>
+                                    <Grid item xs={12}>
+                                        <Typography variant="subtitle1" gutterBottom>
+                                            Uploading Video {progress} %
+                                        </Typography>
+                                    </Grid>
+                                    <Grid item xs={12}>
+                                        <div className="cssProgress">
+                                            <div className="progress4">
+                                                <div className="cssProgress-bar cssProgress-glow-active cssProgress-lg" style={{ width: `${progress}%` }} />
+                                            </div>
+                                        </div>
+                                    </Grid>
+                                </Grid>
+                            )}
+                            <div style={{ paddingLeft: '20px', paddingRight: '20px', marginBottom: '10px', textAlign: 'center' }}>
                                 <Button
                                     variant="contained"
                                     color="default"
                                     className={classes.uploadButton}
                                     startIcon={<CloudUploadIcon />}
                                     onClick={uploadHandler}
+                                    disabled={uploading}
                                 >
                                     Upload
                                 </Button>

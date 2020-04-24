@@ -337,7 +337,10 @@ const EditPopper = props => {
                         'oid': newCamera.oid,
                         'lat': parseFloat(newCamera.latitude),
                         'lon': parseFloat(newCamera.longitude)
-                    })
+                    }),
+                    {
+                        'Content-Type': 'application/json'
+                    }
                 )
                 console.log(responseData)
                 props.setLocationData(location => {

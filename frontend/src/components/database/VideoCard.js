@@ -12,7 +12,8 @@ import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import PlayCircleOutlineIcon from '@material-ui/icons/PlayCircleOutline';
 import SettingsIcon from '@material-ui/icons/Settings';
-import GpsFixedIcon from '@material-ui/icons/GpsFixed';
+import InfoOutlinedIcon from '@material-ui/icons/InfoOutlined';
+import Tooltip from '@material-ui/core/Tooltip';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -28,6 +29,7 @@ const useStyles = makeStyles(theme => ({
   details: {
     display: 'flex',
     flexDirection: 'column',
+    maxWidth: '200px'
   },
   content: {
     flex: '1 0 auto',
@@ -80,7 +82,7 @@ const VideoCard = props => {
 
   const deleteVideoHandler = async () => {
     try {
-        await sendRequest(process.env.REACT_APP_BACKEND_URL + '/deletevideo/' + props.oid, 'DELETE');
+        await sendRequest(process.env.REACT_APP_BACKEND_URL + '/video/deletevideo/' + props.oid, 'DELETE');
     } catch(err) {
         console.log(err);
     }  
@@ -113,9 +115,11 @@ const VideoCard = props => {
                 </Typography>
                 </CardContent>
                 <div className={classes.controls}>
-                  <IconButton aria-label="track">
-                      <GpsFixedIcon className={classes.optionIcon} />
-                  </IconButton>
+                  <Tooltip title={props.name}>
+                    <IconButton aria-label="info">
+                      <InfoOutlinedIcon className={classes.optionIcon} />
+                    </IconButton>
+                  </Tooltip>
                   <IconButton aria-label="play">
                       <PlayCircleOutlineIcon className={classes.playIcon} />
                   </IconButton>

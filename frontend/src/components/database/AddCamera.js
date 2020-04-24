@@ -55,7 +55,10 @@ const AddCamera = props => {
                     JSON.stringify({
                         'lat': parseFloat(location.latitude),
                         'lon': parseFloat(location.longitude)
-                    })
+                    }),
+                    {
+                        'Content-Type': 'application/json'
+                    }
                 )
                 console.log(responseData)
                 props.setLocationData(location => {

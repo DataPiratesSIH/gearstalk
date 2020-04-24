@@ -16,7 +16,7 @@ cctv = Blueprint("cctv", __name__)
 @cctv.route('/getcctv', methods=['GET'])
 def getCCTV():
     if "cctv" not in db.list_collection_names():
-        return [], 200
+        return jsonify([]), 200
     else:
         cctvs = list(db.cctv.find({}))
         return dumps(cctvs), 200

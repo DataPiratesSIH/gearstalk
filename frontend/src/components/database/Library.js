@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { useHttpClient } from '../hooks/http-hook';
 import { makeStyles } from '@material-ui/core/styles';
 import LoadingSpinner from '../utils/LoadingSpinner';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import Button from '@material-ui/core/Button';
 import Container from '@material-ui/core/Container';
 import VideoCard from './VideoCard';
 import Grid from '@material-ui/core/Grid';
@@ -15,8 +15,10 @@ import SearchIcon from '@material-ui/icons/Search';
 import MicIcon from '@material-ui/icons/Mic';
 import TuneIcon from '@material-ui/icons/Tune';
 import VideoCallIcon from '@material-ui/icons/VideoCall';
-import AppsIcon from '@material-ui/icons/Apps';
-import { Typography } from '@material-ui/core';
+import HomeIcon from '@material-ui/icons/Home';
+import Typography from '@material-ui/core/Typography';
+import Tooltip from '@material-ui/core/Tooltip';
+import FilterDialog from './FilterDialog';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -36,6 +38,7 @@ const useStyles = makeStyles(theme => ({
     },
     input: {
         marginLeft: theme.spacing(1),
+        textDecoration: 'none',
         flex: 1,
     },
     iconButton: {
@@ -52,27 +55,43 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
-
-
-
 const Library = () => {
     const classes = useStyles();
     const [search, setSearch] = useState('');
 
+    const [filter, setFilter] = useState(false);
+
+    const handleClickFilter = () => {
+        // if (homeVideos.length > 0) {
+        //     setFilter(true);
+        // }
+        setFilter(true);
+    };
+  
+    const handleClose = () => {
+      setFilter(false);
+    };
+
     const { isLoading, error, sendRequest, clearError } = useHttpClient();
 
     const [videos, setVideos] = useState([])
+    const [homeVideos, setHomeVideos] = useState([])
 
     const toggleSearch = (event) => {
         setSearch(event.target.value)
+    }
+
+    const homeHandler = () => {
+        setVideos(homeVideos)
+        setSearch("")
     }
 
     useEffect(() => {
         const fetchVideos = async () => {
             try {
                 const responseData = await sendRequest(process.env.REACT_APP_BACKEND_URL + '/video/getvideo','GET');
-                console.log(responseData)
                 setVideos(responseData)
+                setHomeVideos(responseData)
             }
             catch (err) {
                 console.log(err)
@@ -82,21 +101,24 @@ const Library = () => {
     }, [sendRequest])
 
     const searchHandler = async () => {
-        try {
-            const responseData = await sendRequest(
-                process.env.REACT_APP_BACKEND_URL + '/searchvideo',
-                'POST',
-                JSON.stringify({
-                    search: search
+        if (search !== "") {
+            try {
+                const responseData = await sendRequest(
+                    process.env.REACT_APP_BACKEND_URL + '/video/search',
+                    'POST',
+                    JSON.stringify({
+                        search: search
                     }),
                     {
                         'Content-Type': 'application/json'
                     }
                 );
-            console.log(responseData)
-        } catch(err) {
-            console.log(err);
-        }     
+                clearError()
+                setVideos(responseData)
+            } catch(err) {
+                console.log(err);
+            }     
+        } 
     }
 
     const videoDeletor = (oid) => {
@@ -105,6 +127,7 @@ const Library = () => {
 
     return (
         <React.Fragment>
+            <FilterDialog open={filter} handleClose={handleClose} />
             <CssBaseline />
             <Container maxWidth="xl">
                 <Grid container className={classes.topContainer}>
@@ -132,15 +155,23 @@ const Library = () => {
                     </Grid>
                     <Grid style={{ textAlign: 'center' }} item md={2} xs={12}>
                         <div className={classes.iconMargin}>
-                            <IconButton color="primary" className={classes.iconButton} aria-label="Filter">
-                                <TuneIcon />
-                            </IconButton>
-                            <IconButton color="primary" className={classes.iconButton} aria-label="Add Video">
-                                <VideoCallIcon />
-                            </IconButton>
-                            <IconButton color="primary" className={classes.iconButton} aria-label="Apps">
-                                <AppsIcon />
-                            </IconButton>
+                            <Tooltip title="Filter">
+                                <IconButton color="primary" className={classes.iconButton} aria-label="Filter" onClick={handleClickFilter}>
+                                    <TuneIcon />
+                                </IconButton>
+                            </Tooltip>
+                            <Tooltip title="Upload Video">
+                                <Link to="/upload">
+                                    <IconButton color="primary" className={classes.iconButton} aria-label="Upload Video">
+                                        <VideoCallIcon />
+                                    </IconButton>
+                                </Link>
+                            </Tooltip>
+                            <Tooltip title="Back to Home">
+                                <IconButton color="primary" className={classes.iconButton} aria-label="Home" onClick={homeHandler}>
+                                    <HomeIcon />
+                                </IconButton>
+                            </Tooltip>
                         </div>
                     </Grid>
                 </Grid>
@@ -160,33 +191,28 @@ const Library = () => {
                             <Typography style={{ marginTop: '40px' }} variant="h6" gutterBottom>
                                 No Video found in the database. Start with uploading one.
                             </Typography>
-                            <Button 
-                                variant="contained" 
-                                size="large" 
-                                style={{ margin: '20px', color: '#ffffff', background: 'rgba(21, 0, 93, 1)' }}
-                            >
-                                Upload Video
-                            </Button>
                         </div>
-
                     )}
-                    <Grid container spacing={4}> 
-                    {videos.map((video, index) =>
-                        <VideoCard 
-                            key={index}
-                            index={index}
-                            oid={video._id.$oid}
-                            date={video.date}
-                            time={video.date}
-                            location_id={video.location_id}
-                            file_id={video.file_id}
-                            thumbnail_id={video.thumbnail_id}
-                            duration={video.duration}
-                            processed={video.processed}
-                            videoDeletor={videoDeletor}
-                        />
-                    )}                                     
-                    </Grid>
+                    {!isLoading && (
+                        <Grid container spacing={4}> 
+                            {videos.map((video, index) =>
+                                <VideoCard 
+                                    key={index}
+                                    index={index}
+                                    oid={video._id.$oid}
+                                    name={video.name}
+                                    date={video.date}
+                                    time={video.date}
+                                    location_id={video.location_id}
+                                    file_id={video.file_id}
+                                    thumbnail_id={video.thumbnail_id}
+                                    duration={video.duration}
+                                    processed={video.processed}
+                                    videoDeletor={videoDeletor}
+                                />
+                            )}                                     
+                        </Grid>
+                    )}
                 </div>
             </Container>
         </React.Fragment>

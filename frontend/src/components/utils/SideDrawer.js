@@ -13,7 +13,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import AppsIcon from '@material-ui/icons/Apps';
 import DashboardIcon from '@material-ui/icons/Dashboard';
 import AccessibilityIcon from '@material-ui/icons/Accessibility';
-import StorageIcon from '@material-ui/icons/Storage';
+import VideoLibraryIcon from '@material-ui/icons/VideoLibrary';
 import CameraEnhanceIcon from '@material-ui/icons/CameraEnhance';
 import AddPhotoAlternateIcon from '@material-ui/icons/AddPhotoAlternate';
 import InsertChartIcon from '@material-ui/icons/InsertChart';
@@ -90,9 +90,9 @@ const SideDrawer = props => {
           <ListSubheader component="div">
             DATABASE
           </ListSubheader>  
-          <ListItem button onClick={() => {pushLink('/store')}}>
-                <ListItemIcon><Avatar><StorageIcon fontSize='small' /></Avatar></ListItemIcon>
-                <ListItemText primary="Store" />
+          <ListItem button onClick={() => {pushLink('/library')}}>
+                <ListItemIcon><Avatar><VideoLibraryIcon fontSize='small' /></Avatar></ListItemIcon>
+                <ListItemText primary="Library" />
               </ListItem>
               <ListItem button onClick={() => {pushLink('/upload')}}>
                 <ListItemIcon><Avatar><AddPhotoAlternateIcon fontSize='small' /></Avatar></ListItemIcon>

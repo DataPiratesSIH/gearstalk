@@ -32,8 +32,12 @@ def online(url):
 # Get first frame of video for thumbnail
 def getFirstFrame(videofile):
     vidcap = cv2.VideoCapture(videofile)
+    fps = vidcap.get(cv2.CAP_PROP_FPS)      
+    frame_count = int(vidcap.get(cv2.CAP_PROP_FRAME_COUNT))
+    duration = frame_count/fps
     success, image = vidcap.read()
     if success:
         dummy, thumbnail = cv2.imencode('.jpg', image)
         thumbnail = thumbnail.tostring()
-    return thumbnail
+    vidcap.release()
+    return [thumbnail, duration]

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { useHttpClient } from '../hooks/http-hook';
 import { makeStyles } from '@material-ui/core/styles';
 import UtilDialog from '../utils/UtilDialog';
@@ -120,9 +121,11 @@ const VideoCard = props => {
                       <InfoOutlinedIcon className={classes.optionIcon} />
                     </IconButton>
                   </Tooltip>
-                  <IconButton aria-label="play">
-                      <PlayCircleOutlineIcon className={classes.playIcon} />
-                  </IconButton>
+                  <Link to={`/play/${props.oid}`}>
+                    <IconButton aria-label="play">
+                        <PlayCircleOutlineIcon className={classes.playIcon} />
+                    </IconButton>
+                  </Link>
                   <IconButton onClick={handleClick} aria-label="options">
                       <SettingsIcon className={classes.optionIcon} />
                   </IconButton>

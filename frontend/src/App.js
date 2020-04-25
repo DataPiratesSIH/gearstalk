@@ -23,6 +23,7 @@ import Landing from './components/utils/Landing';
 import Search from './components/tools/Search';
 import VideoQuality from './components/tools/VideoQuality';
 import Maps from './components/maps/Maps';
+import Play from './components/database/Play';
 // import MapGL from './components/maps/MapGl';
 
 const theme = createMuiTheme(customTheme);
@@ -65,6 +66,9 @@ const App = () => {
           </Route>
           <Route path="/library" exact>
               <Library />
+          </Route>
+          <Route path="/play/:oid" exact>
+              <Play />
           </Route>
           <Route path="/search" exact>
               <Search />

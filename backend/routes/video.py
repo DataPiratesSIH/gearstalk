@@ -12,6 +12,120 @@ from utils.utils import getFirstFrame, allowed_file
 
 video = Blueprint("video", __name__)
 
+record = ['None', 'Today', 'This Week', 'This Month', 'This Year']
+duration = ['None', 'Short (<4 minutes)', 'Medium (>4 minutes and <20 minutes)', 'Long (>20 minutes)']
+sort = ['Relevance', 'Upload Date', 'Duration']
+typeOf = ['None', 'Processed', 'Unprocessed']
+
+def sameWeek(dateString):
+    d1 = datetime.strptime(dateString,'%Y-%m-%d')
+    d2 = datetime.today()
+    return d1.isocalendar()[1] == d2.isocalendar()[1] \
+            and d1.year == d2.year
+
+def sameMonth(dateString):
+    d1 = datetime.strptime(dateString,'%Y-%m-%d')
+    d2 = datetime.today()
+    print(d1.month, d2.month)
+    return d1.month == d2.month \
+            and d1.year == d2.year
+
+
+def filterNone(filter):
+    if filter['record'] == record[0] and filter['duration'] == duration[0] and filter['sort'] == sort[0] and filter['type'] == typeOf[0]:
+        return None
+    else:
+        return True
+
+def filterByRecord(recordVal, videos):
+    if recordVal == record[0]:
+        return videos
+    elif recordVal == record[1]:
+        items = []
+        today = str(datetime.today().date())
+        for v in videos:
+            if v['date'] == today:
+                items.append(v)
+        return items
+    elif recordVal == record[2]:
+        items = []
+        for v in videos:
+            if sameWeek(v['date']):
+                items.append(v)
+        return items
+    elif recordVal == record[3]:
+        items = []
+        for v in videos:
+            if sameMonth(v['date']):
+                items.append(v)
+        return items
+    elif recordVal == record[4]:
+        items = []
+        for v in videos:
+            if datetime.strptime(v['date'],'%Y-%m-%d').year == datetime.today().year:
+                items.append(v)
+        return items
+    else:
+        return videos
+
+def filterByDuration(durationVal, videos):
+    if durationVal == duration[0]:
+        return videos
+    elif durationVal == duration[1]:
+        items = []
+        for v in videos:
+            if int(v['duration'][0:2]) * 60 + int(v['duration'][3:5]) < 4:
+                items.append(v)
+        return items
+    elif durationVal == duration[2]:
+        items = []
+        for v in videos:
+            if int(v['duration'][0:2]) * 60 + int(v['duration'][3:5]) > 4 \
+             and int(v['duration'][0:2]) * 60 + int(v['duration'][3:5]) < 20:
+                items.append(v)
+        return items
+    elif durationVal == duration[3]:
+        items = []
+        for v in videos:
+            if int(v['duration'][0:2]) * 60 + int(v['duration'][3:5]) > 20:
+                items.append(v)
+        return items
+    else:
+        return videos
+
+def filterByType(typeVal, videos):
+    if typeVal == typeOf[0]:
+        return videos
+    elif typeVal == typeOf[1]:
+        items = []
+        for v in videos:
+            if v['processed'] == True:
+                items.append(v)
+        return items
+    elif typeVal == typeOf[1]:
+        items = []
+        for v in videos:
+            if v['processed'] == False:
+                items.append(v)
+        return items
+    else:
+        return videos
+
+def sortBy(sortVal, videos):
+    if sortVal == sort[0]:
+        return videos
+    elif sortVal == sort[1]:
+        videos.sort(key=lambda x: datetime.strptime(x['date'], '%Y-%m-%d'), reverse=True)
+        for v in videos:
+            print(v['date'])
+        return videos
+    elif sortVal == sort[2]:
+        videos.sort(key=lambda x: int(x['duration'][0:2]) * 3600 + int(x['duration'][3:5]) * 60 + int(x['duration'][6:8]), reverse=True)
+        return videos
+    else:
+        return videos
+
+
 '''-----------------------------------
             video-crud
 -----------------------------------'''
@@ -40,6 +154,24 @@ def getVideoSearch():
                 items.append(v)
 
         return dumps(items), 200
+
+@video.route('/filter', methods=['POST'])
+def getVideoFilter():
+    data = json.loads(request.data)
+    filter = data.get("filter")
+    print(filter)
+    if "video" not in db.list_collection_names() or filter == None:
+        return jsonify([]), 200
+    elif filterNone(filter) == None:
+        videos = list(db.video.find({}))
+        return dumps(videos), 200
+    else:
+        videos = list(db.video.find({}))
+        videos = filterByRecord(filter['record'], videos)
+        videos = filterByDuration(filter['duration'], videos)
+        videos = filterByType(filter['type'], videos)
+        videos = sortBy(filter['sort'], videos)
+        return dumps(videos), 200
 
 # Upload a video to the database
 @video.route('/addvideo', methods=['POST'])

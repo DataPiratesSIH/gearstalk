@@ -127,7 +127,7 @@ const Library = () => {
 
     return (
         <React.Fragment>
-            <FilterDialog open={filter} handleClose={handleClose} />
+            <FilterDialog open={filter} handleClose={handleClose} setVideos={setVideos} />
             <CssBaseline />
             <Container maxWidth="xl">
                 <Grid container className={classes.topContainer}>

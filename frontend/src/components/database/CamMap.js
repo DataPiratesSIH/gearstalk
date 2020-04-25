@@ -3,6 +3,8 @@ import MapGL, { Popup } from 'react-map-gl';
 import DeckGL from '@deck.gl/react';
 import {ScatterplotLayer} from '@deck.gl/layers';
 
+import 'mapbox-gl/dist/mapbox-gl.css';
+
 const CamMap = ({width, height, viewState, onViewStateChange, libraries}) => {
     const data = useMemo(() => {
         let items = []

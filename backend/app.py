@@ -48,7 +48,8 @@ def process():
         # videostr = db.cctv.find({"_id":video_id})
 
         f = open('saves/processing.mp4','wb+')
-        fs.download_to_stream(video_id, f)f.close()
+        fs.download_to_stream(video_id, f)
+        f.close()
 
         # path = "C:\\Users\\Lenovo\\Downloads\\Documents\\GitHub\\yolo_textiles\\Object-detection\\videos\\airport.mp4"
         vidcap = cv2.VideoCapture('saves/processing.mp4')

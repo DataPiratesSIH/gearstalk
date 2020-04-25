@@ -21,6 +21,7 @@ import IconButton from '@material-ui/core/IconButton';
 import Fade from '@material-ui/core/Fade';
 import Paper from '@material-ui/core/Paper';
 import Popper from '@material-ui/core/Popper';
+import Tooltip from '@material-ui/core/Tooltip';
 import LocationOnIcon from '@material-ui/icons/LocationOn';
 import SearchIcon from '@material-ui/icons/Search';
 import SettingsIcon from '@material-ui/icons/Settings';
@@ -663,7 +664,9 @@ const Camera = () => {
                                                         </Typography>
                                                     </Grid>
                                                     <Grid style={{ padding: '10px' }} item xs={2}>
-                                                        <InfoOutlinedIcon fontSize='large' />
+                                                        <Tooltip title={camera.formatted_address}>
+                                                            <InfoOutlinedIcon fontSize='large' />
+                                                        </Tooltip>
                                                     </Grid>
                                                         <Grid className={classes.locationAttributes} item xs={6}>
                                                             <div>

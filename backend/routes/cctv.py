@@ -21,6 +21,17 @@ def getCCTV():
         cctvs = list(db.cctv.find({}))
         return dumps(cctvs), 200
 
+# Get CCTV by Id
+@cctv.route('/getcctvbyid/<oid>', methods=['GET'])
+def getCCTVById(oid):
+    if oid == None:
+            return jsonify({"success": False, "message": "No Object Id in param."}), 400
+    else:
+        if "cctv" not in db.list_collection_names():
+            return jsonify({"success": False, "message": "No Collection cctv."}), 404
+        else:
+            cctv = db.cctv.find_one({ "_id": ObjectId(oid)})
+            return dumps(cctv), 200
 
 # Add a CCTV camera and its location to the database
 # Send JSON data from Postman

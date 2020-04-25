@@ -139,6 +139,18 @@ def getVideo():
         videos = list(db.video.find({}))
         return dumps(videos), 200
 
+# Get Video by id
+@video.route('/getvideobyid/<oid>', methods=['GET'])
+def getVideoById(oid):
+    if oid == None:
+            return jsonify({"success": False, "message": "No Object Id in param."}), 400
+    else:
+        if "video" not in db.list_collection_names():
+            return jsonify({"success": False, "message": "No Collection video."}), 404
+        else:
+            video = db.video.find_one({ "_id": ObjectId(oid)})
+            return dumps(video), 200
+
 # Returns videos for a search query
 @video.route('/search', methods=['POST'])
 def getVideoSearch():

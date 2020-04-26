@@ -1,20 +1,42 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import ReactPlayer from 'react-player';
+import { FlyToInterpolator } from 'react-map-gl';
+import CamMap from './CamMap';
+import LocDialog from './LocDialog';
+import TimeDialog from './TimeDialog';
+import UtilDialog from '../utils/UtilDialog';
 import { useHttpClient } from '../hooks/http-hook';
-import { useParams } from 'react-router-dom';
+import { useParams, useHistory } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import LoadingSpinner from '../utils/LoadingSpinner';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import Divider from '@material-ui/core/Divider';
 import Typography from '@material-ui/core/Typography';
+import Tooltip from '@material-ui/core/Tooltip';
+import IconButton from '@material-ui/core/IconButton';
 import Alert from '@material-ui/lab/Alert';
 import PlayCircleFilledIcon from '@material-ui/icons/PlayCircleFilled';
 import EditIcon from '@material-ui/icons/Edit';
+import LocationOnIcon from '@material-ui/icons/LocationOn';
+import InfoOutlinedIcon from '@material-ui/icons/InfoOutlined';
+import VideocamIcon from '@material-ui/icons/Videocam';
+import ClearIcon from '@material-ui/icons/Clear';
+import MyLocationIcon from '@material-ui/icons/MyLocation';
+import EditLocationIcon from '@material-ui/icons/EditLocation';
+import AccessAlarmsIcon from '@material-ui/icons/AccessAlarms';
+import KeyboardBackspaceIcon from '@material-ui/icons/KeyboardBackspace';
+import ImageIcon from '@material-ui/icons/Image';
+import ImageSearchIcon from '@material-ui/icons/ImageSearch';
+import TrendingDownIcon from '@material-ui/icons/TrendingDown';
+import DynamicFeedIcon from '@material-ui/icons/DynamicFeed';
+import BookmarksIcon from '@material-ui/icons/Bookmarks';
+import CameraEnhanceIcon from '@material-ui/icons/CameraEnhance';
 
 const useStyles = makeStyles((theme) => ({
     root: {
       flexGrow: 1,
+      marginBottom: '20px',
     },
     paper: {
       height: 140,
@@ -46,12 +68,20 @@ const useStyles = makeStyles((theme) => ({
         pointerEvents:'none',
     },
     details: {
-        padding: '15px',
+        padding: '10px',
+        background: '#2a3f73',
+        color: '#ffffff',
+        border: '1px solid #4f619a', 
     },
     locationAttributes: {
         textAlign: 'left',
         marginTop: '8px',
         marginBottom: '8px',
+    },
+    iconMargin: {
+        '& > *': {
+            marginLeft: theme.spacing(2),
+        },
     },
     locationParams: {
         fontSize: '13px',
@@ -67,10 +97,62 @@ const useStyles = makeStyles((theme) => ({
     },
     camHeading: {
         padding: '15px 15px 5px',
-    }
+    },
+    mapContainer: {
+        boxShadow: '-3px 6px 34px 6px rgba(18,25,41,1)',
+        border: '1px solid #4f619a', 
+        position: 'relative', 
+    },
+    noLocation: {
+        textAlign: 'center',
+        padding: '50px 10px',
+        fontWeight: '500',
+        fontSize: '18px',
+    },
+    content: {
+        padding: '5%',
+    },
+    videoHeader: {
+        background: '#435080'
+    },
+    infoButton: {
+        padding: 5,
+        color: '#758cd1',
+    },
+    videocamButton: {
+        padding: 5,
+        color: '#ffffff',
+    },
+    filename: {
+        padding: '5px 10px',
+        color: '#ffffff',
+        fontWeight: '400',
+    },
+    timestamp: {
+        margin: '20px 0px',
+        padding: '10px 10px 5px',
+        border: '2px solid #4f5c88'
+    },
+    mainContent: {
+        margin: '20px 0px',
+    },
+    mainOption: {
+        padding: '10px',
+        paddingTop: '15px',
+        background: '#0a045e',
+        color: '#ffffff',
+        border: '1px solid #4f619a', 
+        textAlign: 'center',
+        cursor: 'pointer',
+        "&:hover": {
+            background: '#ffffff',
+            border: '1px solid #30a3f2',
+            color: '#0a045e',
+        }
+    },
 }));
 
-const CamDisplay = ({ location, camera, setCamera}) => {
+const CamDisplay = ({ location, camera, setCamera }) => {
     const classes = useStyles()
     const { isLoading, error, sendRequest, clearError } = useHttpClient();
 
@@ -92,7 +174,9 @@ const CamDisplay = ({ location, camera, setCamera}) => {
     return (
         <div>
             {isLoading && (
-                <LoadingSpinner />
+                <div style={{ padding: '40px 0px' }}>
+                    <LoadingSpinner />
+                </div>
             )}
             {error && (
                 <div style={{ marginTop: "20p", marginBottom: "20px" }}>
@@ -103,9 +187,9 @@ const CamDisplay = ({ location, camera, setCamera}) => {
             )}
             {!isLoading && (
                 <div>
-                    {camera && (
+                    {camera ? (
                         <div>
-                            <div className={classes.camHeading} item xs={12}>
+                            <div className={classes.camHeading}>
                                 <Typography variant='subtitle1' gutterBottom>
                                     Camera Id <span style={{ color: '#ffffff'}}>#{camera._id.$oid}</span>
                                 </Typography>
@@ -163,8 +247,28 @@ const CamDisplay = ({ location, camera, setCamera}) => {
                             </Grid>
                             <Divider className={classes.divider} />                
                             <div className={classes.details}>
-                                {camera.formatted_address}
+                                <Grid container>
+                                    <Grid style={{ paddingTop: '10px' }} item xs={1}>
+                                        <LocationOnIcon />
+                                    </Grid>
+                                    <Grid item xs={11}>
+                                        <div 
+                                            style={{ 
+                                                color: '#758cd1',
+                                                padding: '5px 0px',
+                                                fontSize: '18px',
+                                                fontWeight: '500', 
+                                            }}>
+                                            Address
+                                        </div>
+                                        {camera.formatted_address}
+                                    </Grid>
+                                </Grid>
                             </div>
+                        </div>
+                    ) : (
+                        <div className={classes.noLocation}>
+                            No Location data found. Add a Location to this video.
                         </div>
                     )}
                 </div>
@@ -175,13 +279,62 @@ const CamDisplay = ({ location, camera, setCamera}) => {
 
 const Play = () => {
     const classes = useStyles();
+    let history = useHistory();
     const params = useParams('/play/:oid');
     const { oid } = params;
 
-    const { isLoading, error, sendRequest, clearError } = useHttpClient();
+    const { isLoading, error, sendRequest, clearError, setErrorText } = useHttpClient();
 
     const [video, setVideo] = useState()
     const [camera, setCamera] = useState()
+
+    const optionHandler = (event) => {
+        if (!video) {
+            setErrorText('No camera found in the database. Start with inserting one.')
+        } else {
+            let option = event.target.getAttribute("value")
+            switch(option) {
+                case "back":
+                   history.push("/library")
+                   break;
+                case "track":
+                    history.push(`/track/${video._id.$oid}`)
+                    break
+                case "analytics":
+                    history.push(`/analytics/${video._id.$oid}`)
+                    break;
+                case "process":
+                    break;
+                case "search":
+                    history.push(`/search/${video._id.$oid}`)
+                    break;
+                case "enhance":
+                    history.push(`/enhance/${video._id.$oid}`)
+                    break;
+                case "bookmark":
+                    break;
+                case "time":
+                    handleTimeOpen()
+                    break;
+                case "locate":
+                    if (camera) {
+                        handleFlyTo({
+                            latitude: camera.latitude, 
+                            longitude: camera.longitude
+                        })
+                    }
+                    break;
+                case "edit":
+                    handleLocationOpen()
+                    break;
+                case "delete":
+                    handleDeleteOpen()
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
 
     useEffect(() => {
         const fetchVideo = async () => {
@@ -196,12 +349,103 @@ const Play = () => {
         fetchVideo()
     }, [oid, sendRequest])
     
+    const handleChangeViewState = ({ viewState }) => setViewState(viewState)
 
+    const [viewState, setViewState] = useState({
+        latitude: 19.0760,
+        longitude: 72.8777,
+        zoom: 11,
+        pitch: 40.5,
+        bearing: 0.7,
+    })
+
+    const handleFlyTo = useCallback(destination => {
+        setViewState(v => { 
+            return {
+                ...v, 
+                ...destination, 
+                zoom: 11,
+                transitionDuration: 2000,
+                transitionInterpolator: new FlyToInterpolator()
+            }
+        })
+    }, [])
+
+    useEffect(() => {
+        if (camera) {
+            handleFlyTo({
+                latitude: camera.latitude, 
+                longitude: camera.longitude
+            })
+        }
+    }, [camera, handleFlyTo])
+
+    const [locationOpen, setLocationOpen] = useState(false);
+
+    const handleLocationOpen = () => {
+        setLocationOpen(true);
+    };
+
+    const handleLocationClose = () => {
+        setLocationOpen(false);
+    };
+
+    const [timeOpen, setTimeOpen] = useState(false);
+
+    const handleTimeOpen = () => {
+        setTimeOpen(true);
+    };
+
+    const handleTimeClose = () => {
+        setTimeOpen(false);
+    };
+
+    const [deleteOpen, setDeleteOpen] = useState(false);
+
+    const handleDeleteOpen = () => {
+        setDeleteOpen(true);
+    };
+
+    const handleDeleteClose = () => {
+        setDeleteOpen(false);
+    };
+
+    const deleteVideoHandler = async () => {
+        try {
+            await sendRequest(process.env.REACT_APP_BACKEND_URL + '/video/deletevideo/' + video._id.$oid, 'DELETE');
+        } catch(err) {
+            console.log(err);
+        }  
+        handleDeleteClose();
+        history.push("/library")
+    }
 
     return (
-        <Grid container className={classes.root}>
+        <React.Fragment>
+            <LocDialog
+                open={locationOpen}
+                camera={camera}
+                video_id={oid}
+                setVideo={setVideo}
+                handleClose={handleLocationClose}
+            />
+            <TimeDialog
+                open={timeOpen}
+                video={video}
+                setVideo={setVideo}
+                handleClose={handleTimeClose}
+            />
+            <UtilDialog 
+                open={deleteOpen}
+                title="Delete Camera?"
+                operationHandler={deleteVideoHandler} 
+                handleClose={handleDeleteClose}
+            >
+                This will delete this video from the database. Please confirm if you want to delete the video.
+            </UtilDialog>
+            <Grid container className={classes.root}>
             <Grid item md={8} xs={12}>
-                <div>
+                <div className={classes.content}>
                     {error && (
                         <div style={{ marginTop: "20p", marginBottom: "20px" }}>
                             <Alert onClose={clearError} severity="error">
@@ -215,15 +459,96 @@ const Play = () => {
                         </div>
                     )}
                     {video && (
-                        <ReactPlayer 
-                            controls 
-                            url={`${process.env.REACT_APP_BACKEND_URL}/helpers/video/${video.file_id}`}
-                            light={`${process.env.REACT_APP_BACKEND_URL}/helpers/file/${video.thumbnail_id}`} 
-                            playing
-                            pip
-                            width="100%" 
-                            playIcon={<PlayCircleFilledIcon className={classes.playIcon} />}
-                        />
+                        <React.Fragment>
+                            <Grid style={{ marginBottom: '10px' }} container>
+                                <Grid className={classes.videoHeader} item md={10} sm={12}>
+                                    <Typography className={classes.filename} variant='subtitle2' gutterBottom>
+                                        {video.name}
+                                    </Typography>
+                                </Grid>
+                                <Grid style={{ textAlign: 'center' }} item md={2} xs={12}>
+                                    <div className={classes.iconMargin}>
+                                        <Tooltip title={`Id #${video._id.$oid}`}>
+                                            <IconButton color="primary" className={classes.infoButton} aria-label="Info">
+                                                <InfoOutlinedIcon fontSize='small' />
+                                            </IconButton>
+                                        </Tooltip>
+                                        <Tooltip title="Upload Video">
+                                            <IconButton color="primary" className={classes.videocamButton} aria-label="Upload Video" onClick={() => {history.push("/upload")}}>
+                                                <VideocamIcon fontSize='small' />
+                                            </IconButton>
+                                        </Tooltip>
+                                    </div>
+                                </Grid>
+                            </Grid>
+                            <ReactPlayer 
+                                controls 
+                                style={{ boxShadow: '-3px 6px 34px 6px rgba(18,25,41,1)' }}
+                                url={`${process.env.REACT_APP_BACKEND_URL}/helpers/video/${video.file_id}`}
+                                light={`${process.env.REACT_APP_BACKEND_URL}/helpers/file/${video.thumbnail_id}`} 
+                                playing
+                                pip
+                                width="100%" 
+                                playIcon={<PlayCircleFilledIcon className={classes.playIcon} />}
+                            />
+                            <Grid className={classes.timestamp} container>
+                                <Grid item xs={11} style={{ fontSize: '15px', color: '#ffffff' }}>
+                                    {new Date(video.date + 'T' + video.time + '+05:30').toString()}
+                                </Grid>
+                                <Grid item xs={1}>
+                                    <Tooltip title={`${video.date} ${video.time}`}>
+                                        <AccessAlarmsIcon style={{ color: '#ffffff' }} />
+                                    </Tooltip>
+                                </Grid>
+                            </Grid>
+                            <Grid className={classes.mainContent} container>
+                                <Grid value="back" className={classes.mainOption} item md={2} sm={2} xs={6} onClick={optionHandler}>
+                                    <KeyboardBackspaceIcon fontSize='large' />
+                                    <Typography className={classes.optionTitle}>
+                                        Back to Library
+                                    </Typography>
+                                </Grid>
+                                <Grid value="track" className={classes.mainOption} item md={2} sm={2} xs={6} onClick={optionHandler}>
+                                    <TrendingDownIcon fontSize='large' />
+                                    <Typography className={classes.optionTitle}>
+                                        Realtime Tracking
+                                    </Typography>
+                                </Grid>
+                                <Grid value="analytics" className={classes.mainOption} item md={2} sm={2} xs={6} onClick={optionHandler}>
+                                    <DynamicFeedIcon fontSize='large' />
+                                    <Typography className={classes.optionTitle}>
+                                        Video Analytics
+                                    </Typography>
+                                </Grid>
+                                {video.processed ? (
+                                    <Grid value="search" className={classes.mainOption} item md={2} sm={2} xs={6} onClick={optionHandler}>
+                                        <ImageSearchIcon fontSize='large' />
+                                        <Typography className={classes.optionTitle}>
+                                            Search
+                                        </Typography>
+                                    </Grid>
+                                ) : (
+                                    <Grid value="process" className={classes.mainOption} item md={2} sm={2} xs={6} onClick={optionHandler}>
+                                        <ImageIcon fontSize='large' />
+                                        <Typography className={classes.optionTitle}>
+                                            Process Video
+                                        </Typography>
+                                    </Grid>
+                                )}
+                                <Grid value="enhance" className={classes.mainOption} item md={2} sm={2} xs={6} onClick={optionHandler}>
+                                    <CameraEnhanceIcon fontSize='large' />
+                                    <Typography className={classes.optionTitle}>
+                                        Enhance Video
+                                    </Typography>
+                                </Grid>
+                                <Grid value="bookmark" className={classes.mainOption} item md={2} sm={2} xs={6} onClick={optionHandler}>
+                                    <BookmarksIcon fontSize='large' />
+                                    <Typography className={classes.optionTitle}>
+                                        Bookmark Video
+                                    </Typography>
+                                </Grid>
+                            </Grid>
+                        </React.Fragment>
                     )}   
                 </div>
             </Grid>
@@ -240,46 +565,45 @@ const Play = () => {
                             )}
                         </Paper>
                     </Grid>
-                    <Grid value="locate" className={classes.option} item xs={4}>
+                    <Grid value="time" className={classes.option} item xs={3} onClick={optionHandler}>
                         <EditIcon />
+                        <Typography className={classes.optionTitle}>
+                            Edit Timestamp
+                        </Typography>
+                    </Grid>
+                    <Grid value="locate" className={classes.option} item xs={3} onClick={optionHandler}>
+                        <MyLocationIcon />
                         <Typography className={classes.optionTitle}>
                             Locate Camera
                         </Typography>
                     </Grid>
-                    <Grid value="locate" className={classes.option} item xs={4}>
-                        <EditIcon />
+                    <Grid value="edit" className={classes.option} item xs={3} onClick={optionHandler}>
+                        <EditLocationIcon />
                         <Typography className={classes.optionTitle}>
-                            Locate Camera
+                            Edit Location
                         </Typography>
                     </Grid>
-                    <Grid value="locate" className={classes.option} item xs={4}>
-                        <EditIcon />
+                    <Grid value="delete" className={classes.option} item xs={3} onClick={optionHandler}>
+                        <ClearIcon />
                         <Typography className={classes.optionTitle}>
-                            Locate Camera
+                            Delete Video
                         </Typography>
                     </Grid>
-                    <Grid value="locate" className={classes.option} item xs={4}>
-                        <EditIcon />
-                        <Typography className={classes.optionTitle}>
-                            Locate Camera
-                        </Typography>
-                    </Grid>
-                    <Grid value="locate" className={classes.option} item xs={4}>
-                        <EditIcon />
-                        <Typography className={classes.optionTitle}>
-                            Locate Camera
-                        </Typography>
-                    </Grid>
-                    <Grid value="locate" className={classes.option} item xs={4}>
-                        <EditIcon />
-                        <Typography className={classes.optionTitle}>
-                            Locate Camera
-                        </Typography>
+                    <Grid item xs={12}>
+                        <div className={classes.mapContainer}>
+                                <CamMap
+                                    width="100%" 
+                                    height="30vh" 
+                                    viewState={viewState}
+                                    onViewStateChange={handleChangeViewState}
+                                    libraries={camera ? [camera] : []}
+                                />
+                        </div>
                     </Grid>
                 </Grid>
             </Grid>
         </Grid>
-
+        </React.Fragment>
     )
 }
 

@@ -111,6 +111,8 @@ def deleteCCTV(oid):
         else:
             result = db.cctv.delete_one({"_id": ObjectId(oid)})
             if (result.deleted_count) > 0:
+                if "video" in db.list_collection_names():
+                    db.video.update_one({ "_id": ObjectId(oid) }, { "$set": { "location_id": None } })
                 return jsonify({"success": True, "message": "CCTV successfully deleted."}), 200
             else: 
                 return jsonify({"success": False, "message": "CCTV with provided id doesn't exist."}), 404
@@ -126,6 +128,8 @@ def deletAllCCTV():
     else:
         result = db.cctv.delete_many({})
         if (result.deleted_count) > 0:
+            if "video" in db.list_collection_names():
+                db.video.update_many({}, { "$set": { "location_id": None } })
             return jsonify({"success": True, "message": "All CCTVs successfully deleted."}), 200
         else: 
             return jsonify({"success": True, "message": "CCTVs collection is already empty"}), 204

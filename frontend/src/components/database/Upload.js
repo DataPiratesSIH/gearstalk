@@ -327,8 +327,9 @@ const Upload = () => {
     const [success, setSuccess] = useState(false);
     const [selectedDate, setSelectedDate] = useState(new Date());
     const [location, setLocation] = useState();
-    const [open, setOpen] = React.useState(false);
+    const [open, setOpen] = useState(false);
     const { error, clearError, setErrorText } = useHttpClient();
+    
     const handleClickOpen = () => {
         setOpen(true);
     };
@@ -459,7 +460,6 @@ const Upload = () => {
                                             value={selectedDate}
                                             onChange={handleDateChange}
                                             onError={console.log}
-                                            disablePast
                                             format="yyyy/MM/dd HH:mm"
                                         />
                                     </MuiPickersUtilsProvider>

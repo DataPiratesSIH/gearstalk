@@ -208,6 +208,7 @@ def addVideo():
     if timestamp.endswith(tmz_str):
         timestamp = timestamp.replace(tmz_str, '')
 
+    date_time_obj = None
     try:
         date_time_obj = datetime.strptime(timestamp, '%a %b %d %Y %H:%M:%S')
     except Exception as e:
@@ -280,6 +281,66 @@ def updateVideo():
     }), 200
 
 '''
+
+# Update Video Location
+@video.route('/updatevideolocation', methods=['PATCH'])
+def updateVideoLocation():
+    data = json.loads(request.data)
+    video_id = data.get("video_id")
+    location_id = data.get("location_id")
+    if video_id == None or location_id == None:
+        return jsonify({"success": False, "message": "Fields are empty."}), 401
+    try:
+        location = db.cctv.find_one({ "_id": ObjectId(location_id)})
+    except Exception as e:
+        print(e)
+        return jsonify({"success": False, "message": "Camera not found in database."}), 401
+    result = db.video.update_one({"_id": ObjectId(video_id)}, { "$set": { "location_id": str(location["_id"]) } })
+    if result.matched_count == 0:
+        return jsonify({"success": False, "message": "ObjectId cannot be found."}), 404
+    elif result.modified_count == 0:
+        video = db.video.find_one({ "_id": ObjectId(video_id)})
+        return dumps(video), 201
+    else:
+        video = db.video.find_one({ "_id": ObjectId(video_id)})
+        return dumps(video), 200
+    
+# Update Video Timestamp
+@video.route('/updatevideotimestamp', methods=['PATCH'])
+def updateVideoTimestamp():
+    data = json.loads(request.data)
+    video_id = data.get("video_id")
+    timestamp = data.get("time")
+    if video_id == None or timestamp == None:
+        return jsonify({"success": False, "message": "Fields are empty."}), 401
+    tmz_str = ' GMT+0530 (India Standard Time)'
+    if timestamp.endswith(tmz_str):
+        timestamp = timestamp.replace(tmz_str, '')
+    date_time_obj = None
+    try:
+        date_time_obj = datetime.strptime(timestamp, '%a %b %d %Y %H:%M:%S')
+    except Exception as e:
+        print(e)
+        pass
+    if date_time_obj == None:
+        return jsonify({
+            "success": False,
+            "message": "Timestamp is invalid. Please try again!"
+        }), 403
+    result = db.video.update_one(
+            {"_id": ObjectId(video_id)}, 
+            { "$set": { 
+                "date": str(date_time_obj.date()),
+                "time": str(date_time_obj.time()) 
+            } })
+    if result.matched_count == 0:
+        return jsonify({"success": False, "message": "ObjectId cannot be found."}), 404
+    elif result.modified_count == 0:
+        video = db.video.find_one({ "_id": ObjectId(video_id)})
+        return dumps(video), 201
+    else:
+        video = db.video.find_one({ "_id": ObjectId(video_id)})
+        return dumps(video), 200
 
 # Delete Video by id
 @video.route('/deletevideo/<oid>', methods=['DELETE'])

@@ -62,10 +62,9 @@ const Library = () => {
     const [filter, setFilter] = useState(false);
 
     const handleClickFilter = () => {
-        // if (homeVideos.length > 0) {
-        //     setFilter(true);
-        // }
-        setFilter(true);
+        if (homeVideos.length > 0) {
+            setFilter(true);
+        }
     };
   
     const handleClose = () => {

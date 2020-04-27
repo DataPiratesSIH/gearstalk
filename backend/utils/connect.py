@@ -12,3 +12,5 @@ client = pymongo.MongoClient(CONNECTION_STRING)
 db = client.get_database('gearstalk')
 fs = GridFSBucket(db)
 gmaps = googlemaps.Client(key=GOOGLEMAPS_KEY)
+
+stopwords = ['Blazer','Burkha','Chudidar','Long-pants','Saree','Bags','Kurta','Skirt','Strip-dress','Sunglasses','Trousers','shirt']

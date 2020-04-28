@@ -24,7 +24,6 @@ import Search from './components/tools/Search';
 import VideoQuality from './components/tools/VideoQuality';
 import Maps from './components/maps/Maps';
 import Play from './components/database/Play';
-// import MapGL from './components/maps/MapGl';
 
 const theme = createMuiTheme(customTheme);
 

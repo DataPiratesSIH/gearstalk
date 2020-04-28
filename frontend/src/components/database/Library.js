@@ -1,8 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { useHttpClient } from '../hooks/http-hook';
 import { makeStyles } from '@material-ui/core/styles';
 import LoadingSpinner from '../utils/LoadingSpinner';
+import FilterDialog from './FilterDialog';
+import MicDialog from '../utils/MicDialog';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Container from '@material-ui/core/Container';
 import VideoCard from './VideoCard';
@@ -18,7 +20,6 @@ import VideoCallIcon from '@material-ui/icons/VideoCall';
 import HomeIcon from '@material-ui/icons/Home';
 import Typography from '@material-ui/core/Typography';
 import Tooltip from '@material-ui/core/Tooltip';
-import FilterDialog from './FilterDialog';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -120,12 +121,47 @@ const Library = () => {
         } 
     }
 
+    const [micOpen, setMicOpen] = useState(false);
+
+    const handleMicOpen = () => {
+        setMicOpen(true);
+    };
+  
+    const onText = useCallback((text) => {
+        const operation = async (text) => {
+            setSearch(text)
+            console.log(text)
+            try {
+                const responseData = await sendRequest(
+                    process.env.REACT_APP_BACKEND_URL + '/video/search',
+                    'POST',
+                    JSON.stringify({
+                        search: text
+                    }),
+                    {
+                        'Content-Type': 'application/json'
+                    }
+                );
+                clearError()
+                setVideos(responseData)
+            } catch(err) {
+                console.log(err);
+            }    
+        }
+        operation(text)
+    }, [sendRequest, clearError]);
+
+    const handleMicClose = () => {
+        setMicOpen(false);
+    };
+
     const videoDeletor = (oid) => {
         setVideos(videos => videos.filter(video => video._id.$oid !== oid))
     }
 
     return (
         <React.Fragment>
+            <MicDialog open={micOpen} onText={onText} handleClose={handleMicClose} />
             <FilterDialog open={filter} handleClose={handleClose} setVideos={setVideos} />
             <CssBaseline />
             <Container maxWidth="xl">
@@ -148,7 +184,7 @@ const Library = () => {
                             <SearchIcon fontSize='small' />
                         </IconButton>
                         <Divider className={classes.divider} orientation="vertical" />
-                        <IconButton color="primary" className={classes.iconButton} aria-label="mic">
+                        <IconButton onClick={handleMicOpen} color="primary" className={classes.iconButton} aria-label="mic">
                             <MicIcon fontSize='small' />
                         </IconButton>
                     </Grid>

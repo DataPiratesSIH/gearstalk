@@ -8,7 +8,7 @@ from bson import ObjectId
 from werkzeug.utils import secure_filename
 from datetime import datetime
 from bson.json_util import dumps
-from utils.utils import getFirstFrame, allowed_file
+from utils.utils import getFirstFrame, allowed_file, randomString
 
 video = Blueprint("video", __name__)
 
@@ -220,15 +220,18 @@ def addVideo():
         }), 403
         
     oid = fs.upload_from_stream(filename, file)
-    f = open('saves/test.mp4','wb+')
+    video_name = 'saves/' + randomString() + '.mp4'
+    f = open(video_name, 'wb+')
     fs.download_to_stream(oid, f)
     f.close()
     try:
-        metadata = getFirstFrame('saves/test.mp4')
+        metadata = getFirstFrame(video_name)
         thumbnail = metadata[0]
         duration = time.strftime("%H:%M:%S", time.gmtime(metadata[1]))
     except Exception as e:
         print(e)
+        if os.path.exists(video_name):
+            os.remove(video_name)
         return jsonify({"success": False, "message": "Failed to process video"}), 500
 
     thumbnail_oid = fs.upload_from_stream(str(oid), thumbnail)
@@ -248,6 +251,9 @@ def addVideo():
         "duration": duration,
         "processed": False
     })
+
+    if os.path.exists(video_name):
+        os.remove(video_name)
 
     return jsonify({
         "success": True, 

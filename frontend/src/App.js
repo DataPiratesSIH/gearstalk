@@ -24,6 +24,7 @@ import Search from './components/tools/Search';
 import VideoQuality from './components/tools/VideoQuality';
 import Maps from './components/maps/Maps';
 import Play from './components/database/Play';
+import LandingPage from './components/LandingPage/landing';
 // import MapGL from './components/maps/MapGl';
 
 const theme = createMuiTheme(customTheme);
@@ -63,6 +64,7 @@ const App = () => {
         <Switch>
           <Route path="/" exact>
               <Landing />
+              {/* <LandingPage /> */}
           </Route>
           <Route path="/library" exact>
               <Library />

@@ -47,7 +47,7 @@ pip install -r requirements.txt
 
 ## Export dependencies
 ```bash
-pip freeze
+pip freeze > requirements.txt
 ```
 Copy paste the output to requirements.txt
 

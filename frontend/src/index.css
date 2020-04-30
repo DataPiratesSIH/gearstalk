@@ -49,3 +49,11 @@ code {
 .mapboxgl-popup-tip {
   border-top-color: #2db1e1 !important;
 }
+
+.mic-position {
+  height: 220px; 
+  width: 250px; 
+  position: relative; 
+  cursor: pointer; 
+  overflow-y: hidden
+}

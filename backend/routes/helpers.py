@@ -1,12 +1,17 @@
 import mimetypes
 import os
 import re
+import base64
 from flask import Blueprint, request, jsonify, Response
 from utils.connect import client, db, fs
-from utils.utils import allowed_file, getFrame, online
+from utils.utils import allowed_file, getFrame, online, randomString
 from bson import ObjectId
 from datetime import datetime
 from bson.json_util import dumps
+import wave
+import speech_recognition as sr
+
+r = sr.Recognizer()
 
 helpers = Blueprint("helpers", __name__)
 
@@ -57,3 +62,33 @@ def video(fileid):
     rv.headers.add('Content-Range', 'bytes {0}-{1}/{2}'.format(byte1, byte1 + length - 1, size))
     rv.headers.add('Cache-Control', 'no-cache')
     return rv
+
+@helpers.route('/speech', methods=['POST']) 
+def speech():
+    speech = request.files['speech']
+    name = 'saves/' + randomString() + '.wav'
+    nchannels = 2
+    sampwidth = 2
+    framerate = 44100
+    nframes = 128000
+    audio = wave.open(name, 'wb')
+    audio.setnchannels(nchannels)
+    audio.setsampwidth(sampwidth)
+    audio.setframerate(framerate)
+    audio.setnframes(nframes)
+
+    blob = speech.read() # such as `blob.read()`
+    audio.writeframesraw(blob)
+    audio.close()
+
+    test = sr.AudioFile(name)
+    with test as source:
+        text = r.record(source)
+    try:
+        val = r.recognize_google(text, show_all=True)
+        fin = val['alternative'][0]['transcript']
+    except Exception as e:
+        fin = ""
+    if os.path.exists(name):
+        os.remove(name)
+    return jsonify({"message": fin}), 200

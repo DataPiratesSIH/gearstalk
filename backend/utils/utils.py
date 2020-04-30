@@ -2,6 +2,8 @@ import json,requests
 import cv2
 import base64
 from .rabbitmq import rabbitmq_upload
+import random
+import string
 
 ALLOWED_EXTENSIONS = ['mp4','avi','jpeg','png']
 
@@ -41,3 +43,7 @@ def getFirstFrame(videofile):
         thumbnail = thumbnail.tostring()
     vidcap.release()
     return [thumbnail, duration]
+
+def randomString(stringLength=8):
+    letters = string.ascii_lowercase
+    return ''.join(random.choice(letters) for i in range(stringLength))    

@@ -9,9 +9,11 @@ import Fab from "@material-ui/core/Fab";
 import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
 import Zoom from "@material-ui/core/Zoom";
 import { Button } from "@material-ui/core";
-import "./Header.css";
 import { Link } from "react-scroll";
 import { FaBeer } from "react-icons/fa"
+import { useHistory } from "react-router-dom";
+
+import "./Header.css";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -19,10 +21,13 @@ const useStyles = makeStyles(theme => ({
     bottom: theme.spacing(2),
     right: theme.spacing(2)
   },
-
+  appBar: {
+    background: 'linear-gradient(90deg, rgba(36,44,78,1) 0%, rgba(49,61,100,1) 29%, rgba(63,78,128,1) 51%, rgba(47,58,98,1) 75%, rgba(36,44,78,1) 100%)',
+    zIndex: theme.zIndex.drawer + 1,
+  }
 }));
 
-function ScrollTop(props) {
+const ScrollTop = props => {
   const { children, window } = props;
   const classes = useStyles();
   // Note that you normally won't need to set the window ref as useScrollTrigger
@@ -75,11 +80,14 @@ ScrollTop.propTypes = {
   window: PropTypes.func
 };
 
-export default function BackToTop(props) {
+const BackToTop = props => {
+  const classes = useStyles();
+  let history = useHistory();
+
   return (
     <React.Fragment>
       <CssBaseline />
-      <AppBar color="primary" style={{ alignItems: 'center', justifyContent: 'center' }}>
+      <AppBar className={classes.appBar} style={{ alignItems: 'center', justifyContent: 'center' }}>
         <Toolbar>
         <img
             src={<FaBeer />}
@@ -146,7 +154,7 @@ export default function BackToTop(props) {
           Tech-Stack
         </Link>
         </Button>
-          <Button variant="contained" href="#">
+          <Button variant="contained" onClick={() => history.push("/console")}>
             Go to Console
           </Button>
         </Toolbar>
@@ -160,3 +168,5 @@ export default function BackToTop(props) {
     </React.Fragment>
   );
 }
+
+export default BackToTop;

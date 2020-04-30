@@ -3,7 +3,7 @@ import AutoGrid from './AutoGrid';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Container from '@material-ui/core/Container';
 
-const Landing = () => {
+const Console = () => {
     return (
         <React.Fragment>
             <CssBaseline />
@@ -15,4 +15,4 @@ const Landing = () => {
     )
 }
 
-export default Landing;
+export default Console;

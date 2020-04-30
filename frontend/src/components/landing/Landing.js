@@ -1,17 +1,19 @@
 import React from "react";
+import { useHistory } from "react-router-dom";
 import { Button } from "@material-ui/core"
 import { GiMiner, GiMiningHelmet } from "react-icons/gi"
-import "./Landing.css";
 import Header from "./Header";
 import { PieChart,WorldMap } from "./Charts.js"
 import TechStack from "./Techstack"
 import Footer from "./Footer"
 
+import "./Landing.css";
 
+const Landing = () => {
+  let history = useHistory();
 
-export default function Landing() {
   return (
-    <div className="App">
+    <div className="landing">
       <Header />
       <div className="section-content rowC section1" paddingbottom="0px">
         <div style={{ paddingleft:"0px", width: "50%", textAlign: "left", color: "white" }}>
@@ -23,7 +25,7 @@ export default function Landing() {
           <h1 style={{ fontSize: "50px" }}>Textiles Detection</h1>
           <h3 sm={12} lg={4} >To configure this component to work with your existing app, you’ll need to import and call initImages, passing an object for configuration. imageResolver is where you will take the processed image object with calculated dimensions and generate a URL that conforms to how your CMS resizes images.</h3>
           <br/>
-          <Button variant="contained" color="primary">
+          <Button variant="contained" color="primary" onClick={() => history.push("/console")}>
             Go to Console
           </Button>
           &nbsp;&nbsp;&nbsp; 
@@ -130,3 +132,5 @@ export default function Landing() {
     </div>
   );
 }
+
+export default Landing;

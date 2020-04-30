@@ -2,6 +2,7 @@ import React from 'react';
 import Badge from '@material-ui/core/Badge';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 import IndiaMap from './images/IndiaMap.png';
+import "./Map.css"
 
 const StyledBadge = withStyles((theme) => ({
   badge: {

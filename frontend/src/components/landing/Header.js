@@ -9,7 +9,7 @@ import Fab from "@material-ui/core/Fab";
 import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
 import Zoom from "@material-ui/core/Zoom";
 import { Button } from "@material-ui/core";
-import "./header.css";
+import "./Header.css";
 import { Link } from "react-scroll";
 import { FaBeer } from "react-icons/fa"
 
@@ -86,7 +86,7 @@ export default function BackToTop(props) {
             className="nav-logo"
             alt="Logo"
           />
-        <Button variant="h6">
+        <Button variant="text">
           <Link
           activeClass="active"
           to="section1"
@@ -98,7 +98,7 @@ export default function BackToTop(props) {
           Home
         </Link>
         </Button>
-        <Button variant="h6">
+        <Button variant="text">
           <Link
             activeClass="active"
             to="section2"
@@ -110,7 +110,7 @@ export default function BackToTop(props) {
             features
           </Link>
         </Button>
-        <Button variant="h6">
+        <Button variant="text">
         <Link
           activeClass="active"
           to="section3"
@@ -122,7 +122,7 @@ export default function BackToTop(props) {
           Model
         </Link>
         </Button>
-        <Button variant="h6">
+        <Button variant="text">
         <Link
           activeClass="active"
           to="section4"
@@ -134,7 +134,7 @@ export default function BackToTop(props) {
           Database
         </Link>
         </Button>
-        <Button variant="h6">
+        <Button variant="text">
         <Link
           activeClass="active"
           to="section5"
@@ -146,7 +146,7 @@ export default function BackToTop(props) {
           Tech-Stack
         </Link>
         </Button>
-          <Button variant="contained" color="default" href="#">
+          <Button variant="contained" href="#">
             Go to Console
           </Button>
         </Toolbar>

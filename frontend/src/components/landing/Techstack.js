@@ -50,7 +50,7 @@ const Techstack = () => {
                 <Typography gutterBottom variant="h5" component="h2">
                   TensorFlow.JS
                 </Typography>
-                <Typography variant="body2" color="default" component="p">
+                <Typography variant="body2" component="p">
                   TensorFlow.js is an hardware-accelerated JavaScript library
                   for training and deploying ML models.
                 </Typography>
@@ -77,7 +77,7 @@ const Techstack = () => {
                 <Typography gutterBottom variant="h5" component="h2">
                   ReactJS
                 </Typography>
-                <Typography variant="body2" color="default" component="p">
+                <Typography variant="body2" component="p">
                   React is a JavaScript library for building user interfaces. It
                   is maintained by Facebook and a large Community.
                 </Typography>
@@ -104,7 +104,7 @@ const Techstack = () => {
                 <Typography gutterBottom variant="h5" component="h2">
                   Flask
                 </Typography>
-                <Typography variant="body2" color="default" component="p">
+                <Typography variant="body2" component="p">
                   D3.js is a JavaScript library for producing dynamic,
                   interactive data visualizations in web browsers.
                 </Typography>
@@ -129,7 +129,7 @@ const Techstack = () => {
                 <Typography gutterBottom variant="h5" component="h2">
                   Material UI
                 </Typography>
-                <Typography variant="body2" color="default" component="p">
+                <Typography variant="body2" component="p">
                   Material UI provides React components implementing <Link className={classes.Link} href="https://material.io/">Google's Material Design</Link>
                   specification
                 </Typography>
@@ -156,7 +156,7 @@ const Techstack = () => {
                 <Typography gutterBottom variant="h5" component="h2">
                   MongoDB Atlas
                 </Typography>
-                <Typography variant="body2" color="default" component="p">
+                <Typography variant="body2" component="p">
                   Material UI provides React components implementing <Link className={classes.Link} href="https://material.io/">Google's Material Design</Link>
                   specification
                 </Typography>
@@ -183,7 +183,7 @@ const Techstack = () => {
                 <Typography gutterBottom variant="h5" component="h2">
                   Grid FS
                 </Typography>
-                <Typography variant="body2" color="default" component="p">
+                <Typography variant="body2" component="p">
                   Material UI provides React components implementing <Link className={classes.Link} href="https://material.io/">Google's Material Design</Link>
                   specification
                 </Typography>
@@ -210,7 +210,7 @@ const Techstack = () => {
                 <Typography gutterBottom variant="h5" component="h2">
                   AMcharts
                 </Typography>
-                <Typography variant="body2" color="default" component="p">
+                <Typography variant="body2" component="p">
                   Material UI provides React components implementing <Link className={classes.Link} href="https://material.io/">Google's Material Design</Link>
                   specification
                 </Typography>
@@ -218,7 +218,7 @@ const Techstack = () => {
             </CardActionArea>
             <CardActions>
               {/* <Link to="https://www.tensorflow.org/js" > */}
-              <Button size="small" color="white">
+              <Button size="small" style={{ color: '#ffffff'}}>
                 <Link className={classes.Link} href="https://material-ui.com/">See More</Link>
               </Button>
               {/* </Link>  */}

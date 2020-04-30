@@ -19,12 +19,12 @@ import Library from './components/database/Library';
 import Camera from './components/database/Camera';
 import Upload from './components/database/Upload';
 import Signup from './components/auth/Signup';
-import Landing from './components/utils/Landing';
+// import Landing from './components/utils/Landing';
 import Search from './components/tools/Search';
 import VideoQuality from './components/tools/VideoQuality';
 import Maps from './components/maps/Maps';
 import Play from './components/database/Play';
-import LandingPage from './components/LandingPage/landing';
+import Landing from './components/landing/Landing';
 // import MapGL from './components/maps/MapGl';
 
 const theme = createMuiTheme(customTheme);
@@ -110,9 +110,12 @@ const App = () => {
           }}
         >
           <Router>
-            <ResponsiveDrawer>
+              <Route path="/" exact>
+                <Landing />
+              </Route>
+            {/* <ResponsiveDrawer>
               {routes}
-            </ResponsiveDrawer>
+            </ResponsiveDrawer> */}
           </Router>
         </AuthContext.Provider>
     </ThemeProvider>
@@ -120,3 +123,7 @@ const App = () => {
 }
 
 export default App;
+
+
+
+

@@ -10,7 +10,6 @@ import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
 import Zoom from "@material-ui/core/Zoom";
 import { Button } from "@material-ui/core";
 import { Link } from "react-scroll";
-import { FaBeer } from "react-icons/fa"
 import { useHistory } from "react-router-dom";
 
 import "./Header.css";
@@ -24,6 +23,10 @@ const useStyles = makeStyles(theme => ({
   appBar: {
     background: 'linear-gradient(90deg, rgba(36,44,78,1) 0%, rgba(49,61,100,1) 29%, rgba(63,78,128,1) 51%, rgba(47,58,98,1) 75%, rgba(36,44,78,1) 100%)',
     zIndex: theme.zIndex.drawer + 1,
+  },
+  toolBar: {
+    width: '100vw',
+    overflowY: 'auto',
   }
 }));
 
@@ -88,11 +91,13 @@ const BackToTop = props => {
     <React.Fragment>
       <CssBaseline />
       <AppBar className={classes.appBar} style={{ alignItems: 'center', justifyContent: 'center' }}>
-        <Toolbar>
+        <Toolbar className={classes.toolBar}>
         <img
-            src={<FaBeer />}
+            src="/logo192.png"
             className="nav-logo"
             alt="Logo"
+            width="30"
+            height="30"
           />
         <Button variant="text">
           <Link

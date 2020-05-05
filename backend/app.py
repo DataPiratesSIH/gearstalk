@@ -11,12 +11,13 @@ from utils.geocode import address_resolver, geocode_address
 from routes.cctv import cctv
 from routes.video import video
 from routes.helpers import helpers
+from routes.process import process
 from utils.connect import client, db, fs
 
 import threading
 from werkzeug.utils import secure_filename
 import base64
-from utils.utils import getFirstFrame, allowed_file, getFrame, online
+from utils.utils import AfterResponse, getFirstFrame, allowed_file, getFrame, online
 from utils.rabbitmq import rabbitmq_live
 
 try:
@@ -33,38 +34,13 @@ app.register_blueprint(cctv, url_prefix="/cctv")
 app.register_blueprint(video, url_prefix="/video")
 app.register_blueprint(helpers, url_prefix="/helpers")
 
+with app.app_context():
+    app.register_blueprint(process, url_prefix="/process")
+    AfterResponse(app)
+
 '''-----------------------------------
             merged-routes
 -----------------------------------'''
-
-# @app.route('/processing/<video_id>', methods=['POST'])                    #if passing id through url
-# def process(video_id):
-
-@app.route('/processing', methods=['POST'])
-def process():
-    try:
-        data = request.get_json()
-        video_id = data['id']
-        # videostr = db.cctv.find({"_id":video_id})
-
-        f = open('saves/processing.mp4','wb+')
-        fs.download_to_stream(video_id, f)
-        f.close()
-
-        # path = "C:\\Users\\Lenovo\\Downloads\\Documents\\GitHub\\yolo_textiles\\Object-detection\\videos\\airport.mp4"
-        vidcap = cv2.VideoCapture('saves/processing.mp4')
-        sec = 0
-        frameRate = 0.5                                              #it will capture image in each 0.5 second
-        success = getFrame(vidcap,sec,filename)
-        while success:
-            sec = sec + frameRate
-            sec = round(sec, 2)
-            success = getFrame(vidcap,sec,filename)
-
-        os.remove('saves/processing.mp4')
-        return jsonify({"status": "Video will be processed in a while!!"}), 200
-    except Exception as e:
-        return f"An Error Occured: {e}"
 
 @app.route('/livestream', methods=['GET'])
 def livestream():

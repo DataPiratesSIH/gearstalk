@@ -11,7 +11,7 @@ from utils.geocode import address_resolver, geocode_address
 from routes.cctv import cctv
 from routes.video import video
 from routes.helpers import helpers
-from routes.process import process
+from routes.process import process, executor
 from utils.connect import client, db, fs
 
 import threading
@@ -29,14 +29,15 @@ app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = 'saves'
 app.config['CORS_HEADERS'] = 'Content-Type'
 CORS(app)
-
+executor.init_app(app)
 app.register_blueprint(cctv, url_prefix="/cctv")
 app.register_blueprint(video, url_prefix="/video")
 app.register_blueprint(helpers, url_prefix="/helpers")
+app.register_blueprint(process, url_prefix="/process")
 
-with app.app_context():
-    app.register_blueprint(process, url_prefix="/process")
-    AfterResponse(app)
+# with app.app_context():
+    # app.register_blueprint(process, url_prefix="/process")
+    # AfterResponse(app)
 
 '''-----------------------------------
             merged-routes

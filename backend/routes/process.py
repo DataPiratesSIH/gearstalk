@@ -5,8 +5,10 @@ from time import sleep
 from bson import ObjectId
 from utils.connect import db, fs
 from utils.utils import getFrame, randomString
+from flask_executor import Executor
 
 process = Blueprint('app', __name__)
+executor = Executor()
 
 @process.route('/processvideo/<oid>', methods=['GET'])
 def processVideo(oid):
@@ -22,9 +24,9 @@ def processVideo(oid):
         elif video['processed'] == "processing":
             return jsonify({"success": False, "message": "Video is currently being processed."}), 404
         else:
-            @app.after_response
+            # @app.after_response
             def processor():
-                sleep(5)
+                # sleep(5)
                 if len(video["file_id"]) == 24:
                     video_name = 'saves/' + randomString() + '.mp4'
                     f = open(video_name, 'wb+')
@@ -66,5 +68,5 @@ def processVideo(oid):
                         os.remove(video_name)
 
                 print('Finished entire process')
-
+            executor.submit(processor)
             return jsonify({"status": "Video will be processed in a while!"}), 200

@@ -4,11 +4,7 @@ import DateFnsUtils from '@date-io/date-fns';
 import { MuiPickersUtilsProvider, KeyboardDateTimePicker } from "@material-ui/pickers";
 import LoadingSpinner from '../utils/LoadingSpinner';
 import Alert from '@material-ui/lab/Alert';
-import Button from '@material-ui/core/Button';
-import Typography from '@material-ui/core/Typography';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
+import { Button, Typography, Dialog, DialogActions, DialogContent }from '@material-ui/core';
 
 interface Props {
     open: boolean;

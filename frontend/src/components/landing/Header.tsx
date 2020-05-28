@@ -1,55 +1,130 @@
-import React from "react";
-import AppBar from "@material-ui/core/AppBar";
-import Toolbar from "@material-ui/core/Toolbar";
-import { makeStyles } from "@material-ui/core/styles";
-import CssBaseline from "@material-ui/core/CssBaseline";
-import useScrollTrigger from "@material-ui/core/useScrollTrigger";
-import Fab from "@material-ui/core/Fab";
-import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
-import Zoom from "@material-ui/core/Zoom";
-import { Button } from "@material-ui/core";
+import React, { useState } from "react";
 import { Link } from "react-scroll";
 import { useHistory } from "react-router-dom";
+import { makeStyles } from "@material-ui/core/styles";
+import {
+  Typography,
+  Fab,
+  IconButton,
+  Button,
+  Zoom,
+  useScrollTrigger,
+  CssBaseline,
+  Toolbar,
+  AppBar,
+  Drawer,
+  List,
+  Divider,
+  ListItem,
+} from "@material-ui/core";
+import MenuIcon from "@material-ui/icons/Menu";
+import CloseIcon from "@material-ui/icons/Close";
+import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
 
-import "./Header.css";
-
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     position: "fixed",
     bottom: theme.spacing(2),
-    right: theme.spacing(2)
+    right: theme.spacing(2),
   },
   appBar: {
-    background: 'linear-gradient(90deg, rgba(36,44,78,1) 0%, rgba(49,61,100,1) 29%, rgba(63,78,128,1) 51%, rgba(47,58,98,1) 75%, rgba(36,44,78,1) 100%)',
+    background:
+      "linear-gradient(90deg, rgba(36,44,78,1) 0%, rgba(49,61,100,1) 29%, rgba(63,78,128,1) 51%, rgba(47,58,98,1) 75%, rgba(36,44,78,1) 100%)",
     zIndex: theme.zIndex.drawer + 1,
   },
   toolBar: {
-    width: '100vw',
-    overflowY: 'auto',
-  }
+    width: "100vw",
+    overflowY: "auto",
+  },
+  sectionDesktop: {
+    display: "none",
+    [theme.breakpoints.up("md")]: {
+      width: "100%",
+      display: "flex",
+      justifyContent: "flex-end",
+    },
+  },
+  nav: {
+    margin: "0px 5px",
+    textTransform: "none",
+    color: "#ffffff",
+    fontSize: "17px",
+    fontFamily: "Verdana, Geneva, sans-serif",
+    "&:hover": {
+      color: "#5ce1e6",
+    },
+  },
+  hamburger: {
+    display: "flex",
+    width: "100%",
+    justifyContent: "flex-end",
+    [theme.breakpoints.up("md")]: {
+      display: "none",
+    },
+  },
+  tryButton: {
+    marginLeft: "5px",
+    textTransform: "none",
+    fontFamily: "Trebuchet MS, Helvetica, sans-serif",
+    borderRadius: 7,
+    fontWeight: 600,
+    color: "#1E1E30",
+    fontSize: "17px",
+    background: "#5ce1e6",
+    "&:hover": {
+      background: "#ffffff",
+    },
+  },
+  logoTypo: {
+    marginLeft: "10px",
+    fontFamily: "Verdana, Geneva, sans-serif",
+  },
+  menu: {
+    backgroundColor: "#1E1E30",
+  },
+  menuDivider: {
+    backgroundColor: "#464670",
+  },
+  menuItem: {
+    padding: "24px",
+    color: "#6C757D",
+    fontSize: "16px",
+    fontWeight: 600,
+  },
+  iconContainer: {
+    textAlign: "right",
+    padding: "10px 20px",
+  },
 }));
+
+const menu = [
+  { text: "Home", section: "section1" },
+  { text: "Features", section: "section2" },
+  { text: "Model", section: "section3" },
+  { text: "Database", section: "section4" },
+  { text: "Techstack", section: "section5" },
+];
 
 interface ScrollToTopProps {
   children: React.ReactNode;
   window?: Window;
 }
 
-const ScrollTop: React.FC<ScrollToTopProps> = props => {
+const ScrollTop: React.FC<ScrollToTopProps> = (props) => {
   const { children, window } = props;
   const classes = useStyles();
-  // Note that you normally won't need to set the window ref as useScrollTrigger
-  // will default to window.
-  // This is only being set here because the demo is in an iframe.
   const trigger = useScrollTrigger({
     target: window ? window : undefined,
     disableHysteresis: true,
-    threshold: 100
+    threshold: 100,
   });
 
-  const handleClick: ((event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void) | undefined = event => {
-    const anchor = ((event.target as HTMLInputElement).ownerDocument || document).querySelector(
-      "#back-to-top-anchor"
-    );
+  const handleClick:
+    | ((event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void)
+    | undefined = (event) => {
+    const anchor = (
+      (event.target as HTMLInputElement).ownerDocument || document
+    ).querySelector("#back-to-top-anchor");
 
     if (anchor) {
       anchor.scrollIntoView({ behavior: "smooth", block: "center" });
@@ -63,104 +138,127 @@ const ScrollTop: React.FC<ScrollToTopProps> = props => {
       </div>
     </Zoom>
   );
+};
+
+interface ScrollLinkProps {
+  to: String;
+  children: React.ReactNode;
 }
 
-// $(document).ready(function() {
-//   $(window).scroll(function() {
-//     var height = $(".first-container").height();
-//     var scrollTop = $(window).scrollTop();
+const ScrollLink: React.FC<ScrollLinkProps> = ({ to, children }) => {
+  return (
+    <Link
+      activeClass="active"
+      to={to}
+      spy={true}
+      smooth={true}
+      offset={-70}
+      duration={500}
+    >
+      {children}
+    </Link>
+  );
+};
 
-//     if (scrollTop >= height - 40) {
-//       $(".nav-container").addClass("solid-nav");
-//     } else {
-//       $(".nav-container").removeClass("solid-nav");
-//     }
-//   });
-// });
+interface TopMenuProps {
+  onClose: () => void;
+}
+
+const TopMenu: React.FC<TopMenuProps> = ({ onClose }) => {
+  const classes = useStyles();
+  let history = useHistory();
+  return (
+    <div className={classes.menu} role="presentation">
+      <div className={classes.iconContainer}>
+        <IconButton
+          edge="end"
+          color="inherit"
+          aria-label="close"
+          onClick={onClose}
+        >
+          <CloseIcon />
+        </IconButton>
+      </div>
+      <List>
+        {menu.map((m, i) => (
+          <div key={i}>
+            <Divider className={classes.menuDivider} />
+
+            <ScrollLink to={m.section}>
+              <ListItem className={classes.menuItem} button>
+                {m.text}
+              </ListItem>
+            </ScrollLink>
+          </div>
+        ))}
+      </List>
+      <div style={{ padding: '24px'}}>
+      <Button
+              className={classes.tryButton}
+              onClick={() => history.push("/console")}
+            >
+              Go to Console
+            </Button>
+      </div>
+
+    </div>
+  );
+};
 
 interface HeaderProps {
   window?: Window;
 }
 
-const Header: React.FC<HeaderProps> = props => {
+const Header: React.FC<HeaderProps> = (props) => {
   const classes = useStyles();
   let history = useHistory();
+  const [open, setOpen] = useState<boolean>(false);
+  const toggleDrawer = () => setOpen((open) => !open);
 
   return (
     <React.Fragment>
       <CssBaseline />
-      <AppBar className={classes.appBar} style={{ alignItems: 'center', justifyContent: 'center' }}>
+      <Drawer anchor={"top"} open={open} onClose={toggleDrawer}>
+        <TopMenu onClose={toggleDrawer} />
+      </Drawer>
+      <AppBar
+        className={classes.appBar}
+        style={{ alignItems: "center", justifyContent: "center" }}
+      >
         <Toolbar className={classes.toolBar}>
-        <img
+          <img
             src="/logo192.png"
             className="nav-logo"
             alt="Logo"
-            width="30"
+            width="40"
             height="30"
           />
-        <Button variant="text">
-          <Link
-          activeClass="active"
-          to="section1"
-          spy={true}
-          smooth={true}
-          offset={-70}
-          duration={500}
-        >
-          Home
-        </Link>
-        </Button>
-        <Button variant="text">
-          <Link
-            activeClass="active"
-            to="section2"
-            spy={true}
-            smooth={true}
-            offset={-70}
-            duration={500}
-          >
-            features
-          </Link>
-        </Button>
-        <Button variant="text">
-        <Link
-          activeClass="active"
-          to="section3"
-          spy={true}
-          smooth={true}
-          offset={-70}
-          duration={500}
-        >
-          Model
-        </Link>
-        </Button>
-        <Button variant="text">
-        <Link
-          activeClass="active"
-          to="section4"
-          spy={true}
-          smooth={true}
-          offset={-70}
-          duration={500}
-        >
-          Database
-        </Link>
-        </Button>
-        <Button variant="text">
-        <Link
-          activeClass="active"
-          to="section5"
-          spy={true}
-          smooth={true}
-          offset={-70}
-          duration={500}
-        >
-          Tech-Stack
-        </Link>
-        </Button>
-          <Button variant="contained" onClick={() => history.push("/console")}>
-            Go to Console
-          </Button>
+          <Typography className={classes.logoTypo} variant="h6">
+            GearStalk
+          </Typography>
+          <div className={classes.sectionDesktop}>
+            {menu.map((m, i) => (
+              <Button key={i} className={classes.nav}>
+                <ScrollLink to={m.section}>{m.text}</ScrollLink>
+              </Button>
+            ))}
+            <Button
+              className={classes.tryButton}
+              onClick={() => history.push("/console")}
+            >
+              Go to Console
+            </Button>
+          </div>
+          <div className={classes.hamburger}>
+            <IconButton
+              edge="end"
+              color="inherit"
+              aria-label="menu"
+              onClick={toggleDrawer}
+            >
+              <MenuIcon />
+            </IconButton>
+          </div>
         </Toolbar>
       </AppBar>
       <Toolbar id="back-to-top-anchor" />
@@ -171,6 +269,6 @@ const Header: React.FC<HeaderProps> = props => {
       </ScrollTop>
     </React.Fragment>
   );
-}
+};
 
 export default Header;

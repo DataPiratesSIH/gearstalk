@@ -2,25 +2,34 @@ import React, { useReducer } from "react";
 import { useHttpClient } from "../hooks/http-hook";
 import { makeStyles } from "@material-ui/core/styles";
 import LoadingSpinner from "../utils/LoadingSpinner";
-import Button from "@material-ui/core/Button";
-import Dialog from "@material-ui/core/Dialog";
-import DialogActions from "@material-ui/core/DialogActions";
-import DialogContent from "@material-ui/core/DialogContent";
-import Grid from "@material-ui/core/Grid";
-import DialogTitle from "@material-ui/core/DialogTitle";
-import ExpansionPanel from "@material-ui/core/ExpansionPanel";
-import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary";
-import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";
-import Typography from "@material-ui/core/Typography";
+import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  Grid,
+  DialogTitle,
+  ExpansionPanel,
+  ExpansionPanelSummary,
+  ExpansionPanelDetails,
+  Typography,
+  Radio,
+  RadioGroup,
+  FormControlLabel,
+  FormControl,
+} from "@material-ui/core";
+
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
-import Radio from "@material-ui/core/Radio";
-import RadioGroup from "@material-ui/core/RadioGroup";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import FormControl from "@material-ui/core/FormControl";
 import Alert from "@material-ui/lab/Alert";
 import TuneIcon from "@material-ui/icons/Tune";
 
-const record: string[] = ["None", "Today", "This Week", "This Month", "This Year"];
+const record: string[] = [
+  "None",
+  "Today",
+  "This Week",
+  "This Month",
+  "This Year",
+];
 const duration: string[] = [
   "None",
   "Short (<4 minutes)",
@@ -90,7 +99,9 @@ const FilterDialog: React.FC<Props> = (props) => {
 
   const [state, dispatch] = useReducer(reducer, initialFilter);
 
-  const handleChange: ((event: React.ChangeEvent<HTMLInputElement>, value: string) => void) | undefined = (event) =>
+  const handleChange:
+    | ((event: React.ChangeEvent<HTMLInputElement>, value: string) => void)
+    | undefined = (event) =>
     dispatch({
       type: event.target.name,
       value: event.target.value,

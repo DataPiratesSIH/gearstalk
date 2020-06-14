@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
+import { AuthContext } from "../context/auth-context";
 import { useHttpClient } from "../hooks/http-hook";
 import { makeStyles } from "@material-ui/core/styles";
 import LoadingSpinner from "../utils/LoadingSpinner";
@@ -127,6 +128,7 @@ const LocDialog: React.FC<LocDialogProps> = (props) => {
   const [locationData, setLocationData] = useState<{ [key: string]: any }[]>(
     []
   );
+  const auth = useContext(AuthContext);
   const [searchData, setSearchData] = useState<{ [key: string]: any }[]>([]);
   const [searchText, setSearchText] = useState<string>("");
   const [location, setLocation] = useState<{ [key: string]: any } | null>();
@@ -190,6 +192,7 @@ const LocDialog: React.FC<LocDialogProps> = (props) => {
           }),
           {
             "Content-Type": "application/json",
+            Authorization: 'Bearer ' + auth.token
           }
         );
         console.log(responseData);

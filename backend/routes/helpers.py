@@ -3,6 +3,7 @@ import os
 import re
 import base64
 from flask import Blueprint, request, jsonify, Response
+from flask_jwt_extended import jwt_required
 from utils.connect import client, db, fs
 from utils.utils import allowed_file, getFrame, online, randomString
 from bson import ObjectId
@@ -64,6 +65,7 @@ def video(fileid):
     return rv
 
 @helpers.route('/speech', methods=['POST']) 
+@jwt_required
 def speech():
     speech = request.files['speech']
     name = 'saves/' + randomString() + '.wav'

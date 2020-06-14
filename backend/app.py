@@ -47,18 +47,6 @@ app.register_blueprint(process, url_prefix="/process")
     # app.register_blueprint(process, url_prefix="/process")
     # AfterResponse(app)
 
-
-@app.route("/dashboard")
-@jwt_required #this page will only be accessed if u login by jwt by this command
-def dasboard():
-    return jsonify(message="Welcome! to the Data Science Learner")
-
-@app.route("/bambi")
-@jwt_required  #this page will only be accessed if u login by jwt by this command
-def dasboard1():
-    return jsonify(message="Welcome! bambi")
-
-
 '''-----------------------------------
             merged-routes
 -----------------------------------'''

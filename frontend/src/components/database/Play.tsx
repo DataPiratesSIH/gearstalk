@@ -1,4 +1,5 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useContext } from "react";
+import { AuthContext } from "../context/auth-context";
 import ReactPlayer from "react-player";
 import { FlyToInterpolator } from "react-map-gl";
 import CamMap from "./CamMap";
@@ -169,6 +170,7 @@ const CamDisplay: React.FC<CamDisplayProps> = ({
   camera,
   setCamera,
 }) => {
+  const auth = useContext(AuthContext);
   const classes = useStyles();
   const { isLoading, error, sendRequest, clearError } = useHttpClient();
 
@@ -177,7 +179,11 @@ const CamDisplay: React.FC<CamDisplayProps> = ({
       try {
         const responseData = await sendRequest(
           process.env.REACT_APP_BACKEND_URL + "/cctv/getcctvbyid/" + location,
-          "GET"
+          "GET",
+          null,
+          {
+            Authorization: 'Bearer ' + auth.token
+          }
         );
         console.log(responseData);
         setCamera(responseData);
@@ -188,7 +194,7 @@ const CamDisplay: React.FC<CamDisplayProps> = ({
     if (location !== null) {
       fetchCamera();
     }
-  }, [location, setCamera, sendRequest]);
+  }, [location, setCamera, sendRequest, auth.token]);
 
   return (
     <div>
@@ -289,6 +295,7 @@ const Play: React.FC = () => {
   const classes = useStyles();
   let history = useHistory();
   const { oid } = useParams();
+  const auth = useContext(AuthContext);
 
   const {
     isLoading,
@@ -358,7 +365,11 @@ const Play: React.FC = () => {
       try {
         const responseData = await sendRequest(
           process.env.REACT_APP_BACKEND_URL + "/video/getvideobyid/" + oid,
-          "GET"
+          "GET",
+          null,
+          {
+            Authorization: 'Bearer ' + auth.token
+          }
         );
         console.log(responseData);
         setVideo(responseData);
@@ -368,7 +379,7 @@ const Play: React.FC = () => {
     };
     console.log(oid);
     fetchVideo();
-  }, [oid, sendRequest]);
+  }, [oid, sendRequest, auth.token]);
 
   const handleChangeViewState = ({ viewState }) => setViewState(viewState);
 

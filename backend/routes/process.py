@@ -1,6 +1,7 @@
 import os
 import cv2
 from flask import Blueprint, request, jsonify, current_app as app
+from flask_jwt_extended import jwt_required
 from time import sleep
 from bson import ObjectId
 from utils.connect import db, fs
@@ -11,6 +12,7 @@ process = Blueprint('app', __name__)
 executor = Executor()
 
 @process.route('/processvideo/<oid>', methods=['GET'])
+@jwt_required
 def processVideo(oid):
     print(oid)
     if oid == None or len(oid) != 24:

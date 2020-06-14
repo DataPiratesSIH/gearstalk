@@ -1,6 +1,7 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useContext } from "react";
 import { Link } from "react-router-dom";
 import { useHttpClient } from "../hooks/http-hook";
+import { AuthContext } from "../context/auth-context";
 import { makeStyles } from "@material-ui/core/styles";
 import LoadingSpinner from "../utils/LoadingSpinner";
 import FilterDialog from "./FilterDialog";
@@ -63,7 +64,7 @@ const useStyles = makeStyles((theme) => ({
 const Library: React.FC = () => {
   const classes = useStyles();
   const [search, setSearch] = useState<string>("");
-
+  const auth = useContext(AuthContext);
   const [filter, setFilter] = useState<boolean>(false);
 
   const handleClickFilter = () => {
@@ -95,7 +96,11 @@ const Library: React.FC = () => {
       try {
         const responseData = await sendRequest(
           process.env.REACT_APP_BACKEND_URL + "/video/getvideo",
-          "GET"
+          "GET",
+          null,
+          {
+            Authorization: 'Bearer ' + auth.token
+          }
         );
         setVideos(responseData);
         setHomeVideos(responseData);
@@ -104,7 +109,7 @@ const Library: React.FC = () => {
       }
     };
     fetchVideos();
-  }, [sendRequest]);
+  }, [sendRequest, auth.token]);
 
   const searchHandler = async () => {
     if (search !== "") {
@@ -147,6 +152,7 @@ const Library: React.FC = () => {
             }),
             {
               "Content-Type": "application/json",
+              Authorization: 'Bearer ' + auth.token
             }
           );
           clearError();
@@ -157,7 +163,7 @@ const Library: React.FC = () => {
       };
       operation(text);
     },
-    [sendRequest, clearError]
+    [sendRequest, clearError, auth.token]
   );
 
   const handleMicClose = () => {

@@ -1,7 +1,8 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useContext } from "react";
 import { useHistory } from "react-router-dom";
 import { useHttpClient } from "../hooks/http-hook";
 import { makeStyles } from "@material-ui/core/styles";
+import { AuthContext } from "../context/auth-context";
 import { FlyToInterpolator } from "react-map-gl";
 import CamMap from "./CamMap";
 import AddCamera from "./AddCamera";
@@ -190,6 +191,7 @@ interface LocationPopoverProps {
 }
 
 const LocationPopover: React.FC<LocationPopoverProps> = (props) => {
+  const auth = useContext(AuthContext);
   const classes = useStyles();
   const [searchText, setSearchText] = useState<string>("");
   const [searchData, setSearchData] = useState<{ [key: string]: any }[]>();
@@ -249,7 +251,11 @@ const LocationPopover: React.FC<LocationPopoverProps> = (props) => {
     try {
       const responseData = await sendRequest(
         process.env.REACT_APP_BACKEND_URL + "/cctv/deleteallcctv",
-        "DELETE"
+        "DELETE",
+        null,
+        {
+          Authorization: 'Bearer ' + auth.token
+        }
       );
       console.log(responseData);
       props.setLocationData([]);
@@ -373,6 +379,7 @@ interface EditPopperProps {
 
 const EditPopper: React.FC<EditPopperProps> = (props) => {
   const classes = useStyles();
+  const auth = useContext(AuthContext);
   const [success, setSuccess] = useState(false);
   const [newCamera, setNewCamera] = useState<{ [key: string]: string }>({
     oid: "",
@@ -417,6 +424,7 @@ const EditPopper: React.FC<EditPopperProps> = (props) => {
           }),
           {
             "Content-Type": "application/json",
+            Authorization: 'Bearer ' + auth.token
           }
         );
         console.log(responseData);
@@ -535,6 +543,7 @@ const EditPopper: React.FC<EditPopperProps> = (props) => {
 };
 
 const Camera: React.FC = () => {
+  const auth = useContext(AuthContext);
   const [locationData, setLocationData] = useState<{ [key: string]: any }[]>(
     []
   );
@@ -574,7 +583,12 @@ const Camera: React.FC = () => {
     const fetchLocations = async () => {
       try {
         const responseData = await sendRequest(
-          process.env.REACT_APP_BACKEND_URL + "/cctv/getcctv"
+          process.env.REACT_APP_BACKEND_URL + "/cctv/getcctv",
+          "GET",
+          null,
+          {
+            Authorization: 'Bearer ' + auth.token
+          }
         );
         setLocationData(responseData);
         if (responseData.length > 0) {
@@ -585,7 +599,7 @@ const Camera: React.FC = () => {
       }
     };
     fetchLocations();
-  }, [sendRequest]);
+  }, [sendRequest, auth.token]);
 
   const [editEl, setEditEl] = useState(null);
   const [editOpen, setEditOpen] = useState(false);

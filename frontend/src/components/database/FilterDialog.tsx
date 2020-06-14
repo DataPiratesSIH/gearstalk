@@ -1,4 +1,5 @@
-import React, { useReducer } from "react";
+import React, { useReducer, useContext } from "react";
+import { AuthContext } from "../context/auth-context";
 import { useHttpClient } from "../hooks/http-hook";
 import { makeStyles } from "@material-ui/core/styles";
 import LoadingSpinner from "../utils/LoadingSpinner";
@@ -60,7 +61,7 @@ interface Props {
 
 const FilterDialog: React.FC<Props> = (props) => {
   const classes = useStyles();
-
+  const auth = useContext(AuthContext);
   const { isLoading, error, sendRequest, clearError } = useHttpClient();
 
   const initialFilter = {
@@ -115,7 +116,10 @@ const FilterDialog: React.FC<Props> = (props) => {
         "POST",
         JSON.stringify({
           filter: state,
-        })
+        }),
+        {
+          Authorization: 'Bearer ' + auth.token
+        }
       );
       props.setVideos(responseData);
       props.handleClose();

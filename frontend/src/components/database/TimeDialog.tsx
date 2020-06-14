@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
+import { AuthContext } from "../context/auth-context";
 import { useHttpClient } from '../hooks/http-hook';
 import DateFnsUtils from '@date-io/date-fns';
 import { MuiPickersUtilsProvider, KeyboardDateTimePicker } from "@material-ui/pickers";
@@ -15,6 +16,7 @@ interface Props {
 
 const TimeDialog: React.FC<Props> = ({ open, video, setVideo, handleClose }) => {
     const [selectedDate, setSelectedDate] = useState(new Date());
+    const auth = useContext(AuthContext);
     
     // eslint-disable-next-line
     const { isLoading, error, sendRequest, clearError } = useHttpClient();
@@ -41,7 +43,8 @@ const TimeDialog: React.FC<Props> = ({ open, video, setVideo, handleClose }) => 
                         'time': selectedDate.toString()
                     }),
                     {
-                        'Content-Type': 'application/json'
+                        'Content-Type': 'application/json',
+                        Authorization: 'Bearer ' + auth.token
                     }
                 )
                 setVideo(responseData)

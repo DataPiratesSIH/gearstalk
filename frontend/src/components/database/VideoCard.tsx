@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
+import { AuthContext } from "../context/auth-context";
 import { Link } from "react-router-dom";
 import { useHttpClient } from "../hooks/http-hook";
 import { makeStyles } from "@material-ui/core/styles";
@@ -74,6 +75,7 @@ interface Props {
 
 const VideoCard: React.FC<Props> = (props) => {
   const classes = useStyles();
+  const auth = useContext(AuthContext);
 
   // eslint-disable-next-line
   const { sendRequest } = useHttpClient();
@@ -102,7 +104,11 @@ const VideoCard: React.FC<Props> = (props) => {
     try {
       await sendRequest(
         process.env.REACT_APP_BACKEND_URL + "/video/deletevideo/" + props.oid,
-        "DELETE"
+        "DELETE",
+        null,
+        {
+          Authorization: 'Bearer ' + auth.token
+        }
       );
     } catch (err) {
       console.log(err);

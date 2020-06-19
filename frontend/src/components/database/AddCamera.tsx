@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
+import { AuthContext } from "../context/auth-context";
 import { useHttpClient } from "../hooks/http-hook";
 import { makeStyles } from "@material-ui/core/styles";
 import {
@@ -57,6 +58,7 @@ interface Props {
 const AddCamera: React.FC<Props> = (props) => {
   const classes = useStyles();
   const [success, setSuccess] = useState(false);
+  const auth = useContext(AuthContext);
   const [location, setLocation] = useState<{
     latitude: string;
     longitude: string;
@@ -85,6 +87,7 @@ const AddCamera: React.FC<Props> = (props) => {
           }),
           {
             "Content-Type": "application/json",
+            Authorization: 'Bearer ' + auth.token
           }
         );
         console.log(responseData);

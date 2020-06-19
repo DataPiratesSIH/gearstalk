@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
+import { AuthContext } from "../context/auth-context";
 import axios from "axios";
 import { useHttpClient } from "../hooks/http-hook";
 import DateFnsUtils from "@date-io/date-fns";
@@ -241,6 +242,7 @@ const LocationDialog: React.FC<LocationDialogProps> = (props) => {
   const [locationData, setLocationData] = useState<{ [key: string]: any }[]>(
     []
   );
+  const auth = useContext(AuthContext);
   const [searchData, setSearchData] = useState<{ [key: string]: any }[]>([]);
   const [title, setTitle] = useState<string>("Choose a Location");
   const [searchText, setSearchText] = useState<string>("");
@@ -252,7 +254,12 @@ const LocationDialog: React.FC<LocationDialogProps> = (props) => {
     const fetchLocations = async () => {
       try {
         const responseData = await sendRequest(
-          process.env.REACT_APP_BACKEND_URL + "/cctv/getcctv"
+          process.env.REACT_APP_BACKEND_URL + "/cctv/getcctv",
+          "GET",
+          null,
+          {
+            Authorization: 'Bearer ' + auth.token
+          }
         );
         setLocationData(responseData);
         setSearchData(responseData);
@@ -263,7 +270,7 @@ const LocationDialog: React.FC<LocationDialogProps> = (props) => {
     if (props.open) {
       fetchLocations();
     }
-  }, [props.open, sendRequest]);
+  }, [props.open, sendRequest, auth.token]);
 
   const clearLocation = () => {
     props.setLocation({});
@@ -360,6 +367,7 @@ const LocationDialog: React.FC<LocationDialogProps> = (props) => {
 
 const Upload: React.FC = () => {
   const classes = useStyles();
+  const auth = useContext(AuthContext);
   const [videoFile, setVideoFile] = useState<File | null>(null);
   const [progress, setProgress] = useState<number>(0);
   const [processVideo, setProcessVideo] = useState<boolean>(false);
@@ -407,6 +415,11 @@ const Upload: React.FC = () => {
     ) {
       setUploading(true);
       setProgress(0);
+      
+      const headers = {
+        Authorization: 'Bearer ' + auth.token
+      };
+
       const config = {
         onUploadProgress: function (progressEvent) {
           let percentCompleted = Math.round(
@@ -414,7 +427,9 @@ const Upload: React.FC = () => {
           );
           setProgress(percentCompleted);
         },
+        headers: headers
       };
+
 
       let data = new FormData();
       data.append("video", videoFile);

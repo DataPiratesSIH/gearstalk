@@ -1,5 +1,6 @@
 import os
 from flask import Flask, request, jsonify, make_response, render_template, Response, Flask, flash, redirect, url_for
+from flask_jwt_extended import JWTManager, jwt_required, create_access_token
 from flask_cors import CORS
 import json,requests
 import cv2
@@ -8,6 +9,7 @@ from bson import ObjectId
 from datetime import datetime
 from bson.json_util import dumps
 from utils.geocode import address_resolver, geocode_address
+from routes.auth import auth
 from routes.cctv import cctv
 from routes.video import video
 from routes.helpers import helpers
@@ -26,10 +28,16 @@ except FileExistsError as e:
     pass
 
 app = Flask(__name__)
+jwt = JWTManager(app)
+
+# JWT Config
+app.config["JWT_SECRET_KEY"] = "this-is-secret-key"
+
 app.config['UPLOAD_FOLDER'] = 'saves'
 app.config['CORS_HEADERS'] = 'Content-Type'
 CORS(app)
 executor.init_app(app)
+app.register_blueprint(auth, url_prefix="/auth")
 app.register_blueprint(cctv, url_prefix="/cctv")
 app.register_blueprint(video, url_prefix="/video")
 app.register_blueprint(helpers, url_prefix="/helpers")

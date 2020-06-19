@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useContext } from "react";
 import FadeIn from "../utils/FadeIn";
 import { useHistory } from "react-router-dom";
+import { AuthContext } from "../context/auth-context";
 import { Button, Grid } from "@material-ui/core";
 import { GiMiner, GiMiningHelmet } from "react-icons/gi";
 import Header from "./Header";
@@ -24,10 +25,11 @@ const Feature: React.FC<FeatureProps> = ({ children }) => {
 
 const Landing: React.FC = () => {
   let history = useHistory();
+  const auth = useContext(AuthContext);
 
   return (
     <div className="landing">
-      <Header />
+      <Header isLoggedIn={auth.isLoggedIn} />
       <div className="section-content rowC section1">
         <Grid container>
           <Grid
@@ -62,13 +64,33 @@ const Landing: React.FC = () => {
                 URL that conforms to how your CMS resizes images.
               </h3>
               <br />
-              <Button
-                variant="contained"
-                color="primary"
-                onClick={() => history.push("/console")}
-              >
-                Go to Console
-              </Button>
+              {auth.isLoggedIn ? (
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={() => history.push("/console")}
+                  >
+                    Go to Console
+                  </Button>
+              ) : (
+                <>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={() => history.push("/signup")}
+                  >
+                    Sign Up
+                  </Button>
+                  &nbsp;
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={() => history.push("/signin")}
+                  >
+                    Log In
+                  </Button>
+                </>
+              )}
               &nbsp;&nbsp;&nbsp;
               <Button variant="outlined" color="primary">
                 Github

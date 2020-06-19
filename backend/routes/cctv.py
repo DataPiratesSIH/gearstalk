@@ -1,4 +1,5 @@
 from flask import Blueprint, request, jsonify
+from flask_jwt_extended import jwt_required
 import json,requests
 from utils.connect import client, db, fs
 from utils.geocode import address_resolver
@@ -14,6 +15,7 @@ cctv = Blueprint("cctv", __name__)
 
 # Get all CCTV objects
 @cctv.route('/getcctv', methods=['GET'])
+@jwt_required
 def getCCTV():
     if "cctv" not in db.list_collection_names():
         return jsonify([]), 200
@@ -23,6 +25,7 @@ def getCCTV():
 
 # Get CCTV by Id
 @cctv.route('/getcctvbyid/<oid>', methods=['GET'])
+@jwt_required
 def getCCTVById(oid):
     if oid == None:
             return jsonify({"success": False, "message": "No Object Id in param."}), 400
@@ -37,6 +40,7 @@ def getCCTVById(oid):
 # Send JSON data from Postman
 # {"lat": 23.45, "lon": 45.67}
 @cctv.route('/addcctv', methods=['POST'])
+@jwt_required
 def addCCTV():
     location = json.loads(request.data)
     print(location)
@@ -66,6 +70,7 @@ def addCCTV():
     
 # Update CCTV by id
 @cctv.route('/updatecctv', methods=['PATCH'])
+@jwt_required
 def updateCCTV():
     location = json.loads(request.data)
     print(location)
@@ -100,6 +105,7 @@ def updateCCTV():
 
 # Delete CCTV by id
 @cctv.route('/deletecctv/<oid>', methods=['DELETE'])
+@jwt_required
 def deleteCCTV(oid):
     ## Dangerous route
     # return jsonify({"success": False, "message": "Forbidden. This is very dangerous."}), 403
@@ -120,6 +126,7 @@ def deleteCCTV(oid):
 
 # Delete all CCTVs in the collection
 @cctv.route('/deleteallcctv', methods=['DELETE'])
+@jwt_required
 def deletAllCCTV():
     ## Dangerous route
     # return jsonify({"success": False, "message": "Forbidden. This is very dangerous."}), 403

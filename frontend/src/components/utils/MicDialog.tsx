@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
+import { AuthContext } from "../context/auth-context";
 import { useHttpClient } from "../hooks/http-hook";
 import useRecorder from "../hooks/audio-hook";
 import MicIcon from "./MicIcon";
@@ -13,6 +14,7 @@ interface Props {
 }
 
 const MicDialog: React.FC<Props> = ({ open, onText, handleClose }) => {
+  const auth = useContext(AuthContext);
   const [text, setText] = useState("");
   let {
     audioURL,
@@ -37,7 +39,10 @@ const MicDialog: React.FC<Props> = ({ open, onText, handleClose }) => {
         const responseData = await sendRequest(
           process.env.REACT_APP_BACKEND_URL + "/helpers/speech",
           "POST",
-          data
+          data,
+          {
+            Authorization: 'Bearer ' + auth.token
+          }
         );
         setText((text) => text + responseData.message);
         if (responseData.message === "") {

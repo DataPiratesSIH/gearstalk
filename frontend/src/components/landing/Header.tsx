@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Link } from "react-scroll";
 import { useHistory } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
+import Logout from "../auth/Logout";
 import {
   Typography,
   Fab,
@@ -192,21 +193,21 @@ const TopMenu: React.FC<TopMenuProps> = ({ onClose }) => {
           </div>
         ))}
       </List>
-      <div style={{ padding: '24px'}}>
-      <Button
-              className={classes.tryButton}
-              onClick={() => history.push("/console")}
-            >
-              Go to Console
-            </Button>
+      <div style={{ padding: "24px" }}>
+        <Button
+          className={classes.tryButton}
+          onClick={() => history.push("/console")}
+        >
+          Go to Console
+        </Button>
       </div>
-
     </div>
   );
 };
 
 interface HeaderProps {
   window?: Window;
+  isLoggedIn: boolean;
 }
 
 const Header: React.FC<HeaderProps> = (props) => {
@@ -214,7 +215,6 @@ const Header: React.FC<HeaderProps> = (props) => {
   let history = useHistory();
   const [open, setOpen] = useState<boolean>(false);
   const toggleDrawer = () => setOpen((open) => !open);
-
   return (
     <React.Fragment>
       <CssBaseline />
@@ -242,12 +242,32 @@ const Header: React.FC<HeaderProps> = (props) => {
                 <ScrollLink to={m.section}>{m.text}</ScrollLink>
               </Button>
             ))}
-            <Button
-              className={classes.tryButton}
-              onClick={() => history.push("/console")}
-            >
-              Go to Console
-            </Button>
+            {props.isLoggedIn ? (
+              <>
+                <Button
+                  className={classes.tryButton}
+                  onClick={() => history.push("/console")}
+                >
+                  Go to Console
+                </Button>
+                <Logout className={classes.nav} />
+              </>
+            ) : (
+              <>
+                <Button
+                  className={classes.tryButton}
+                  onClick={() => history.push("/signup")}
+                >
+                  SignUp
+                </Button>
+                <Button
+                  className={classes.tryButton}
+                  onClick={() => history.push("/signin")}
+                >
+                  SignIn
+                </Button>
+              </>
+            )}
           </div>
           <div className={classes.hamburger}>
             <IconButton

@@ -1,9 +1,11 @@
 import json,requests
 import cv2
 import base64
-from .rabbitmq import rabbitmq_upload
+from .rabbitmq import rabbitmq_bridge
 import random
 import string
+from bson import ObjectId
+from utils.connect import LOAD_BALANCER_URL
 from werkzeug.wsgi import ClosingIterator
 from traceback import print_exc
 
@@ -66,9 +68,55 @@ def getFrame(vidcap,video_id,sec,timestamp):
             ('photo', ("frame.png", string, 'application/octet')),                          #wrapping json data and image-file into a single file
             ('data', ('data', json.dumps(data), 'application/json')),
         ]
+
+        #sending files without rabbitmq(faster)
+        # r = requests.post(LOAD_BALANCER_URL, files=files)                                 #add after hosting load_balancer
         print(sec)
-        # rabbitmq_upload(string)
+
+        #to use rabbitmq for sending(slower...bt no frames r lost)
+        # rabbitmq_bridge(files,urls)
     return hasFrames
+
+def processor(oid,file_id,timestamp):
+    # sleep(5)
+    if len(file_id) == 24:
+        video_name = 'saves/' + randomString() + '.mp4'
+        f = open(video_name, 'wb+')
+        fs.download_to_stream(ObjectId(file_id), f)
+        f.close()
+
+        print("File Downloaded")
+
+        print("Starting processing")
+
+        '''-----------------------------------
+                processing goes here
+        -----------------------------------'''
+
+        '''send video_id = 123467 and timestamp also here!!'''
+        # path = "C:\\Users\\Lenovo\\Downloads\\Documents\\GitHub\\yolo_textiles\\Object-detection\\videos\\airport.mp4"
+
+        vidcap = cv2.VideoCapture(video_name)
+        sec = 0
+
+        frameRate = 0.5                                                         # it will capture image in each 0.5 second
+        success = getFrame(vidcap,oid,sec,timestamp)
+        while success:
+            sec = sec + frameRate
+            sec = round(sec, 2)
+            success = getFrame(vidcap,oid,sec,timestamp)
+
+        vidcap.release()
+
+        '''-----------------------------------
+                        end
+        -----------------------------------'''
+
+        print("Processing Done. Now Removing Video.")
+        if os.path.exists(video_name):
+            os.remove(video_name)
+
+    print('Finished entire process')
 
 def online(url):
     try:

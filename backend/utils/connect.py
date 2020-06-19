@@ -7,6 +7,7 @@ import googlemaps
 load_dotenv()
 CONNECTION_STRING = os.getenv("MONGODB_STRING")
 GOOGLEMAPS_KEY = os.getenv("GOOGLE_MAPS_KEY")
+LOAD_BALANCER_URL = os.getenv("HAPROXY_URL")
 
 client = pymongo.MongoClient(CONNECTION_STRING)
 db = client.get_database('gearstalk')

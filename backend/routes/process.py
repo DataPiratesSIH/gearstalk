@@ -2,12 +2,13 @@ import os
 import cv2
 from flask import Blueprint, request, jsonify, current_app as app
 from time import sleep
+import numpy as np
 from bson import ObjectId
 from utils.connect import db, fs
 from utils.utils import getFrame, randomString
 from flask_executor import Executor
 
-process = Blueprint('app', __name__)
+process = Blueprint('process', __name__)
 executor = Executor()
 
 @process.route('/processvideo/<oid>', methods=['GET'])
@@ -41,21 +42,18 @@ def processVideo(oid):
                             processing goes here
                     -----------------------------------'''
 
+                    '''send video_id = 123467 and timestamp also here!!'''
                     # path = "C:\\Users\\Lenovo\\Downloads\\Documents\\GitHub\\yolo_textiles\\Object-detection\\videos\\airport.mp4"
 
                     vidcap = cv2.VideoCapture(video_name)
                     sec = 0
 
-                    # it will capture image in each 0.5 second
-
-                    # Not sure what is filename
-
-                    # frameRate = 0.5                                              
-                    # success = getFrame(vidcap,sec,filename)
-                    # while success:
-                    #     sec = sec + frameRate
-                    #     sec = round(sec, 2)
-                    #     success = getFrame(vidcap,sec,filename)
+                    frameRate = 0.5                                                         # it will capture image in each 0.5 second   
+                    success = getFrame(vidcap,video_id,sec,timestamp)
+                    while success:
+                        sec = sec + frameRate
+                        sec = round(sec, 2)
+                        success = getFrame(vidcap,video_id,sec,timestamp)
 
                     vidcap.release()
 
@@ -70,3 +68,47 @@ def processVideo(oid):
                 print('Finished entire process')
             executor.submit(processor)
             return jsonify({"status": "Video will be processed in a while!"}), 200
+
+
+@process.route('/video', methods=['POST'])
+def Video():
+    # print('inside')
+    # data = request.form
+    # video = request.files['vidcap']
+    # print(video)
+    # image_cv = video.read()
+    
+    
+    # np_image = np.frombuffer(image_cv, dtype=np.uint8)                                      # convert string data to numpy array
+    
+    # video_name = cv2.imdecode(np_image, flags=1)                                                   # convert numpy array to image
+    # print(video_name)
+
+    # def processor():
+
+    path = "C:\\Users\\Lenovo\\Downloads\\Documents\\GitHub\\yolo_textiles\\videos\\airport.mp4"
+    video_id = 123467
+
+    vidcap = cv2.VideoCapture(path)
+    sec = 0
+
+    frameRate = 0.5                                              
+    success = getFrame(vidcap,video_id,sec,timestamp)
+    while success:
+        sec = sec + frameRate
+        sec = round(sec, 2)
+        success = getFrame(vidcap,video_id,sec,timestamp)
+
+    vidcap.release()
+
+    '''-----------------------------------
+                    end
+    -----------------------------------'''
+
+    print("Processing Done. Now Removing Video.")
+    # if os.path.exists(video_name):
+    #     os.remove(video_name)
+
+    print('Finished entire process')
+    # executor.submit(processor)
+    return jsonify({"status": "Video will be processed in a while!"}), 200

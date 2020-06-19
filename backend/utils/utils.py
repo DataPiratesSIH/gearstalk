@@ -49,14 +49,25 @@ def allowed_file(filename):
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 
-def getFrame(vidcap,sec,filename):
+def getFrame(vidcap,video_id,sec,timestamp):
     vidcap.set(cv2.CAP_PROP_POS_MSEC,sec*1000)
     hasFrames,image = vidcap.read()
 
     if hasFrames:
         string = base64.b64encode(cv2.imencode('.png', image)[1]).decode()
-        rabbitmq_upload(string,filename)
-        # print(result)
+        data = {
+            "video_id" : video_id,
+            "timestamp": timestamp,
+            "frame_sec": sec
+        }
+        # np.save(open("frame.npy","wb+"), image)                                           #faster method(todo)
+        # print(sec)
+        files = [
+            ('photo', ("frame.png", string, 'application/octet')),                          #wrapping json data and image-file into a single file
+            ('data', ('data', json.dumps(data), 'application/json')),
+        ]
+        print(sec)
+        # rabbitmq_upload(string)
     return hasFrames
 
 def online(url):

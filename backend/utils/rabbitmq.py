@@ -1,7 +1,7 @@
 import pika
 import json
 
-def rabbitmq_upload(string,filename):
+def rabbitmq_upload(string):
     credentials = pika.PlainCredentials('test', 'test')
 
     connection = pika.BlockingConnection(
@@ -11,7 +11,6 @@ def rabbitmq_upload(string,filename):
     channel.queue_declare(queue='uploading')
 
     data = {
-        "file": filename,
         "img" : string
     }
     message = json.dumps(data, ensure_ascii=False, indent=4)

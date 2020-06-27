@@ -220,7 +220,7 @@ const LocDialog: React.FC<LocDialogProps> = (props) => {
             severity="error"
             onClose={clearError}
           >
-            {error}sdsd
+            {error}
           </Alert>
         )}
         <Grid container>

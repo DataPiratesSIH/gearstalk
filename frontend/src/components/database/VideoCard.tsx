@@ -178,7 +178,7 @@ const VideoCard: React.FC<Props> = (props) => {
         <CardMedia
           className={classes.cover}
           image={`${process.env.REACT_APP_BACKEND_URL}/helpers/file/${props.thumbnail_id}`}
-          title="Live from space album cover"
+          title={props.name}
         />
       </Card>
     </Grid>

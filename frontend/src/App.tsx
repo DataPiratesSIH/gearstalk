@@ -22,9 +22,9 @@ import Signup from "./components/auth/Signup";
 import Console from "./components/utils/Console";
 import Search from "./components/tools/Search";
 import VideoQuality from "./components/tools/VideoQuality";
-import Maps from "./components/maps/Maps";
 import Play from "./components/database/Play";
 import Landing from "./components/landing/Landing";
+import Visualization from "./components/tools/Visualization";
 
 const theme = createMuiTheme(customTheme);
 
@@ -33,7 +33,7 @@ const App = () => {
 
   let routes;
 
-  if (token) {
+  // if (token) {
     routes = (
       <Switch>
         <Route path="/" exact>
@@ -64,9 +64,9 @@ const App = () => {
             <VideoQuality />
           </ResponsiveDrawer>
         </Route>
-        <Route path="/maps" exact>
+        <Route path="/visualization" exact>
           <ResponsiveDrawer>
-            <Maps />
+            <Visualization />
           </ResponsiveDrawer>
         </Route>
         <Route path="/upload" exact>
@@ -79,25 +79,25 @@ const App = () => {
             <Camera />
           </ResponsiveDrawer>
         </Route>
-        <Redirect to="/" />
+        <Redirect to="/videoquality" />
       </Switch>
     );
-  } else {
-    routes = (
-      <Switch>
-        <Route path="/" exact>
-          <Landing />
-        </Route>
-        <Route path="/signin" exact>
-          <Signin />
-        </Route>
-        <Route path="/signup" exact>
-          <Signup />
-        </Route>
-        <Redirect to="/" />
-      </Switch>
-    );
-  }
+  // } else {
+  //   routes = (
+  //     <Switch>
+  //       <Route path="/" exact>
+  //         <Landing />
+  //       </Route>
+  //       <Route path="/signin" exact>
+  //         <Signin />
+  //       </Route>
+  //       <Route path="/signup" exact>
+  //         <Signup />
+  //       </Route>
+  //       <Redirect to="/" />
+  //     </Switch>
+  //   );
+  // }
 
   return (
     <ThemeProvider theme={theme}>

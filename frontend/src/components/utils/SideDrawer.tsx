@@ -116,7 +116,7 @@ const SideDrawer = props => {
                 <ListItemIcon><Avatar><CameraEnhanceIcon fontSize="small" /></Avatar></ListItemIcon>
                 <ListItemText primary="Video Quality" />
               </ListItem>
-              <ListItem button>
+              <ListItem button onClick={() => {pushLink('/visualization')}}>
                 <ListItemIcon><Avatar><InsertChartIcon  fontSize="small" /></Avatar></ListItemIcon>
                 <ListItemText primary="Visualization" />
               </ListItem>

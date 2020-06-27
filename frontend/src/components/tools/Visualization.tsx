@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { Grid } from "@material-ui/core";
-import qualityIcon from "./quality.svg";
+import analysisIcon from "./analysis.svg";
 import ChooseDialog from "./ChooseDialog";
 import { useHistory } from "react-router-dom";
 
@@ -25,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const VideoQuality: React.FC = () => {
+const Visualization: React.FC = () => {
   let history = useHistory();
 
   const [open, setOpen] = useState<boolean>(false);
@@ -34,7 +34,7 @@ const VideoQuality: React.FC = () => {
   const classes = useStyles();
 
   useEffect(() => {
-    if (videoTag) history.push(`enhance/${videoTag}`);
+    if (videoTag) history.push(`visualization/${videoTag}`);
   }, [history, videoTag]);
   return (
     <>
@@ -47,8 +47,8 @@ const VideoQuality: React.FC = () => {
         <Grid style={{ marginTop: "100px" }} item xs={12}>
           <img
             style={{ width: "40%", height: "30vh" }}
-            src={qualityIcon}
-            alt="qualityIcon"
+            src={analysisIcon}
+            alt="analysisIcon"
           />
         </Grid>
 
@@ -62,4 +62,4 @@ const VideoQuality: React.FC = () => {
   );
 };
 
-export default VideoQuality;
+export default Visualization;

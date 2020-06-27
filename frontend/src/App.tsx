@@ -25,6 +25,7 @@ import VideoQuality from "./components/tools/VideoQuality";
 import Play from "./components/database/Play";
 import Landing from "./components/landing/Landing";
 import Visualization from "./components/tools/Visualization";
+import Enhance from "./components/tools/Enhance";
 
 const theme = createMuiTheme(customTheme);
 
@@ -52,6 +53,11 @@ const App = () => {
         <Route path="/play/:oid" exact>
           <ResponsiveDrawer>
             <Play />
+          </ResponsiveDrawer>
+        </Route>
+        <Route path="/enhance/:oid" exact>
+          <ResponsiveDrawer>
+            <Enhance />
           </ResponsiveDrawer>
         </Route>
         <Route path="/search" exact>

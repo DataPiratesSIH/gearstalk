@@ -36,6 +36,13 @@ const VideoQuality: React.FC = () => {
   useEffect(() => {
     if (videoTag) history.push(`enhance/${videoTag}`);
   }, [history, videoTag]);
+
+  useEffect(() => {    
+    return () => {
+      setOpen(false);
+    }
+  }, [])
+  
   return (
     <>
       <ChooseDialog

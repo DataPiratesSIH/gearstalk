@@ -95,7 +95,7 @@ interface ChooseDialogProps {
   handleClose: () => void;
 }
 
-const ChooseDialog: React.FC<ChooseDialogProps> = (props) => {
+const ChooseDialog: React.FC<ChooseDialogProps> = ({ open, setVideoTag, handleClose }) => {
   const { isLoading, error, sendRequest, clearError } = useHttpClient();
   const classes = useStyles();
   const [videoData, setVideoData] = useState<{ [key: string]: any }[]>([]);
@@ -121,10 +121,10 @@ const ChooseDialog: React.FC<ChooseDialogProps> = (props) => {
         console.log(err);
       }
     };
-    if (props.open) {
+    if (open) {
       fetchVideos();
     }
-  }, [props.open, sendRequest, auth.token]);
+  }, [open, sendRequest, auth.token]);
   const clearVideo = () => {
     setVideo(null);
   };
@@ -147,15 +147,15 @@ const ChooseDialog: React.FC<ChooseDialogProps> = (props) => {
   };
 
   const videoSetter = () => {
-      video && props.setVideoTag(video);
+      video && setVideoTag(video);
   }
 
   return (
     <Dialog
       fullWidth={true}
       maxWidth={"lg"}
-      open={props.open}
-      onClose={props.handleClose}
+      open={open}
+      onClose={handleClose}
       aria-labelledby="max-width-dialog-title"
     >
       <DialogTitle>
@@ -238,7 +238,7 @@ const ChooseDialog: React.FC<ChooseDialogProps> = (props) => {
         <Button autoFocus color="primary" onClick={clearVideo}>
           Clear
         </Button>
-        <Button onClick={props.handleClose} color="primary" autoFocus>
+        <Button onClick={handleClose} color="primary" autoFocus>
           Cancel
         </Button>
       </DialogActions>

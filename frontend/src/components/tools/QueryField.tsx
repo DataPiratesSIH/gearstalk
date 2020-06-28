@@ -16,7 +16,15 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   button: {
-    margin: theme.spacing(1),
+    marginTop: "5px",
+    marginLeft: "5px",
+    width: "100%",
+    textTransform: "none",
+    cursor: "pointer",
+    fontSize: "16px",
+    fontWeight: 500,
+    padding: "4px 10px",
+    border: "1px solid #2bd1e1",
   },
 }));
 
@@ -47,13 +55,10 @@ const QueryField: React.FC = () => {
       <Grid container spacing={1}>
         <Grid item sm={11} xs={10}>
           <Button
-            variant="contained"
-            color="primary"
             className={classes.button}
             endIcon={<Icon>send</Icon>}
-            style={{ width: "100%" }}
           >
-            Send
+            SEND
           </Button>
         </Grid>
         <Grid item sm={1} xs={2}>

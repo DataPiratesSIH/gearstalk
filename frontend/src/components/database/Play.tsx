@@ -328,9 +328,10 @@ const Play: React.FC = () => {
           history.push(`/analytics/${video._id.$oid}`);
           break;
         case "process":
+          history.push('/search',[video._id.$oid]);
           break;
         case "search":
-          history.push(`/search/${video._id.$oid}`);
+          history.push('/search',[video._id.$oid]);
           break;
         case "enhance":
           history.push(`/enhance/${video._id.$oid}`);

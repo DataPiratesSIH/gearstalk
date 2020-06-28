@@ -6,7 +6,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import ReactPlayer from "react-player";
 import PlayCircleFilledIcon from "@material-ui/icons/PlayCircleFilled";
 import { captureVideoFrame } from "../utils/utils";
-import { Grid, Button, Paper, Slider } from "@material-ui/core";
+import { Grid, Button, Paper, Slider, Typography } from "@material-ui/core";
 import WallpaperIcon from "@material-ui/icons/Wallpaper";
 
 const useStyles = makeStyles((theme) => ({
@@ -26,7 +26,7 @@ const useStyles = makeStyles((theme) => ({
   },
   filterPaper: {
     height: "100%", 
-    padding: "20px 20%", 
+    padding: "20px 20px", 
     backgroundColor: "#0a045e",
     border: "1px solid #2db1e1"
   }
@@ -113,7 +113,9 @@ const Enhance: React.FC = () => {
 
   return (
     <Grid style={{ padding: "20px" }} container>
-      <Grid item md={8} sm={12} xs={12}>
+      <Typography variant="h5" gutterBottom>Image Quality</Typography>
+      <Grid style={{ backgroundColor: "#2db1e1", height: "1px", marginBottom: "20px" }} item xs={12} />
+      <Grid item md={6} sm={12} xs={12}>
         <ReactPlayer
           ref={(player) => {
             playerRef.current = player;
@@ -135,7 +137,7 @@ const Enhance: React.FC = () => {
           }}
         />
       </Grid>
-      <Grid className={classes.infoContainer} item md={4} sm={12} xs={12}>
+      <Grid className={classes.infoContainer} item md={6} sm={12} xs={12}>
         <Grid container className={classes.info}>
           <Grid item xs={12} style={{ padding: "20px" }}>
             <WallpaperIcon style={{ color: "2db1e1", fontSize: "100px" }} />
@@ -152,7 +154,7 @@ const Enhance: React.FC = () => {
         </Grid>
       </Grid>
       <Grid style={{ height: "50px" }} item xs={12} />
-      <Grid item md={7} sm={12} xs={12}>
+      <Grid item md={6} sm={12} xs={12}>
         {image && (
           <img
             style={{ width: "100%" }}
@@ -162,12 +164,12 @@ const Enhance: React.FC = () => {
           />
         )}
       </Grid>
-      <Grid style={{ padding: "10px" }} item md={5} sm={12} xs={12}>
+      <Grid style={{ padding: "10px", paddingTop: "0px" }} item md={6} sm={12} xs={12}>
         {image && (
           <Paper className={classes.filterPaper} square>
-            <Grid container>
+            <Grid container spacing={2}>
               {filterMap.map((f, i) => (
-                <Grid key={i} item xs={12} style={{ margin: "10px 0px" }}>
+                <Grid key={i} item md={6} xs={12} style={{ margin: "10px 0px" }}>
                   <Grid container>
                     <Grid item xs={12}>
                       <div style={{ fontSize: "17px", fontWeight: 600 }}>{f.key.toUpperCase()}</div>

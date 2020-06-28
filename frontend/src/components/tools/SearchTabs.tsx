@@ -76,21 +76,13 @@ const SearchTabs: React.FC = () => {
           aria-label="scrollable auto tabs example"
         >
           <Tab label="Photo" {...a11yProps(0)} />
-          <Tab label="Select Attributes" {...a11yProps(1)} />
-          <Tab label="Select from Video" {...a11yProps(2)} />
-          <Tab label="Type" {...a11yProps(3)} />
+          <Tab label="Type" {...a11yProps(1)} />
         </Tabs>
       </AppBar>
       <TabPanel value={value} index={0}>
         <ImageCrop />
       </TabPanel>
       <TabPanel value={value} index={1}>
-        Item Two
-      </TabPanel>
-      <TabPanel value={value} index={2}>
-        Item Three
-      </TabPanel>
-      <TabPanel value={value} index={3}>
         <QueryField />
       </TabPanel>
     </div>

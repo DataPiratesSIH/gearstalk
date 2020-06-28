@@ -1,15 +1,15 @@
-import React from "react";
+import React, { useState } from "react";
 import uuid from "uuid";
 
 import { AttributeState, Actions } from '../../types';
 
 import { AttributeProvider } from "../context/attribute-context";
 
-import CssBaseline from "@material-ui/core/CssBaseline";
-import Container from "@material-ui/core/Container";
+import { CssBaseline,  Container } from "@material-ui/core";
 import SearchGrid from "./SearchGrid";
 
 const Search: React.FC = () => {
+  const [video, setVideo] = useState<{ [key:string]: any}>();
   const initialAttribute: AttributeState = {
     attributes: [
       {
@@ -117,7 +117,7 @@ const Search: React.FC = () => {
     <AttributeProvider initialAttribute={initialAttribute} reducer={reducer}>
       <CssBaseline />
       <Container maxWidth="xl">
-        <SearchGrid />
+        <SearchGrid video={video} setVideo={setVideo} />
       </Container>
     </AttributeProvider>
   );

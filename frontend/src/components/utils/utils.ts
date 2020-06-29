@@ -1,3 +1,5 @@
+export const stopwords = ['Blazer','Burkha','Chudidar','Long-pants','Saree','Bags','Kurta','Skirt','Strip-dress','Sunglasses','Trousers','shirt'];
+
 export function captureVideoFrame(vid, format, quality) {
     if (typeof vid === "string") {
       vid = document.getElementById(vid);

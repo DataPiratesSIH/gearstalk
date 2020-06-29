@@ -23,6 +23,7 @@ const useStyles = makeStyles((theme) => ({
 
 interface ColorCircleProps {
   id: string;
+  index: number;
   color: { hex: string };
 }
 
@@ -37,7 +38,8 @@ const ColorCircle: React.FC<ColorCircleProps> = (props) => {
     dispatch({
       type: "updateColor",
       value: color,
-      uid: props.id,
+      pid: props.id,
+      idx: props.index
     });
   };
 

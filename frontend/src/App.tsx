@@ -85,7 +85,7 @@ const App = () => {
             <Camera />
           </ResponsiveDrawer>
         </Route>
-        <Redirect to="/videoquality" />
+        <Redirect to="/search" />
       </Switch>
     );
   // } else {

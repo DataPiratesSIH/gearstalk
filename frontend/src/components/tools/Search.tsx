@@ -13,10 +13,8 @@ const Search: React.FC = () => {
   const initialAttribute: AttributeState = {
     attributes: [
       {
-        id: uuid(),
-        gender: "Male",
-        features: [{ id: uuid(), cloth: "Shirt", color: { hex: "#000" } }],
-      },
+        id: uuid(), labels: ["Shirt"], colors: [{ hex: "#000" }]
+      }
     ],
   };
 
@@ -34,9 +32,7 @@ const Search: React.FC = () => {
           attributes: [
             ...state.attributes,
             {
-              id: uuid(),
-              gender: "Female",
-              features: [{ id: uuid(), cloth: "Pant", color: { hex: "#000" } }],
+              id: uuid(), labels: ["Shirt"], colors: [{ hex: "#000" }]
             },
           ],
         };
@@ -49,64 +45,58 @@ const Search: React.FC = () => {
           attributes: newAttributes,
         };
 
-      case "addFeature":
+      case "addLabel":
         attributes.forEach(function (attribute, index) {
           if (attribute.id === action.pid) {
-            attribute.features.push({
-              id: uuid(),
-              cloth: "Shirt",
-              color: { hex: "#000" },
-            });
+            if (!attribute.labels.includes(action.value))
+            attribute.labels.push(action.value);
           }
         });
         return {
           attributes: attributes,
         };
 
-      case "deleteFeature":
-        for (let i = 0; i < attributes.length; i++) {
-          const newFeatures = attributes[i].features.filter(
-            (feature) => feature.id !== action.did
-          );
-          attributes[i].features = newFeatures;
-        }
-        return {
-          attributes: attributes,
-        };
-
-      case "updateGender":
-        for (let i = 0; i < attributes.length; i++) {
-          if (attributes[i].id === action.uid) {
-            attributes[i].gender = action.value;
+      case "removeLabel":
+        attributes.forEach(function (attribute, index) {
+          if (attribute.id === action.pid) {
+            const newLabels = attribute.labels.filter((label) => label !== action.value)
+            attribute.labels = newLabels
           }
-        }
+        });
         return {
           attributes: attributes,
         };
 
-      case "updateCloth":
-        for (let i = 0; i < attributes.length; i++) {
-          for (let j = 0; j < attributes[i].features.length; j++) {
-            if (attributes[i].features[j].id === action.uid) {
-              attributes[i].features[j].cloth = action.value;
+        case "addColor":
+          attributes.forEach(function (attribute, index) {
+            if (attribute.id === action.pid) {
+              if (!attribute.colors.includes(action.value))
+              attribute.colors.push(action.value);
             }
-          }
-        }
-        return {
-          attributes: attributes,
-        };
+          });
+          return {
+            attributes: attributes,
+          };
 
-      case "updateColor":
-        for (let i = 0; i < attributes.length; i++) {
-          for (let j = 0; j < attributes[i].features.length; j++) {
-            if (attributes[i].features[j].id === action.uid) {
-              attributes[i].features[j].color = action.value;
+        case "updateColor": 
+          attributes.forEach(function (attribute, index) {
+            if (attribute.id === action.pid) {
+              attribute.colors[action.idx] = action.value;
             }
-          }
-        }
-        return {
-          attributes: attributes,
-        };
+          });
+          return {
+            attributes: attributes,
+          };
+  
+        case "removeColor":
+          attributes.forEach(function (attribute, index) {
+            if (attribute.id === action.pid) {
+              attribute.colors.pop();
+            }
+          });
+          return {
+            attributes: attributes,
+          };
 
       default:
         return state;

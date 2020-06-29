@@ -1,223 +1,171 @@
-import React from "react";
+import React, { useState } from "react";
 import { useAttribute } from "../context/attribute-context";
-import { makeStyles } from "@material-ui/core/styles";
-import InputLabel from "@material-ui/core/InputLabel";
-import IconButton from "@material-ui/core/IconButton";
-import Grid from "@material-ui/core/Grid";
-import MenuItem from "@material-ui/core/MenuItem";
-import Select from "@material-ui/core/Select";
-import FormControl from "@material-ui/core/FormControl";
-import Typography from "@material-ui/core/Typography";
-import CloseIcon from "@material-ui/icons/Close";
+import {
+  IconButton,
+  Grid,
+  Typography,
+  Chip,
+  Avatar,
+  Popover,
+  Divider
+} from "@material-ui/core";
 import AddBoxIcon from "@material-ui/icons/AddBox";
-import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
+import IndeterminateCheckBoxIcon from "@material-ui/icons/IndeterminateCheckBox";
 import ColorCircle from "./ColorCircle";
 
 import { Feature } from "../../types";
-
-const useStyles = makeStyles((theme) => ({
-  formControl: {
-    margin: theme.spacing(1),
-    minWidth: 120,
-  },
-  selectEmpty: {
-    marginTop: theme.spacing(2),
-  },
-}));
-
-interface FeatureItemProps {
-  key: string;
-  id: string;
-  cloth: string;
-  color: { hex: string };
-}
-
-const FeatureItem: React.FC<FeatureItemProps> = (props) => {
-  // eslint-disable-next-line
-  const [{ attributes }, dispatch] = useAttribute();
-
-  const handleClothChange:
-    | ((
-        event: React.ChangeEvent<{
-          name?: string | undefined;
-          value: unknown;
-        }>,
-        child: React.ReactNode
-      ) => void)
-    | undefined = (event) => {
-    dispatch({
-      type: "updateCloth",
-      value: String(event.target.value),
-      uid: props.id,
-    });
-  };
-
-  return (
-    <Grid container spacing={2}>
-      <Grid item xl={2} lg={2} md={2} xs={2} sm={2}>
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-          }}
-        >
-          <ColorCircle id={props.id} color={props.color} />
-        </div>
-      </Grid>
-      <Grid item xl={8} lg={8} md={8} xs={8} sm={8}>
-        <Select fullWidth value={props.cloth} onChange={handleClothChange}>
-          <MenuItem value="Shirt">Shirt</MenuItem>
-          <MenuItem value="Pant">Pant</MenuItem>
-          <MenuItem value="Underwear">Underwear</MenuItem>
-        </Select>
-      </Grid>
-      <Grid item xl={2} lg={2} md={2} xs={2} sm={2}>
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-          }}
-        >
-          <IconButton
-            onClick={() =>
-              dispatch({
-                type: "deleteFeature",
-                did: props.id,
-              })
-            }
-          >
-            <CloseIcon />
-          </IconButton>
-        </div>
-      </Grid>
-    </Grid>
-  );
-};
-
-interface FeatureListProps {
-  items: Feature[];
-}
-
-const FeatureList: React.FC<FeatureListProps> = (props) => {
-  return (
-    <div>
-      {props.items.map((feature) => (
-        <FeatureItem
-          key={feature.id}
-          id={feature.id}
-          cloth={feature.cloth}
-          color={feature.color}
-        />
-      ))}
-    </div>
-  );
-};
+import { stopwords } from "../utils/utils";
 
 interface AttributeItemProps {
   key: string;
   id: string;
   index: number;
-  gender: string;
-  features: Feature[];
+  labels: string[];
+  colors: { hex: string }[];
 }
 
 const AttributeItem: React.FC<AttributeItemProps> = (props) => {
-  const classes = useStyles();
+  const [anchorEl, setAnchorEl] = useState(null);
+
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const open = Boolean(anchorEl);
+  const id = open ? "simple-popover" : undefined;
 
   // eslint-disable-next-line
   const [{ attributes }, dispatch] = useAttribute();
 
-  const handleGenderChange: (
-    event: React.ChangeEvent<{
-      name?: string;
-      value: unknown;
-    }>,
-    child: React.ReactNode
-  ) => void = (event) => {
-    dispatch({
-      type: "updateGender",
-      value: String(event.target.value),
-      uid: props.id,
-    });
-  };
-
   return (
     <React.Fragment>
+      <Popover
+        id={id}
+        open={open}
+        anchorEl={anchorEl}
+        onClose={handleClose}
+        anchorOrigin={{
+          vertical: "bottom",
+          horizontal: "center",
+        }}
+        transformOrigin={{
+          vertical: "top",
+          horizontal: "center",
+        }}
+      >
+        <div style={{ width: "300px" }}>
+          {stopwords.map((sw) => (
+            <>
+              {!props.labels.includes(sw) && (
+                <Chip
+                  style={{ margin: "5px 10px", cursor: "pointer" }}
+                  color="secondary"
+                  label={sw}
+                  avatar={<Avatar>{sw.charAt(0)}</Avatar>}
+                  onClick={() => {
+                    dispatch({
+                      type: "addLabel",
+                      pid: props.id,
+                      value: sw,
+                    });
+                    handleClose();
+                  }}
+                />
+              )}
+            </>
+          ))}
+        </div>
+      </Popover>
       <Grid container spacing={2}>
         <Grid item xl={4} lg={4} md={4} xs={4} sm={4}>
           <Typography color="primary" variant="h6">
             Person {props.index + 1}
           </Typography>
         </Grid>
-        <Grid item xl={6} lg={6} md={6} xs={6} sm={6}>
-          <FormControl className={classes.formControl}>
-            <InputLabel id="demo-simple-select-label">Gender</InputLabel>
-            <Select
-              style={{ width: "100px" }}
-              labelId="demo-simple-select-label"
-              id="demo-simple-select"
-              value={props.gender}
-              onChange={handleGenderChange}
-            >
-              <MenuItem value="Male">Male</MenuItem>
-              <MenuItem value="Female">Female</MenuItem>
-              <MenuItem value="Any">Any</MenuItem>
-            </Select>
-          </FormControl>
-        </Grid>
-        <Grid item xl={2} lg={2} md={2} xs={2} sm={2}>
-          <IconButton
-            style={{ padding: "1px" }}
-            onClick={() =>
-              dispatch({
-                type: "deletePerson",
-                pid: props.id,
-              })
-            }
-          >
-            <DeleteForeverIcon color="error" fontSize="large" />
-          </IconButton>
-        </Grid>
       </Grid>
       <Grid container spacing={2}>
-        <Grid item xl={2} lg={2} md={2} xs={2} sm={2}>
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-            }}
-          >
-            <IconButton
-              style={{ padding: "1px" }}
-              onClick={() =>
+        <Grid item xs={10}>
+          {props.labels.map((label) => (
+            <Chip
+              style={{ margin: "5px 3px", color: "#1C233E", fontWeight: 600 }}
+              color="primary"
+              label={label}
+              onDelete={() =>
                 dispatch({
-                  type: "addFeature",
+                  type: "removeLabel",
                   pid: props.id,
+                  value: label,
                 })
               }
-            >
-              <AddBoxIcon />
-            </IconButton>
-          </div>
+              avatar={<Avatar>{label.charAt(0)}</Avatar>}
+            />
+          ))}
+          <IconButton
+            aria-describedby={id}
+            style={{ padding: "1px", color: "#fff" }}
+            onClick={handleClick}
+          >
+            <AddBoxIcon />
+          </IconButton>
         </Grid>
-        <Grid item xl={10} lg={10} md={10} xs={10} sm={10}>
-          <FeatureList items={props.features} />
+        <Grid item xs={2}>
+          <Grid container spacing={1}>
+            {props.colors.map((color, index) => (
+              <Grid item xs={6}>
+                <ColorCircle id={props.id} index={index} color={color} />
+              </Grid>
+            ))}
+          </Grid>
+          <Grid container style={{ marginTop: "10px" }} spacing={1}>
+            <Grid item xs={6}>
+              {" "}
+              <IconButton
+                aria-describedby={id}
+                style={{ padding: "1px" }}
+                color='primary'
+                onClick={() =>
+                  dispatch({
+                    type: "removeColor",
+                    pid: props.id,
+                  })
+                }
+                disabled={props.colors.length === 0}
+              >
+                <IndeterminateCheckBoxIcon />
+              </IconButton>
+            </Grid>
+            <Grid item xs={6}>
+              {" "}
+              <IconButton
+                aria-describedby={id}
+                style={{ padding: "1px" }}
+                color='primary'
+                onClick={() =>
+                  dispatch({
+                    type: "addColor",
+                    pid: props.id,
+                    value: { hex: "#000" },
+                  })
+                }
+                disabled={props.colors.length > 3}
+              >
+                <AddBoxIcon />
+              </IconButton>
+            </Grid>
+          </Grid>
         </Grid>
       </Grid>
-      <hr></hr>
+      <Divider style={{ margin: "20px", backgroundColor: "#2db1e1"}} />
     </React.Fragment>
   );
 };
 
 interface AttributeListProps {
-  items: {
-    id: string;
-    gender: string;
-    features: Feature[];
-  }[];
+  items: Feature[];
 }
 
 const AttributeList: React.FC<AttributeListProps> = (props) => {
@@ -228,8 +176,8 @@ const AttributeList: React.FC<AttributeListProps> = (props) => {
           key={attribute.id}
           id={attribute.id}
           index={index}
-          gender={attribute.gender}
-          features={attribute.features}
+          labels={attribute.labels}
+          colors={attribute.colors}
         />
       ))}
     </div>

@@ -111,6 +111,7 @@ const SearchGrid: React.FC<Props> = ({ video, setVideo }) => {
         open={open}
         setVideoTag={setVideoTag}
         handleClose={handleClose}
+        processed={false}
       />
       <Grid container spacing={4}>
         <Grid item xl={9} lg={9} md={9} xs={12} sm={12}>

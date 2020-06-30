@@ -8,6 +8,8 @@ export type AttributeState = {
   attributes: Feature[] | null;
 };
 
+export type Person = { box: number[]; labels: string[]; colors: string[] };
+
 export type Actions =
   | { type: "changeAttribute"; newAttribute: any }
   | { type: "addPerson" }
@@ -16,4 +18,9 @@ export type Actions =
   | { type: "removeLabel"; pid: string; value: string }
   | { type: "addColor"; pid: string; value: { hex: string } }
   | { type: "updateColor"; pid: string; idx: number; value: { hex: string } }
-  | { type: "removeColor"; pid: string; };
+  | { type: "removeColor"; pid: string };
+
+export type MetaData = {
+  frame_sec: number;
+  persons: Person[];
+};

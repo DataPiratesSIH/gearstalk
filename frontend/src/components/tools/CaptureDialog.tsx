@@ -94,6 +94,7 @@ const CaptureDialog: React.FC<Props> = ({ open, handleClose, imagePushHandler })
         open={choose}
         setVideoTag={setVideoTag}
         handleClose={handleCloseChoose}
+        processed={false}
       />
       <DialogTitle id="alert-dialog-title">{"Capture Frame"}</DialogTitle>
       <DialogContent>

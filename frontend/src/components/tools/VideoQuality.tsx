@@ -49,6 +49,7 @@ const VideoQuality: React.FC = () => {
         open={open}
         setVideoTag={setVideoTag}
         handleClose={handleClose}
+        processed={false}
       />
       <Grid container style={{ textAlign: "center" }}>
         <Grid style={{ marginTop: "100px" }} item xs={12}>

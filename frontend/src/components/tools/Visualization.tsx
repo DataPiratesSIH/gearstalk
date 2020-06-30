@@ -34,7 +34,7 @@ const Visualization: React.FC = () => {
   const classes = useStyles();
 
   useEffect(() => {
-    if (videoTag) history.push(`visualization/${videoTag}`);
+    if (videoTag) history.push(`analytics/${videoTag}`);
   }, [history, videoTag]);
   return (
     <>
@@ -42,6 +42,7 @@ const Visualization: React.FC = () => {
         open={open}
         setVideoTag={setVideoTag}
         handleClose={handleClose}
+        processed={false}
       />
       <Grid container style={{ textAlign: "center" }}>
         <Grid style={{ marginTop: "100px" }} item xs={12}>

@@ -93,9 +93,10 @@ interface ChooseDialogProps {
   open: boolean;
   setVideoTag: React.Dispatch<React.SetStateAction<string>>;
   handleClose: () => void;
+  processed: boolean;
 }
 
-const ChooseDialog: React.FC<ChooseDialogProps> = ({ open, setVideoTag, handleClose }) => {
+const ChooseDialog: React.FC<ChooseDialogProps> = ({ open, setVideoTag, handleClose, processed }) => {
   const { isLoading, error, sendRequest, clearError } = useHttpClient();
   const classes = useStyles();
   const [videoData, setVideoData] = useState<{ [key: string]: any }[]>([]);
@@ -107,7 +108,7 @@ const ChooseDialog: React.FC<ChooseDialogProps> = ({ open, setVideoTag, handleCl
   useEffect(() => {
     const fetchVideos = async () => {
       try {
-        const responseData = await sendRequest(
+        let responseData = await sendRequest(
           process.env.REACT_APP_BACKEND_URL + "/video/getvideo",
           "GET",
           null,
@@ -115,6 +116,8 @@ const ChooseDialog: React.FC<ChooseDialogProps> = ({ open, setVideoTag, handleCl
             Authorization: "Bearer " + auth.token,
           }
         );
+        if (processed)
+          responseData = responseData.filter((video) => video.processed === true)
         setVideoData(responseData);
         setSearchData(responseData);
       } catch (err) {
@@ -124,7 +127,7 @@ const ChooseDialog: React.FC<ChooseDialogProps> = ({ open, setVideoTag, handleCl
     if (open) {
       fetchVideos();
     }
-  }, [open, sendRequest, auth.token]);
+  }, [open, sendRequest, processed, auth.token]);
   const clearVideo = () => {
     setVideo(null);
   };

@@ -13,7 +13,7 @@ const Search: React.FC = () => {
   const initialAttribute: AttributeState = {
     attributes: [
       {
-        id: uuid(), labels: ["Shirt"], colors: [{ hex: "#000" }]
+        id: uuid(), labels: ["shirt"], colors: [{ hex: "#000" }]
       }
     ],
   };
@@ -32,7 +32,7 @@ const Search: React.FC = () => {
           attributes: [
             ...state.attributes,
             {
-              id: uuid(), labels: ["Shirt"], colors: [{ hex: "#000" }]
+              id: uuid(), labels: ["shirt"], colors: [{ hex: "#000" }]
             },
           ],
         };

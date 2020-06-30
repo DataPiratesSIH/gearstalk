@@ -26,6 +26,7 @@ import Play from "./components/database/Play";
 import Landing from "./components/landing/Landing";
 import Visualization from "./components/tools/Visualization";
 import Enhance from "./components/tools/Enhance";
+import Analytics from "./components/tools/Analytics";
 
 const theme = createMuiTheme(customTheme);
 
@@ -58,6 +59,11 @@ const App = () => {
         <Route path="/enhance/:oid" exact>
           <ResponsiveDrawer>
             <Enhance />
+          </ResponsiveDrawer>
+        </Route>
+        <Route path="/analytics/:oid" exact>
+          <ResponsiveDrawer>
+            <Analytics />
           </ResponsiveDrawer>
         </Route>
         <Route path="/search" exact>

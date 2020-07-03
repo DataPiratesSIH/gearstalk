@@ -17,7 +17,6 @@ import { Feature } from "../../types";
 import { stopwords } from "../utils/utils";
 
 interface AttributeItemProps {
-  key: string;
   id: string;
   index: number;
   labels: string[];
@@ -58,8 +57,8 @@ const AttributeItem: React.FC<AttributeItemProps> = (props) => {
         }}
       >
         <div style={{ width: "300px" }}>
-          {stopwords.map((sw) => (
-            <>
+          {stopwords.map((sw, index) => (
+            <React.Fragment key={index}>
               {!props.labels.includes(sw) && (
                 <Chip
                   style={{ margin: "5px 10px", cursor: "pointer" }}
@@ -76,7 +75,7 @@ const AttributeItem: React.FC<AttributeItemProps> = (props) => {
                   }}
                 />
               )}
-            </>
+            </React.Fragment>
           ))}
         </div>
       </Popover>
@@ -89,8 +88,9 @@ const AttributeItem: React.FC<AttributeItemProps> = (props) => {
       </Grid>
       <Grid container spacing={2}>
         <Grid item xs={10}>
-          {props.labels.map((label) => (
+          {props.labels.map((label, index) => (
             <Chip
+              key={index}
               style={{ margin: "5px 3px", color: "#1C233E", fontWeight: 600 }}
               color="primary"
               label={label}
@@ -115,7 +115,7 @@ const AttributeItem: React.FC<AttributeItemProps> = (props) => {
         <Grid item xs={2}>
           <Grid container spacing={1}>
             {props.colors.map((color, index) => (
-              <Grid item xs={6}>
+              <Grid key={index} item xs={6}>
                 <ColorCircle id={props.id} index={index} color={color} />
               </Grid>
             ))}
@@ -173,7 +173,7 @@ const AttributeList: React.FC<AttributeListProps> = (props) => {
     <div>
       {props.items.map((attribute, index: number) => (
         <AttributeItem
-          key={attribute.id}
+          key={index}
           id={attribute.id}
           index={index}
           labels={attribute.labels}

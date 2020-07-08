@@ -141,7 +141,7 @@ const Pie: React.FC<Props> = ({ data }) => {
 
     chart.events.on("datavalidated", () => {
       setTimeout(() => {
-        console.log(pieSeries.dataItems);
+        console.log(pieSeries.dataItems.values);
         if (pieSeries.dataItems.getIndex(0))
           selectSlice(pieSeries.dataItems.getIndex(0));
       }, 1000);

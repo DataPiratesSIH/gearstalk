@@ -61,13 +61,11 @@ const Analytics: React.FC = () => {
   const canvasRef = useRef(null);
   const handleIsPlaying = () => setIsPlaying(true);
   const handleIsNotPlaying = () => setIsPlaying(false);
-  // eslint-disable-next-line
   const [lineData, setLineData] = useState<any[]>(linedata);
   // eslint-disable-next-line
   const [flowerData, setFlowerData] = useState<any[]>(flowerdata);
   // eslint-disable-next-line
   const [pieData, setPieData] = useState<any[]>(piedata);
-
 
   const [metadata, setMetadata] = useState<MetaData[]>(null);
   const [currentData, setCurrentData] = useState<Person[]>(null);
@@ -136,27 +134,28 @@ const Analytics: React.FC = () => {
     fetchVideo();
   }, [oid, sendRequest, auth.token]);
 
-
   // Fetch Chart Data
   useEffect(() => {
     const fetchChartData = async () => {
       try {
         // eslint-disable-next-line
-        const responseData = await sendRequest(
-          process.env.REACT_APP_BACKEND_URL + "/someroute/" + video.metadata_id,
+        const response = await sendRequest(
+          process.env.REACT_APP_BACKEND_URL +
+            "/video/visual/5ef4dc433f16cd00b13a67e8", // video.metadata_id
           "GET",
           null,
           {
             Authorization: "Bearer " + auth.token,
           }
         );
-        setLineData([]);
+        setLineData(response.linechart);
+        // setFlowerData(response.big_data)
+        console.log(response);
       } catch (err) {
         console.log(err);
       }
     };
-    if (video && video.processed)
-      fetchChartData();
+    if (video) fetchChartData();
   }, [sendRequest, auth.token, video]);
 
   useInterval(() => {
@@ -174,12 +173,12 @@ const Analytics: React.FC = () => {
   }, 500);
 
   return (
-    <Grid container>
-      <Grid item xs={12}>
-        {lineData.length> 0 && <Line data={lineData} />}
+    <Grid container spacing={2}>
+      <Grid item sm={6} xs={12}>
+        <Paper square>{lineData.length > 0 && <Line data={lineData} />}</Paper>
       </Grid>
-      <Grid item xs={12}>
-        {flowerData.length>0 && <Flower data={flowerData} />}
+      <Grid item sm={6} xs={12}>
+      <Paper square>{flowerData.length > 0 && <Flower data={flowerData} />}</Paper>
       </Grid>
       <Grid item xs={12}>
         {pieData.length > 0 && <Pie data={pieData} />}

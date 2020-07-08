@@ -8,8 +8,11 @@ import ReactPlayer from "react-player";
 import PlayCircleFilledIcon from "@material-ui/icons/PlayCircleFilled";
 import { useInterval } from "../hooks/time-hook";
 import { MetaData, Person } from "../../types";
-import { md } from "../utils/utils";
+import { md, linedata, piedata, flowerdata } from "../utils/utils";
 import Dot from "../utils/Dot";
+import Line from "../charts/Line";
+import Pie from "../charts/Pie";
+import Flower from "../charts/Flower";
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
@@ -58,6 +61,13 @@ const Analytics: React.FC = () => {
   const canvasRef = useRef(null);
   const handleIsPlaying = () => setIsPlaying(true);
   const handleIsNotPlaying = () => setIsPlaying(false);
+  // eslint-disable-next-line
+  const [lineData, setLineData] = useState<any[]>(linedata);
+  // eslint-disable-next-line
+  const [flowerData, setFlowerData] = useState<any[]>(flowerdata);
+  // eslint-disable-next-line
+  const [pieData, setPieData] = useState<any[]>(piedata);
+
 
   const [metadata, setMetadata] = useState<MetaData[]>(null);
   const [currentData, setCurrentData] = useState<Person[]>(null);
@@ -103,7 +113,7 @@ const Analytics: React.FC = () => {
 
   useEffect(() => {
     if (video) setMetadata(md);
-    if (playerRef.current) console.log(playerRef.current);
+    // if (playerRef.current) console.log(playerRef.current);
   }, [video]);
 
   useEffect(() => {
@@ -117,15 +127,37 @@ const Analytics: React.FC = () => {
             Authorization: "Bearer " + auth.token,
           }
         );
-        console.log(responseData);
         setVideo(responseData);
       } catch (err) {
         console.log(err);
       }
     };
-    console.log(oid);
+    // console.log(oid);
     fetchVideo();
   }, [oid, sendRequest, auth.token]);
+
+
+  // Fetch Chart Data
+  useEffect(() => {
+    const fetchChartData = async () => {
+      try {
+        // eslint-disable-next-line
+        const responseData = await sendRequest(
+          process.env.REACT_APP_BACKEND_URL + "/someroute/" + video.metadata_id,
+          "GET",
+          null,
+          {
+            Authorization: "Bearer " + auth.token,
+          }
+        );
+        setLineData([]);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    if (video && video.processed)
+      fetchChartData();
+  }, [sendRequest, auth.token, video]);
 
   useInterval(() => {
     if (metadata && isPlaying && playerRef.current) {
@@ -135,7 +167,6 @@ const Analytics: React.FC = () => {
       if (m >= 0.5) ct = ct + 0.5;
       ct = Math.floor(ct * 2);
       try {
-        console.log(metadata[ct]);
         setCurrentData(metadata[ct].persons);
         renderPredictions(metadata[ct].persons, canvasRef);
       } catch (err) {}
@@ -144,6 +175,16 @@ const Analytics: React.FC = () => {
 
   return (
     <Grid container>
+      <Grid item xs={12}>
+        {lineData.length> 0 && <Line data={lineData} />}
+      </Grid>
+      <Grid item xs={12}>
+        {flowerData.length>0 && <Flower data={flowerData} />}
+      </Grid>
+      <Grid item xs={12}>
+        {pieData.length > 0 && <Pie data={pieData} />}
+      </Grid>
+
       <Grid style={{ padding: "10px" }} item md={8} sm={12} xs={12}>
         <div className={classes.container}>
           <canvas

@@ -84,3 +84,147 @@ export function captureVideoFrame(vid, format, quality) {
       ],
     },
   ]
+
+export const piedata:any[] = [
+  {
+    country: "Lithuania",
+    litres: 500,
+    subData: [
+      { name: "A", value: 200 },
+      { name: "B", value: 150 },
+      { name: "C", value: 100 },
+      { name: "D", value: 50 },
+    ],
+  },
+  {
+    country: "Czech Republic",
+    litres: 300,
+    subData: [
+      { name: "A", value: 150 },
+      { name: "B", value: 100 },
+      { name: "C", value: 50 },
+    ],
+  },
+  {
+    country: "Ireland",
+    litres: 200,
+    subData: [
+      { name: "A", value: 110 },
+      { name: "B", value: 60 },
+      { name: "C", value: 30 },
+    ],
+  },
+  {
+    country: "Germany",
+    litres: 150,
+    subData: [
+      { name: "A", value: 80 },
+      { name: "B", value: 40 },
+      { name: "C", value: 30 },
+    ],
+  },
+  {
+    country: "Australia",
+    litres: 140,
+    subData: [
+      { name: "A", value: 90 },
+      { name: "B", value: 40 },
+      { name: "C", value: 10 },
+    ],
+  },
+  {
+    country: "Austria",
+    litres: 120,
+    subData: [
+      { name: "A", value: 60 },
+      { name: "B", value: 30 },
+      { name: "C", value: 30 },
+    ],
+  },
+];
+
+export const flowerdata:any[] = [
+  {
+    category: "One",
+    value1: 8,
+    value2: 2,
+  },
+  {
+    category: "Two",
+    value1: 11,
+    value2: 4,
+  },
+  {
+    category: "Three",
+    value1: 7,
+    value2: 6,
+  },
+  {
+    category: "Four",
+    value1: 13,
+    value2: 8,
+  },
+  {
+    category: "Five",
+    value1: 12,
+    value2: 10,
+  },
+  {
+    category: "Six",
+    value1: 15,
+    value2: 12,
+  },
+  {
+    category: "Seven",
+    value1: 9,
+    value2: 14,
+  },
+  {
+    category: "Eight",
+    value1: 6,
+    value2: 16,
+  },
+];
+
+export const linedata:any[] = [
+  {
+    date: 1.0,
+    value: 13,
+  },
+  {
+    date: 1.5,
+    value: 13,
+  },
+  {
+    date: 2.0,
+    value: 13,
+  },
+  {
+    date: 2.5,
+    value: 13,
+  },
+  {
+    date: 3.0,
+    value: 13,
+  },
+  {
+    date: 3.5,
+    value: 13,
+  },
+  {
+    date: 4.0,
+    value: 13,
+  },
+  {
+    date: 4.5,
+    value: 13,
+  },
+  {
+    date: 5.0,
+    value: 13,
+  },
+  {
+    date: 5.5,
+    value: 13,
+  },
+];

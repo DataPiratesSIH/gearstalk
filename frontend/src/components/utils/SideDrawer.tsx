@@ -25,6 +25,7 @@ import VideocamIcon from '@material-ui/icons/Videocam';
 
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import { Typography } from '@material-ui/core';
+import { FaQuestion } from 'react-icons/fa';
 
 const drawerWidth = 300;
 
@@ -137,6 +138,13 @@ const SideDrawer = props => {
               <ListItem button>
                 <ListItemIcon><Avatar><PersonPinIcon fontSize='small' /></Avatar></ListItemIcon>
                 <ListItemText primary="Pinpoint" />
+              </ListItem>   
+          </List>
+          <Divider className={classes.divider} />
+          <List>
+          <ListItem button onClick={() => {pushLink('/faq')}}>
+                <ListItemIcon><Avatar><FaQuestion fontSize='small' /></Avatar></ListItemIcon>
+                <ListItemText primary="FAQs" />
               </ListItem>
           </List>
         </div>

@@ -27,7 +27,7 @@ import Landing from "./components/landing/Landing";
 import Visualization from "./components/tools/Visualization";
 import Enhance from "./components/tools/Enhance";
 import Analytics from "./components/tools/Analytics";
-import FAQ from "./components/tools/faq"
+import FAQs from "./components/tools/FAQs"
 
 const theme = createMuiTheme(customTheme);
 
@@ -89,7 +89,7 @@ const App = () => {
         </Route>
         <Route path="/faq" exact>
           <ResponsiveDrawer>
-            <FAQ />
+            <FAQs />
           </ResponsiveDrawer>
         </Route>
         <Route path="/cctv" exact>

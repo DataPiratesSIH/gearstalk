@@ -161,7 +161,7 @@ const ImageItem: React.FC<ImageItemProps> = (props) => {
             className={classes.margin}
             onClick={openModal}
           >
-            <CropIcon style={{ color: "black" }} fontSize="large" />
+            <CropIcon color="primary" fontSize="large" />
           </IconButton>
         </Grid>
         <Grid item xs={3}>
@@ -172,7 +172,7 @@ const ImageItem: React.FC<ImageItemProps> = (props) => {
               props.imageDeleteHandler(props.id);
             }}
           >
-            <CloseIcon style={{ color: "black" }} fontSize="large" />
+            <CloseIcon color="primary" fontSize="large" />
           </IconButton>
         </Grid>
       </Grid>

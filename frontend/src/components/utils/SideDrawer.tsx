@@ -17,9 +17,9 @@ import VideoLibraryIcon from '@material-ui/icons/VideoLibrary';
 import CameraEnhanceIcon from '@material-ui/icons/CameraEnhance';
 import AddPhotoAlternateIcon from '@material-ui/icons/AddPhotoAlternate';
 import InsertChartIcon from '@material-ui/icons/InsertChart';
-import MapIcon from '@material-ui/icons/Map';
-import PersonPinIcon from '@material-ui/icons/PersonPin';
-import StreetviewIcon from '@material-ui/icons/Streetview';
+// import MapIcon from '@material-ui/icons/Map';
+// import PersonPinIcon from '@material-ui/icons/PersonPin';
+// import StreetviewIcon from '@material-ui/icons/Streetview';
 import ImageSearchIcon from '@material-ui/icons/ImageSearch';
 import VideocamIcon from '@material-ui/icons/Videocam';
 
@@ -122,7 +122,7 @@ const SideDrawer = props => {
                 <ListItemText primary="Visualization" />
               </ListItem>
           </List>
-          <Divider className={classes.divider} />
+          {/* <Divider className={classes.divider} />
           <List>
           <ListSubheader component="div">
             REALTIME MAPPING
@@ -139,7 +139,7 @@ const SideDrawer = props => {
                 <ListItemIcon><Avatar><PersonPinIcon fontSize='small' /></Avatar></ListItemIcon>
                 <ListItemText primary="Pinpoint" />
               </ListItem>   
-          </List>
+          </List> */}
           <Divider className={classes.divider} />
           <List>
           <ListItem button onClick={() => {pushLink('/faq')}}>

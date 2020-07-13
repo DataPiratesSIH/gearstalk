@@ -120,85 +120,52 @@ const Landing: React.FC = () => {
           <h1 className="Headers">Features Implemented</h1>
           <Grid container>
             <Feature>
-              <GiMiner size="90px" color="blue" />
-              <h2>feature1</h2>
+              {/* <GiMiner size="90px" color="blue" /> */}
+              <img src={require("./images/videolibrary.png")} alt="Test" style={{ width: 150 }}/>
+              <h2>VIDEO LIBRARY</h2>
               <h5>
-                The leading digital currency by market capitalization, has grown
-                in value by more than 10 times.
+                It is a library where all the cctv video is stored.We can search and filter the videos on different aspects stored
+                in the database.
               </h5>
             </Feature>
             <Feature>
-              <GiMiningHelmet size="90px" color="blue" />
-              <h2>feature2</h2>
+              {/* <GiMiningHelmet size="90px" color="blue" /> */}
+              <img src={require("./images/addvideo.png")} alt="Test" style={{ width: 150 }}/>
+              <h2>ADD VIDEO</h2>
               <h5>
-                The leading digital currency by market capitalization, has grown
-                in value by more than 10 times.
+                Adds video to the current database.
               </h5>
             </Feature>
             <Feature>
-              <GiMiner size="90px" color="blue" />
-              <h2>feature3</h2>
+              <img src={require("./images/scable.jpg")} alt="Test" style={{ width: 180, height:150 }}/>
+              <h2>SCALABLE ARCHITECTURE</h2>
               <h5>
-                The leading digital currency by market capitalization, has grown
-                in value by more than 10 times.
+                The program can handle more than just one functionality, such as we can detect more than one person in the video timeframe and can list the 
+                mulitple cloths they are wearing on by selection a perticular persons in that timeframe.
+
               </h5>
             </Feature>
             <Feature>
-              <GiMiningHelmet size="90px" color="blue" />
-              <h2>feature4</h2>
+              {/* <GiMiningHelmet size="90px" color="blue" /> */}
+              <img src={require("./images/search1.jpg")} alt="Test" style={{ width: 150 }}/>
+              <h2>SEARCH</h2>
               <h5>
-                The leading digital currency by market capitalization, has grown
-                in value by more than 10 times.
+                A video is chooses from the database to be processed, the video gets processed frame by frame in which
+                it identifies the total number of people in each frame and identifies all the clothes worn by them and listes them,
+                it also captues the a particular frame we want from the video.
               </h5>
             </Feature>
+            
             <Feature>
-              <GiMiner size="90px" color="blue" />
-              <h2>feature5</h2>
+              {/* <GiMiner size="90px" color="blue" /> */}
+              <img src={require("./images/visualization.png")} alt="Test" style={{ width: 150 }}/>
+              <h2>ANALYTICS</h2>
               <h5>
-                The leading digital currency by market capitalization, has grown
-                in value by more than 10 times.
+                It helps to visualise the different aspects of the video by ploting the different parameters 
+                recognized in the following video on the graph to get a better understanding.
               </h5>
             </Feature>
-            <Feature>
-              <GiMiner size="90px" color="blue" />
-              <h2>feature1</h2>
-              <h5>
-                The leading digital currency by market capitalization, has grown
-                in value by more than 10 times.
-              </h5>
-            </Feature>
-            <Feature>
-              <GiMiningHelmet size="90px" color="blue" />
-              <h2>feature2</h2>
-              <h5>
-                The leading digital currency by market capitalization, has grown
-                in value by more than 10 times.
-              </h5>
-            </Feature>
-            <Feature>
-              <GiMiner size="90px" color="blue" />
-              <h2>feature3</h2>
-              <h5>
-                The leading digital currency by market capitalization, has grown
-                in value by more than 10 times.
-              </h5>
-            </Feature>
-            <Feature>
-              <GiMiningHelmet size="90px" color="blue" />
-              <h2>feature4</h2>
-              <h5>
-                The leading digital currency by market capitalization, has grown
-                in value by more than 10 times.
-              </h5>
-            </Feature>
-            <Feature>
-              <GiMiner size="90px" color="blue" />
-              <h2>feature5</h2>
-              <h5>
-                The leading digital currency by market capitalization, has grown
-                in value by more than 10 times.
-              </h5>
-            </Feature>
+          
           </Grid>
         </div>
       </div>

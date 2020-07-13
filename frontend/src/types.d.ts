@@ -1,7 +1,7 @@
 export type Feature = {
   id: string;
   labels: string[];
-  colors: { hex: string }[];
+  colors: { hex: string; [key: string]: any }[];
 };
 
 export type AttributeState = {
@@ -12,6 +12,7 @@ export type Person = { box: number[]; labels: string[]; colors: string[] };
 
 export type Actions =
   | { type: "changeAttribute"; newAttribute: any }
+  | { type: "addWholePerson"; labels: string[]; colors: string[] }
   | { type: "addPerson" }
   | { type: "deletePerson"; pid: string }
   | { type: "addLabel"; pid: string; value: string }

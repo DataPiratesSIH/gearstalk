@@ -2,6 +2,15 @@ import { MetaData } from "../../types";
 
 export const stopwords = ['Blazer','Burkha','Chudidar','Long-pants','Saree','Bags','Kurta','Skirt','Strip-dress','Sunglasses','Trousers','shirt'];
 
+export const newColor = {
+  hex: "#000000",
+  hsl: { h: 0, s: 0, l: 0, a: 1 },
+  hsv: { h: 0, s: 0, v: 0, a: 1 },
+  oldHue: 0,
+  rgb: { r: 0, g: 0, b: 0, a: 1 },
+  source: "rgb",
+}
+
 export function captureVideoFrame(vid, format, quality) {
     if (typeof vid === "string") {
       vid = document.getElementById(vid);

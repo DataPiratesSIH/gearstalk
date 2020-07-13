@@ -7,14 +7,15 @@ import {
   Chip,
   Avatar,
   Popover,
-  Divider
+  Divider,
 } from "@material-ui/core";
 import AddBoxIcon from "@material-ui/icons/AddBox";
 import IndeterminateCheckBoxIcon from "@material-ui/icons/IndeterminateCheckBox";
+import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
 import ColorCircle from "./ColorCircle";
 
 import { Feature } from "../../types";
-import { stopwords } from "../utils/utils";
+import { stopwords, newColor } from "../utils/utils";
 
 interface AttributeItemProps {
   id: string;
@@ -79,11 +80,25 @@ const AttributeItem: React.FC<AttributeItemProps> = (props) => {
           ))}
         </div>
       </Popover>
-      <Grid container spacing={2}>
-        <Grid item xl={4} lg={4} md={4} xs={4} sm={4}>
+      <Grid container spacing={2} style={{ textAlign: "left" }}>
+        <Grid item xs={10}>
           <Typography color="primary" variant="h6">
             Person {props.index + 1}
           </Typography>
+        </Grid>
+        <Grid item xs={2} style={{ textAlign: "right" }}>
+          <IconButton
+            aria-describedby={id}
+            style={{ padding: "1px", color: "#ff1717" }}
+            onClick={() =>
+              dispatch({
+                type: "deletePerson",
+                pid: props.id,
+              })
+            }
+          >
+            <DeleteForeverIcon />
+          </IconButton>
         </Grid>
       </Grid>
       <Grid container spacing={2}>
@@ -126,7 +141,7 @@ const AttributeItem: React.FC<AttributeItemProps> = (props) => {
               <IconButton
                 aria-describedby={id}
                 style={{ padding: "1px" }}
-                color='primary'
+                color="primary"
                 onClick={() =>
                   dispatch({
                     type: "removeColor",
@@ -143,12 +158,12 @@ const AttributeItem: React.FC<AttributeItemProps> = (props) => {
               <IconButton
                 aria-describedby={id}
                 style={{ padding: "1px" }}
-                color='primary'
+                color="primary"
                 onClick={() =>
                   dispatch({
                     type: "addColor",
                     pid: props.id,
-                    value: { hex: "#000" },
+                    value: newColor,
                   })
                 }
                 disabled={props.colors.length > 3}
@@ -159,7 +174,7 @@ const AttributeItem: React.FC<AttributeItemProps> = (props) => {
           </Grid>
         </Grid>
       </Grid>
-      <Divider style={{ margin: "20px", backgroundColor: "#2db1e1"}} />
+      <Divider style={{ margin: "20px", backgroundColor: "#2db1e1" }} />
     </React.Fragment>
   );
 };

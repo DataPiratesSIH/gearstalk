@@ -287,7 +287,8 @@ const Library: React.FC = () => {
                   file_id={video.file_id}
                   thumbnail_id={video.thumbnail_id}
                   duration={video.duration}
-                  processed={video.processed}
+                  processing={video.processing}
+                  prepared={video.prepared}
                   videoDeletor={videoDeletor}
                 />
               ))}

@@ -69,7 +69,8 @@ interface Props {
   file_id: string | number;
   thumbnail_id: string | number;
   duration: string | number;
-  processed: string | boolean;
+  prepared: boolean;
+  processing: boolean
   videoDeletor: (oid: string) => void;
 }
 
@@ -139,7 +140,7 @@ const VideoCard: React.FC<Props> = (props) => {
               {props.duration}
             </Typography>
             <Typography variant="subtitle2" color="textSecondary">
-              {props.processed ? "Processed" : "Unprocessed"}
+              {props.prepared ? "Processed" : "Unprocessed"}
             </Typography>
           </CardContent>
           <div className={classes.controls}>
@@ -165,10 +166,10 @@ const VideoCard: React.FC<Props> = (props) => {
             >
               <MenuItem onClick={handleDeleteOpen}>Delete</MenuItem>
               <MenuItem onClick={handleClose}>Camera</MenuItem>
-              {!props.processed && (
+              {!props.prepared && (
                 <MenuItem onClick={handleClose}>Process</MenuItem>
               )}
-              {props.processed && (
+              {props.prepared && (
                 <MenuItem onClick={handleClose}>Search</MenuItem>
               )}
               <MenuItem onClick={handleClose}>Close</MenuItem>

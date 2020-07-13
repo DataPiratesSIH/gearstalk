@@ -109,6 +109,7 @@ const SearchGrid: React.FC<Props> = ({ video, setVideo }) => {
   const searchHandler = async () => {
     if (attributes.length === 0 || Object.keys(video).length === 0)
       return;
+    console.log(attributes)
     try {
       const responseData = await sendRequest(
         process.env.REACT_APP_BACKEND_URL + "/query/search",

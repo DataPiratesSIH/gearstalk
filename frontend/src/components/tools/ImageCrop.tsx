@@ -17,6 +17,7 @@ import CropIcon from "@material-ui/icons/Crop";
 import NoteAddIcon from "@material-ui/icons/NoteAdd";
 import PlayCircleFilledIcon from "@material-ui/icons/PlayCircleFilled";
 import CaptureDialog from "./CaptureDialog";
+import { useAttribute } from "../context/attribute-context";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -209,6 +210,8 @@ const ImageList: React.FC<ImageListProps> = (props) => {
 const ImageCrop: React.FC = () => {
   const classes = useStyles();
   const auth = useContext(AuthContext);
+  // eslint-disable-next-line
+  const [{ attributes }, dispatch] = useAttribute();
   const { sendRequest } = useHttpClient();
   const [imgSrc, setImgSrc] = useState<Image[]>([]);
   const [open, setOpen] = React.useState(false);
@@ -287,6 +290,13 @@ const ImageCrop: React.FC = () => {
         }
       );
       console.log(responseData);
+      responseData.features.map((r, i) =>
+        dispatch({
+          type: "addWholePerson",
+          labels: r.labels,
+          colors: r.colors,
+        })
+      );
     } catch (err) {
       console.log(err);
     }

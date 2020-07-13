@@ -66,8 +66,8 @@ const Line: React.FC<Props> = ({ data }) => {
       };
     }, [data]);
     return (
-      <div style={{ maxWidth: "90vw", overflowX: "auto" }}>
-        <div style={{ width: "600px", height: "400px" }} id="lineDiv" />
+      <div style={{ maxWidth: "100vw", overflowX: "auto", textAlign: "center" }}>
+        <div style={{ width: "1200px", height: "400px", display: "inline-block" }} id="lineDiv" />
       </div>
     );
   };

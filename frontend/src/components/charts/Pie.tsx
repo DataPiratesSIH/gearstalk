@@ -22,7 +22,6 @@ const Pie: React.FC<Props> = ({ data }) => {
 
     // Add data
     chart.data = data
-    console.log(data)
     // chart.data = pie_data;
     // Add and configure Series
     let pieSeries = chart.series.push(new am4charts.PieSeries());
@@ -142,7 +141,6 @@ const Pie: React.FC<Props> = ({ data }) => {
 
     chart.events.on("datavalidated", () => {
       setTimeout(() => {
-        console.log(pieSeries.dataItems.values);
         if (pieSeries.dataItems.getIndex(0))
           selectSlice(pieSeries.dataItems.getIndex(0));
       }, 1000);
@@ -152,8 +150,8 @@ const Pie: React.FC<Props> = ({ data }) => {
     };
   }, [data]);
   return (
-    <div style={{ maxWidth: "90vw", overflowX: "auto" }}>
-      <div style={{ width: "600px", height: "400px" }} id="pieDiv" />
+    <div style={{ maxWidth: "100vw", overflowX: "auto", textAlign: "center" }}>
+      <div style={{ width: "600px", height: "400px", display: "inline-block" }} id="pieDiv" />
     </div>
   );
 };

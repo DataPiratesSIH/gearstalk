@@ -314,7 +314,7 @@ const Play: React.FC = () => {
   const processVideo = async () => {
     try {
       const responseData = await sendRequest(
-        process.env.REACT_APP_BACKEND_URL + "/prosdscessvideo/" + oid,
+        process.env.REACT_APP_BACKEND_URL + "/processvideo/" + oid,
         "GET",
         null,
         {
@@ -322,8 +322,8 @@ const Play: React.FC = () => {
         }
       );
       console.log(responseData);
-    } catch (err) {
       setWillProcess(true);
+    } catch (err) {
       console.log(err);
     }
   };

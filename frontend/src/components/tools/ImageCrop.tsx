@@ -1,4 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
+import { AuthContext } from "../context/auth-context";
+import { useHttpClient } from "../hooks/http-hook";
 import uuid from "uuid";
 import Cropper from "./Cropper";
 import Button from "@material-ui/core/Button";
@@ -55,7 +57,7 @@ const useStyles = makeStyles((theme) => ({
     fontSize: "15px",
     fontWeight: 600,
     padding: "10px 10px",
-    border: "1px solid #2bd1e1"
+    border: "1px solid #2bd1e1",
   },
 }));
 
@@ -206,6 +208,8 @@ const ImageList: React.FC<ImageListProps> = (props) => {
 
 const ImageCrop: React.FC = () => {
   const classes = useStyles();
+  const auth = useContext(AuthContext);
+  const { sendRequest } = useHttpClient();
   const [imgSrc, setImgSrc] = useState<Image[]>([]);
   const [open, setOpen] = React.useState(false);
 
@@ -216,7 +220,6 @@ const ImageCrop: React.FC = () => {
   const handleClose = () => {
     setOpen(false);
   };
-
 
   const imagePushHandler = (result: string | ArrayBuffer | null) => {
     setImgSrc([...imgSrc, { id: uuid(), src: result }]);
@@ -254,10 +257,53 @@ const ImageCrop: React.FC = () => {
     }
   };
 
+  const BASE64_MARKER = ";base64,";
+
+  function DataToFile(dataURI) {
+    const mime = dataURI.split(BASE64_MARKER)[0].split(":")[1];
+    const filename = "dataURI-file-" + uuid() + "." + mime.split("/")[1];
+    const bytes = atob(dataURI.split(BASE64_MARKER)[1]);
+    const writer = new Uint8Array(new ArrayBuffer(bytes.length));
+
+    for (let i = 0; i < bytes.length; i++) {
+      writer[i] = bytes.charCodeAt(i);
+    }
+
+    return new File([writer.buffer], filename, { type: mime });
+  }
+
+  const imageProcessor = async () => {
+    if (imgSrc.length === 0) return;
+
+    try {
+      const formData = new FormData();
+      imgSrc.map((img, i) => formData.append("files", DataToFile(img.src)));
+      const responseData = await sendRequest(
+        process.env.REACT_APP_BACKEND_URL + "/process/processcropped",
+        "POST",
+        formData,
+        {
+          Authorization: "Bearer " + auth.token,
+        }
+      );
+      console.log(responseData);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   return (
     <div>
-        <CaptureDialog open={open} handleClose={handleClose} imagePushHandler={imagePushHandler} />
-      <Button className={classes.videoCapture} component="span" onClick={handleClickOpen}>
+      <CaptureDialog
+        open={open}
+        handleClose={handleClose}
+        imagePushHandler={imagePushHandler}
+      />
+      <Button
+        className={classes.videoCapture}
+        component="span"
+        onClick={handleClickOpen}
+      >
         <PlayCircleFilledIcon /> &nbsp; CAPTURE FRAME FROM VIDEO
       </Button>
       <ImageList
@@ -303,7 +349,11 @@ const ImageCrop: React.FC = () => {
           xs={6}
         >
           {imgSrc.length > 0 && (
-            <Button className={classes.tryButton} component="span">
+            <Button
+              className={classes.tryButton}
+              component="span"
+              onClick={imageProcessor}
+            >
               <NoteAddIcon /> &nbsp; GENERATE
             </Button>
           )}

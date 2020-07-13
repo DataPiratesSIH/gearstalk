@@ -122,6 +122,7 @@ const Library: React.FC = () => {
           }),
           {
             "Content-Type": "application/json",
+            Authorization: 'Bearer ' + auth.token
           }
         );
         clearError();

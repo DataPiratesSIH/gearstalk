@@ -139,7 +139,7 @@ const SearchGrid: React.FC<Props> = ({ video, setVideo }) => {
       <Grid container spacing={4}>
         <Grid item xl={9} lg={9} md={9} xs={12} sm={12}>
           <Paper className={classes.paper} square>
-            {video ? (
+            {Object.keys(video).length > 0 ? (
               <ReactPlayer
                 controls
                 // style={{ boxShadow: "-3px 6px 34px 6px rgba(18,25,41,1)" }}

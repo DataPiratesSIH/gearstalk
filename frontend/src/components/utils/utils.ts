@@ -237,3 +237,33 @@ export const linedata:any[] = [
     value: 13,
   },
 ];
+
+
+export const toggledata:any[] = [
+  {'from': 'jeans', 'to': 'darkslategray', 'value': 4},
+  {'from': 'Scarf', 'to': 'darkslategray', 'value': 5},
+  {'from': 'Sweater', 'to': 'darkslategray', 'value': 13},
+  {'from': 'Blazer', 'to': 'darkslategray', 'value': 2},
+  {'from': 'jeans', 'to': 'dimgray', 'value': 5},
+  {'from': 'Sweater', 'to': 'rosybrown', 'value': 1},
+  {'from': 'skirt', 'to': 'darkslategray', 'value': 1},
+  {'from': 'skirt', 'to': 'dimgray', 'value': 1},
+  {'from': 'Scarf', 'to': 'darkslateblue', 'value': 1},
+  {'from': 'Scarf', 'to': 'slategray', 'value': 1},
+  {'from': 'skirt', 'to': 'darkslateblue', 'value': 1},
+  {'from': 'Long pants', 'to': 'rosybrown', 'value': 1},
+  {'from': 'jeans', 'to': 'darkgray', 'value': 1},
+  {'from': 'Scarf', 'to': 'dimgray', 'value': 1},
+  {'from': 'Sweater', 'to': 'silver', 'value': 2},
+  {'from': 'jersey', 'to': 'dimgray', 'value': 1},
+  {'from': 'jeans', 'to': 'gray', 'value': 2},
+  {'from': 'Scarf', 'to': 'silver', 'value': 1},
+  {'from': 'Sweater', 'to': 'lightgray', 'value': 1},
+  {'from': 'Scarf', 'to': 'gray', 'value': 1},
+  {'from': 'Blazer', 'to': 'silver', 'value': 1},
+  {'from': 'jersey', 'to': 'silver', 'value': 1},
+  {'from': 'shirt', 'to': 'darkgray', 'value': 1},
+  {'from': 'Blazer', 'to': 'saddlebrown', 'value': 1},
+  {'from': 'Blazer', 'to': 'sienna', 'value': 1
+  }
+];

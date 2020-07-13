@@ -8,12 +8,12 @@ import ReactPlayer from "react-player";
 import PlayCircleFilledIcon from "@material-ui/icons/PlayCircleFilled";
 import { useInterval } from "../hooks/time-hook";
 import { MetaData, Person } from "../../types";
-// eslint-disable-next-line
-import { md, linedata, piedata, flowerdata } from "../utils/utils";
+import { md, linedata, piedata, flowerdata, toggledata } from "../utils/utils";
 import Dot from "../utils/Dot";
 import Line from "../charts/Line";
 import Pie from "../charts/Pie";
 import Flower from "../charts/Flower";
+import Toggle from "../charts/Toggle";
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
@@ -67,6 +67,8 @@ const Analytics: React.FC = () => {
   const [flowerData, setFlowerData] = useState<any[]>([]); // flowerdata
   // eslint-disable-next-line
   const [pieData, setPieData] = useState<any[]>(piedata);
+  // eslint-disable-next-line
+  const [toggleData, setToggleData] = useState<any[]>(toggledata);
 
   const [metadata, setMetadata] = useState<MetaData[]>(null);
   const [currentData, setCurrentData] = useState<Person[]>(null);

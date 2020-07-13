@@ -1,6 +1,6 @@
 import { MetaData } from "../../types";
 
-export const stopwords = ['Blazer','Burkha','Chudidar','Long-pants','Saree','Bags','Kurta','Skirt','Strip-dress','Sunglasses','Trousers','shirt'];
+export const stopwords = ['blazer', 'burkha', 'headwear', 'long pants', 'scarf', 'sweater', 'vest', 'bags', 'chudidar', 'hoddie', 'jeans', 'jersey', 'kurta', 'saree', 'shirt', 'shoes', 'skirt', 'strip-dress', 'sunglasses', 'tops', 'trousers', 'tshirt'];
 
 export const newColor = {
   hex: "#000000",

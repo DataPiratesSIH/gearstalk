@@ -8,11 +8,12 @@ import ReactPlayer from "react-player";
 import PlayCircleFilledIcon from "@material-ui/icons/PlayCircleFilled";
 import { useInterval } from "../hooks/time-hook";
 import { MetaData, Person } from "../../types";
-import { md, linedata, piedata, flowerdata } from "../utils/utils";
+import { md, linedata, piedata, flowerdata, toggledata } from "../utils/utils";
 import Dot from "../utils/Dot";
 import Line from "../charts/Line";
 import Pie from "../charts/Pie";
 import Flower from "../charts/Flower";
+import Toggle from "../charts/Toggle";
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
@@ -61,11 +62,13 @@ const Analytics: React.FC = () => {
   const canvasRef = useRef(null);
   const handleIsPlaying = () => setIsPlaying(true);
   const handleIsNotPlaying = () => setIsPlaying(false);
-  const [lineData, setLineData] = useState<any[]>(linedata);
+  const [lineData, setLineData] = useState<any[]>([]); // linedata
   // eslint-disable-next-line
-  const [flowerData, setFlowerData] = useState<any[]>(flowerdata);
+  const [flowerData, setFlowerData] = useState<any[]>([]); // flowerdata
   // eslint-disable-next-line
   const [pieData, setPieData] = useState<any[]>(piedata);
+  // eslint-disable-next-line
+  const [toggleData, setToggleData] = useState<any[]>(toggledata);
 
   const [metadata, setMetadata] = useState<MetaData[]>(null);
   const [currentData, setCurrentData] = useState<Person[]>(null);
@@ -138,10 +141,10 @@ const Analytics: React.FC = () => {
   useEffect(() => {
     const fetchChartData = async () => {
       try {
+        console.log(video);
         // eslint-disable-next-line
         const response = await sendRequest(
-          process.env.REACT_APP_BACKEND_URL +
-            "/video/visual/5ef4dc433f16cd00b13a67e8", // video.metadata_id
+          process.env.REACT_APP_BACKEND_URL + "/video/visual/" + video._id.$oid, //
           "GET",
           null,
           {
@@ -149,13 +152,13 @@ const Analytics: React.FC = () => {
           }
         );
         setLineData(response.linechart);
-        // setFlowerData(response.big_data)
+        setFlowerData(response.labels_array);
         console.log(response);
       } catch (err) {
         console.log(err);
       }
     };
-    if (video) fetchChartData();
+    if (Object.keys(video).length > 0) fetchChartData();
   }, [sendRequest, auth.token, video]);
 
   useInterval(() => {
@@ -178,7 +181,9 @@ const Analytics: React.FC = () => {
         <Paper square>{lineData.length > 0 && <Line data={lineData} />}</Paper>
       </Grid>
       <Grid item sm={6} xs={12}>
-      <Paper square>{flowerData.length > 0 && <Flower data={flowerData} />}</Paper>
+        <Paper square>
+          {flowerData.length > 0 && <Flower data={flowerData} />}
+        </Paper>
       </Grid>
       <Grid item xs={12}>
         {pieData.length > 0 && <Pie data={pieData} />}

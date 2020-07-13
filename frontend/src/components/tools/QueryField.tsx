@@ -1,4 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
+import { useHttpClient } from "../hooks/http-hook";
+import { AuthContext } from "../context/auth-context";
 import { makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
@@ -6,6 +8,7 @@ import KeyboardVoiceIcon from "@material-ui/icons/KeyboardVoice";
 import Icon from "@material-ui/core/Icon";
 import Grid from "@material-ui/core/Grid";
 import IconButton from "@material-ui/core/IconButton";
+import { useAttribute } from "../context/attribute-context";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -30,10 +33,40 @@ const useStyles = makeStyles((theme) => ({
 
 const QueryField: React.FC = () => {
   const classes = useStyles();
+  const { sendRequest } = useHttpClient();
   const [value, setValue] = useState<string>("");
-
+  // eslint-disable-next-line
+  const [{ attributes }, dispatch] = useAttribute();
+  const auth = useContext(AuthContext);
   const handleChange: (event: any) => void = (event) => {
     setValue(event.target.value);
+  };
+
+  const sendQuery = async () => {
+    console.log(value);
+    if (value) {
+      try {
+        const responseData = await sendRequest(
+          process.env.REACT_APP_BACKEND_URL + "/query/text_search",
+          "POST",
+          JSON.stringify({
+            text: value,
+          }),
+          {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + auth.token,
+          }
+        );
+        console.log(responseData);
+        dispatch({
+          type: "addWholePerson",
+          labels: responseData.labels,
+          colors: responseData.colors,
+        });
+      } catch (err) {
+        console.log(err);
+      }
+    }
   };
 
   return (
@@ -57,6 +90,7 @@ const QueryField: React.FC = () => {
           <Button
             className={classes.button}
             endIcon={<Icon>send</Icon>}
+            onClick={sendQuery}
           >
             SEND
           </Button>

@@ -42,7 +42,7 @@ const Visualization: React.FC = () => {
         open={open}
         setVideoTag={setVideoTag}
         handleClose={handleClose}
-        processed={false}
+        prepared={true}
       />
       <Grid container style={{ textAlign: "center" }}>
         <Grid style={{ marginTop: "100px" }} item xs={12}>

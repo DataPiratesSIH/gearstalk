@@ -1,4 +1,5 @@
 import React, { useState, useContext, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import { AuthContext } from "../context/auth-context";
 import { useAttribute } from "../context/attribute-context";
 import { useHttpClient } from "../hooks/http-hook";
@@ -11,7 +12,8 @@ import ChooseDialog from "./ChooseDialog";
 import qualityIcon from "./quality.svg";
 import ReactPlayer from "react-player";
 import PlayCircleFilledIcon from "@material-ui/icons/PlayCircleFilled";
-import { useLocation } from "react-router-dom";
+import SearchIcon from '@material-ui/icons/Search';
+
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
@@ -76,9 +78,8 @@ const SearchGrid: React.FC<Props> = ({ video, setVideo }) => {
   const auth = useContext(AuthContext);
   const { sendRequest } = useHttpClient();
   useEffect(() => {
-    if (location.state)
-      setVideoTag(String(location.state[0]));
-  }, [location])
+    if (location.state) setVideoTag(String(location.state[0]));
+  }, [location]);
 
   useEffect(() => {
     if (videoTag) {
@@ -105,13 +106,35 @@ const SearchGrid: React.FC<Props> = ({ video, setVideo }) => {
     }
   }, [videoTag, setVideo, auth.token, sendRequest]);
 
+  const searchHandler = async () => {
+    if (attributes.length === 0 || Object.keys(video).length === 0)
+      return;
+    try {
+      const responseData = await sendRequest(
+        process.env.REACT_APP_BACKEND_URL + "/query/search",
+        "POST",
+        JSON.stringify({
+          attributes: attributes,
+          video_id: video._id.$oid
+        }),
+        {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + auth.token,
+        }
+      );
+      console.log(responseData);
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
   return (
     <div className={classes.root}>
       <ChooseDialog
         open={open}
         setVideoTag={setVideoTag}
         handleClose={handleClose}
-        processed={false}
+        prepared={true}
       />
       <Grid container spacing={4}>
         <Grid item xl={9} lg={9} md={9} xs={12} sm={12}>
@@ -135,7 +158,15 @@ const SearchGrid: React.FC<Props> = ({ video, setVideo }) => {
                 }}
               />
             ) : (
-              <div style={{ height: "100%", border: "2px solid #2db1e1", paddingTop: "10vh" }}><h2>No Video Selected</h2></div>
+              <div
+                style={{
+                  height: "100%",
+                  border: "2px solid #2db1e1",
+                  paddingTop: "10vh",
+                }}
+              >
+                <h2>No Video Selected</h2>
+              </div>
             )}
           </Paper>
         </Grid>
@@ -161,17 +192,31 @@ const SearchGrid: React.FC<Props> = ({ video, setVideo }) => {
         <Grid item xl={6} lg={6} md={6} xs={12} sm={12}>
           <Paper className={classes.paper} square>
             <AttributeList items={attributes} />
-            <Button
-              className={classes.tryButton}
-              startIcon={<PersonAddIcon />}
-              onClick={() =>
-                dispatch({
-                  type: "addPerson",
-                })
-              }
-            >
-              Add Person
-            </Button>
+            <Grid container>
+              <Grid item md={6} xs={12}>
+                <Button
+                  className={classes.tryButton}
+                  startIcon={<PersonAddIcon />}
+                  onClick={() =>
+                    dispatch({
+                      type: "addPerson",
+                    })
+                  }
+                >
+                  Add Person
+                </Button>
+              </Grid>
+              <Grid item md={6} xs={12}>
+                <Button
+                  className={classes.tryButton}
+                  startIcon={<SearchIcon />}
+                  disabled={attributes.length === 0 || Object.keys(video).length === 0}
+                  onClick={searchHandler}
+                >
+                  Search
+                </Button>
+              </Grid>
+            </Grid>
           </Paper>
         </Grid>
         <Grid item xl={6} lg={6} md={6} xs={12} sm={12}>

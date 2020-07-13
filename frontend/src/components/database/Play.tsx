@@ -17,6 +17,7 @@ import {
   Typography,
   Tooltip,
   IconButton,
+  Snackbar,
 } from "@material-ui/core";
 import Alert from "@material-ui/lab/Alert";
 import PlayCircleFilledIcon from "@material-ui/icons/PlayCircleFilled";
@@ -35,6 +36,7 @@ import TrendingDownIcon from "@material-ui/icons/TrendingDown";
 import DynamicFeedIcon from "@material-ui/icons/DynamicFeed";
 import BookmarksIcon from "@material-ui/icons/Bookmarks";
 import CameraEnhanceIcon from "@material-ui/icons/CameraEnhance";
+import CancelPresentationIcon from "@material-ui/icons/CancelPresentation";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -182,7 +184,7 @@ const CamDisplay: React.FC<CamDisplayProps> = ({
           "GET",
           null,
           {
-            Authorization: 'Bearer ' + auth.token
+            Authorization: "Bearer " + auth.token,
           }
         );
         console.log(responseData);
@@ -307,6 +309,24 @@ const Play: React.FC = () => {
 
   const [video, setVideo] = useState<{ [key: string]: any }>({});
   const [camera, setCamera] = useState<{ [key: string]: any }>({});
+  const [willProcess, setWillProcess] = useState<boolean>(false);
+
+  const processVideo = async () => {
+    try {
+      const responseData = await sendRequest(
+        process.env.REACT_APP_BACKEND_URL + "/prosdscessvideo/" + oid,
+        "GET",
+        null,
+        {
+          Authorization: "Bearer " + auth.token,
+        }
+      );
+      console.log(responseData);
+    } catch (err) {
+      setWillProcess(true);
+      console.log(err);
+    }
+  };
 
   const optionHandler:
     | ((event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void)
@@ -328,10 +348,10 @@ const Play: React.FC = () => {
           history.push(`/analytics/${video._id.$oid}`);
           break;
         case "process":
-          history.push('/search',[video._id.$oid]);
+          processVideo();
           break;
         case "search":
-          history.push('/search',[video._id.$oid]);
+          history.push("/search", [video._id.$oid]);
           break;
         case "enhance":
           history.push(`/enhance/${video._id.$oid}`);
@@ -369,7 +389,7 @@ const Play: React.FC = () => {
           "GET",
           null,
           {
-            Authorization: 'Bearer ' + auth.token
+            Authorization: "Bearer " + auth.token,
           }
         );
         console.log(responseData);
@@ -458,6 +478,8 @@ const Play: React.FC = () => {
     history.push("/library");
   };
 
+  const willProcessClose = () => setWillProcess(false);
+
   return (
     <React.Fragment>
       <LocDialog
@@ -482,6 +504,15 @@ const Play: React.FC = () => {
         This will delete this video from the database. Please confirm if you
         want to delete the video.
       </UtilDialog>
+      <Snackbar
+        open={willProcess}
+        autoHideDuration={6000}
+        onClose={willProcessClose}
+      >
+        <Alert onClose={willProcessClose} severity="success">
+          The video is under processing. It will be processed in a while!
+        </Alert>
+      </Snackbar>
       <Grid container className={classes.root}>
         <Grid item md={8} xs={12}>
           <div className={classes.content}>
@@ -592,21 +623,38 @@ const Play: React.FC = () => {
                       Realtime Tracking
                     </Typography>
                   </Grid>
-                  <Grid
-                    id="analytics"
-                    className={classes.mainOption}
-                    item
-                    md={2}
-                    sm={2}
-                    xs={6}
-                    onClick={optionHandler}
-                  >
-                    <DynamicFeedIcon fontSize="large" />
-                    <Typography className={classes.optionTitle}>
-                      Video Analytics
-                    </Typography>
-                  </Grid>
-                  {video.processed ? (
+                  {video.prepared ? (
+                    <Grid
+                      id="analytics"
+                      className={classes.mainOption}
+                      item
+                      md={2}
+                      sm={2}
+                      xs={6}
+                      onClick={optionHandler}
+                    >
+                      <DynamicFeedIcon fontSize="large" />
+                      <Typography className={classes.optionTitle}>
+                        Video Analytics
+                      </Typography>
+                    </Grid>
+                  ) : (
+                    <Grid
+                      id="analytics"
+                      className={classes.mainOption}
+                      item
+                      md={2}
+                      sm={2}
+                      xs={6}
+                    >
+                      <CancelPresentationIcon fontSize="large" />
+                      <Typography className={classes.optionTitle}>
+                        Unprocessed
+                      </Typography>
+                    </Grid>
+                  )}
+
+                  {video.prepared ? (
                     <Grid
                       id="search"
                       className={classes.mainOption}

@@ -65,7 +65,8 @@ interface ChooseItemProps {
   file_id: string | number;
   thumbnail_id: string | number;
   duration: string | number;
-  processed: string | boolean;
+  prepared: boolean;
+  processing: boolean;
   video: string;
   setVideo: React.Dispatch<React.SetStateAction<string>>;
 }
@@ -93,10 +94,10 @@ interface ChooseDialogProps {
   open: boolean;
   setVideoTag: React.Dispatch<React.SetStateAction<string>>;
   handleClose: () => void;
-  processed: boolean;
+  prepared: boolean;
 }
 
-const ChooseDialog: React.FC<ChooseDialogProps> = ({ open, setVideoTag, handleClose, processed }) => {
+const ChooseDialog: React.FC<ChooseDialogProps> = ({ open, setVideoTag, handleClose, prepared }) => {
   const { isLoading, error, sendRequest, clearError } = useHttpClient();
   const classes = useStyles();
   const [videoData, setVideoData] = useState<{ [key: string]: any }[]>([]);
@@ -116,8 +117,8 @@ const ChooseDialog: React.FC<ChooseDialogProps> = ({ open, setVideoTag, handleCl
             Authorization: "Bearer " + auth.token,
           }
         );
-        if (processed)
-          responseData = responseData.filter((video) => video.processed === true)
+        if (prepared)
+          responseData = responseData.filter((video) => video.prepared === true)
         setVideoData(responseData);
         setSearchData(responseData);
       } catch (err) {
@@ -127,7 +128,7 @@ const ChooseDialog: React.FC<ChooseDialogProps> = ({ open, setVideoTag, handleCl
     if (open) {
       fetchVideos();
     }
-  }, [open, sendRequest, processed, auth.token]);
+  }, [open, sendRequest, prepared, auth.token]);
   const clearVideo = () => {
     setVideo(null);
   };
@@ -225,7 +226,8 @@ const ChooseDialog: React.FC<ChooseDialogProps> = ({ open, setVideoTag, handleCl
                   file_id={vid.file_id}
                   thumbnail_id={vid.thumbnail_id}
                   duration={vid.duration}
-                  processed={vid.processed}
+                  processing={vid.processing}
+                  prepared={vid.prepared}
                   video={video}
                   setVideo={setVideo}
                 />

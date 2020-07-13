@@ -22,11 +22,12 @@ const Pie: React.FC<Props> = ({ data }) => {
 
     // Add data
     chart.data = data
+    console.log(data)
     // chart.data = pie_data;
     // Add and configure Series
     let pieSeries = chart.series.push(new am4charts.PieSeries());
-    pieSeries.dataFields.value = "litres";
-    pieSeries.dataFields.category = "country";
+    pieSeries.dataFields.value = "Number of People";
+    pieSeries.dataFields.category = "frame_sec";
     pieSeries.slices.template.states.getKey(
       "active"
     ).properties.shiftRadius = 0;
@@ -42,8 +43,8 @@ const Pie: React.FC<Props> = ({ data }) => {
 
     // Add and configure Series
     let pieSeries2 = chart2.series.push(new am4charts.PieSeries());
-    pieSeries2.dataFields.value = "value";
-    pieSeries2.dataFields.category = "name";
+    pieSeries2.dataFields.value = "count";
+    pieSeries2.dataFields.category = "labels";
     pieSeries2.slices.template.states.getKey(
       "active"
     ).properties.shiftRadius = 0;
@@ -76,13 +77,13 @@ const Pie: React.FC<Props> = ({ data }) => {
 
       let fill = selectedSlice.fill;
 
-      let count = dataItem.dataContext.subData.length;
+      let count = dataItem.dataContext.feature_label.length;
       pieSeries2.colors.list = [];
       for (var i = 0; i < count; i++) {
         pieSeries2.colors.list.push(fill.brighten((i * 2) / count));
       }
 
-      chart2.data = dataItem.dataContext.subData;
+      chart2.data = dataItem.dataContext.feature_label;
       pieSeries2.appear();
 
       let middleAngle = selectedSlice.middleAngle;

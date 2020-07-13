@@ -152,6 +152,7 @@ const Analytics: React.FC = () => {
           }
         );
         setLineData(response.linechart);
+        setPieData(response.big_data);
         setFlowerData(response.labels_array);
         console.log(response);
       } catch (err) {

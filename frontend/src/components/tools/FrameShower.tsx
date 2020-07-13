@@ -80,21 +80,21 @@ const FrameShower: React.FC<Props> = ({ video }) => {
       ctx.fillStyle = "#00FFFF";
       let text: string = "";
       person.labels.forEach((label: string) => (text = text + ", " + label));
-      // const textWidth = ctx.measureText(text).width;
-      // const textHeight = parseInt(font, 10); // base 10
-      // // ctx.fillRect(x, y, textWidth + 1, textHeight + 1)
-      // ctx.fillRect(0, 0, textWidth - 1, textHeight - 1);
+      const textWidth = ctx.measureText(text).width;
+      const textHeight = parseInt(font, 10); // base 10
+      // ctx.fillRect(x, y, textWidth + 1, textHeight + 1)
+      ctx.fillRect(0, 0, textWidth - 1, textHeight - 1);
     });
 
-    // persons.forEach((person) => {
-    //   const x = ctx.canvas.width * person.box[0];
-    //   const y = ctx.canvas.height * person.box[1];
-    //   // Draw the text last to ensure it's on top.
-    //   ctx.fillStyle = "#000000";
-    //   let text: string = "";
-    //   person.labels.forEach((label: string) => (text = text + ", " + label));
-    //   ctx.fillText(text, x, y);
-    // });
+    persons.forEach((person) => {
+      const x = ctx.canvas.width * person.box[0];
+      const y = ctx.canvas.height * person.box[1];
+      // Draw the text last to ensure it's on top.
+      ctx.fillStyle = "#000000";
+      let text: string = "";
+      person.labels.forEach((label: string) => (text = text + ", " + label));
+      ctx.fillText(text, x, y);
+    });
   };
 
   useEffect(() => {
@@ -111,7 +111,7 @@ const FrameShower: React.FC<Props> = ({ video }) => {
           }
         );
         console.log(responseData);
-        setMetadata(responseData.metadata);
+        setMetadata(JSON.parse(responseData.metadata).metadata);
       } catch (err) {
         console.log(err);
       }
@@ -128,11 +128,13 @@ const FrameShower: React.FC<Props> = ({ video }) => {
       let ct = playerRef.current.getCurrentTime();
       let f = Math.floor(ct);
       let m = ct % f;
-      if (m >= 0.5) ct = ct + 0.5;
-      ct = Math.floor(ct * 2);
+      if (m >= 1) ct = ct + 1;
+      ct = Math.floor(ct);
       try {
-        setCurrentData(metadata[ct].persons);
-        renderPredictions(metadata[ct].persons, canvasRef);
+        let persons = JSON.parse(metadata[ct].persons)
+        console.log(ct,persons)
+        setCurrentData(persons);
+        renderPredictions(persons, canvasRef);
       } catch (err) {
           console.log(err);
       }

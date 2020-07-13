@@ -145,8 +145,8 @@ const Toggle: React.FC<Props> = ({ data }) => {
 
     // data credit label
     var creditLabel = chart.chartContainer.createChild(am4core.TextLink);
-    creditLabel.text = "Data source: notrudedude";
-    creditLabel.url = "https://www.reddit.com/user/notrudedude";
+    creditLabel.text = "gearStalk";
+    creditLabel.url = "";
     creditLabel.y = am4core.percent(99);
     creditLabel.x = am4core.percent(99);
     creditLabel.horizontalCenter = "right";
@@ -154,7 +154,7 @@ const Toggle: React.FC<Props> = ({ data }) => {
 
     var titleImage = chart.chartContainer.createChild(am4core.Image);
     titleImage.href =
-      "//www.amcharts.com/wp-content/uploads/2018/11/whokissed.png";
+      "";
     titleImage.x = 30;
     titleImage.y = 30;
     titleImage.width = 200;

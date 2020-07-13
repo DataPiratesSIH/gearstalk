@@ -23,5 +23,5 @@ export type Actions =
 
 export type MetaData = {
   frame_sec: number;
-  persons: Person[];
+  persons: string;
 };

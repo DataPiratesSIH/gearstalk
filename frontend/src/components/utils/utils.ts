@@ -49,48 +49,15 @@ export function captureVideoFrame(vid, format, quality) {
   export const md:MetaData[] = [
     {
       frame_sec: 0,
-      persons: [
-        {
-          box: [0, 0, 0.3, 0.3],
-          labels: ["shirt"],
-          colors: ["#fff222", "#fff222"],
-        },
-        {
-          box: [0, 0, 0.3, 0.3],
-          labels: ["shirt"],
-          colors: ["#fff222", "#fff222"],
-        },
-      ],
-    },
-    {
-      frame_sec: 0.5,
-      persons: [
-        {
-          box: [0, 0, 0.3, 0.3],
-          labels: ["shirt"],
-          colors: ["#fff222", "#fff222"],
-        },
-        {
-          box: [0, 0, 0.3, 0.3],
-          labels: ["shirt"],
-          colors: ["#fff222", "#fff222"],
-        },
-      ],
+      persons: '[{box: [0, 0, 0.3, 0.3],labels: ["shirt"],colors: ["#fff222", "#fff222"],},{box: [0, 0, 0.3, 0.3],labels: ["shirt"],colors: ["#fff222", "#fff222"],},]',
     },
     {
       frame_sec: 1,
-      persons: [
-        {
-          box: [0, 0, 0.3, 0.3],
-          labels: ["shirt"],
-          colors: ["#fff222", "#fff222"],
-        },
-        {
-          box: [0, 0, 0.3, 0.3],
-          labels: ["shirt"],
-          colors: ["#fff222", "#fff222"],
-        },
-      ],
+      persons: '[{box: [0, 0, 0.3, 0.3],labels: ["shirt"],colors: ["#fff222", "#fff222"],},{box: [0, 0, 0.3, 0.3],labels: ["shirt"],colors: ["#fff222", "#fff222"],},]',
+    },
+    {
+      frame_sec: 2,
+      persons: '[{box: [0, 0, 0.3, 0.3],labels: ["shirt"],colors: ["#fff222", "#fff222"],},{box: [0, 0, 0.3, 0.3],labels: ["shirt"],colors: ["#fff222", "#fff222"],},]',
     },
   ]
 

@@ -25,8 +25,8 @@ const Pie: React.FC<Props> = ({ data }) => {
     // chart.data = pie_data;
     // Add and configure Series
     let pieSeries = chart.series.push(new am4charts.PieSeries());
-    pieSeries.dataFields.value = "Number of People";
-    pieSeries.dataFields.category = "frame_sec";
+    pieSeries.dataFields.value = "litres";
+    pieSeries.dataFields.category = "country";
     pieSeries.slices.template.states.getKey(
       "active"
     ).properties.shiftRadius = 0;
@@ -42,8 +42,8 @@ const Pie: React.FC<Props> = ({ data }) => {
 
     // Add and configure Series
     let pieSeries2 = chart2.series.push(new am4charts.PieSeries());
-    pieSeries2.dataFields.value = "count";
-    pieSeries2.dataFields.category = "labels";
+    pieSeries2.dataFields.value = "value";
+    pieSeries2.dataFields.category = "name";
     pieSeries2.slices.template.states.getKey(
       "active"
     ).properties.shiftRadius = 0;

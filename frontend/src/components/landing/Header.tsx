@@ -163,9 +163,10 @@ const ScrollLink: React.FC<ScrollLinkProps> = ({ to, children }) => {
 
 interface TopMenuProps {
   onClose: () => void;
+  isLoggedIn: boolean;
 }
 
-const TopMenu: React.FC<TopMenuProps> = ({ onClose }) => {
+const TopMenu: React.FC<TopMenuProps> = ({ onClose, isLoggedIn }) => {
   const classes = useStyles();
   let history = useHistory();
   return (
@@ -194,12 +195,32 @@ const TopMenu: React.FC<TopMenuProps> = ({ onClose }) => {
         ))}
       </List>
       <div style={{ padding: "24px" }}>
-        <Button
-          className={classes.tryButton}
-          onClick={() => history.push("/console")}
-        >
-          Go to Console
-        </Button>
+        {isLoggedIn ? (
+          <>
+            <Button
+              className={classes.tryButton}
+              onClick={() => history.push("/console")}
+            >
+              Go to Console
+            </Button>
+            <Logout className={classes.nav} />
+          </>
+        ) : (
+          <>
+            <Button
+              className={classes.tryButton}
+              onClick={() => history.push("/signup")}
+            >
+              SignUp
+            </Button>
+            <Button
+              className={classes.tryButton}
+              onClick={() => history.push("/signin")}
+            >
+              SignIn
+            </Button>
+          </>
+        )}
       </div>
     </div>
   );
@@ -219,7 +240,7 @@ const Header: React.FC<HeaderProps> = (props) => {
     <React.Fragment>
       <CssBaseline />
       <Drawer anchor={"top"} open={open} onClose={toggleDrawer}>
-        <TopMenu onClose={toggleDrawer} />
+        <TopMenu onClose={toggleDrawer} isLoggedIn={props.isLoggedIn} />
       </Drawer>
       <AppBar
         className={classes.appBar}

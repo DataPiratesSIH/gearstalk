@@ -11,7 +11,6 @@ import Mockup from "./Mockup";
 
 import "./Landing.css";
 
-
 interface FeatureProps {
   children: React.ReactNode;
 }
@@ -66,18 +65,18 @@ const Landing: React.FC = () => {
               </h3>
               <br />
               {auth.isLoggedIn ? (
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    onClick={() => history.push("/console")}
-                  >
-                    Go to Console
-                  </Button>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={() => history.push("/console")}
+                >
+                  Go to Console
+                </Button>
               ) : (
                 <>
                   <Button
                     variant="contained"
-                    color="primary"
+                    style={{ color: "#060124", backgroundColor: "#2db1e1", fontWeight: 500 }}
                     onClick={() => history.push("/signup")}
                   >
                     Sign Up
@@ -85,7 +84,7 @@ const Landing: React.FC = () => {
                   &nbsp;
                   <Button
                     variant="contained"
-                    color="primary"
+                    style={{ color: "#060124", backgroundColor: "#2db1e1", fontWeight: 500 }}
                     onClick={() => history.push("/signin")}
                   >
                     Log In
@@ -123,59 +122,86 @@ const Landing: React.FC = () => {
           <Grid container>
             <Feature>
               {/* <GiMiner size="90px" color="blue" /> */}
-              <img src={require("./images/videolibrary.png")} alt="Test" style={{ width: 150 }}/>
+              <img
+                src={require("./images/videolibrary.png")}
+                alt="Test"
+                style={{ width: 150 }}
+              />
               <h2>VIDEO LIBRARY</h2>
               <h5>
-                It is a library where all the cctv video is stored.We can search and filter the videos on different aspects stored
-                in the database.
+                It is a library where all the cctv video is stored.We can search
+                and filter the videos on different aspects stored in the
+                database.
               </h5>
             </Feature>
             <Feature>
               {/* <GiMiningHelmet size="90px" color="blue" /> */}
-              <img src={require("./images/addvideo.png")} alt="Test" style={{ width: 150 }}/>
+              <img
+                src={require("./images/addvideo.png")}
+                alt="Test"
+                style={{ width: 150 }}
+              />
               <h2>ADD VIDEO</h2>
-              <h5>
-                Adds video to the current database.
-              </h5>
+              <h5>Adds video to the current database.</h5>
             </Feature>
             <Feature>
-              <img src={require("./images/scable.jpg")} alt="Test" style={{ width: 180, height:150 }}/>
+              <img
+                src={require("./images/scable.jpg")}
+                alt="Test"
+                style={{ width: 180, height: 150 }}
+              />
               <h2>SCALABLE ARCHITECTURE</h2>
               <h5>
-                The program can handle more than just one functionality, such as we can detect more than one person in the video timeframe and can list the 
-                mulitple cloths they are wearing on by selection a perticular persons in that timeframe.
-
+                The program can handle more than just one functionality, such as
+                we can detect more than one person in the video timeframe and
+                can list the mulitple cloths they are wearing on by selection a
+                perticular persons in that timeframe.
               </h5>
             </Feature>
             <Feature>
               {/* <GiMiningHelmet size="90px" color="blue" /> */}
-              <img src={require("./images/search1.jpg")} alt="Test" style={{ width: 150 }}/>
+              <img
+                src={require("./images/search1.jpg")}
+                alt="Test"
+                style={{ width: 150 }}
+              />
               <h2>SEARCH</h2>
               <h5>
-                A video is chooses from the database to be processed, the video gets processed frame by frame in which
-                it identifies the total number of people in each frame and identifies all the clothes worn by them and listes them,
-                it also captues the a particular frame we want from the video.
+                A video is chooses from the database to be processed, the video
+                gets processed frame by frame in which it identifies the total
+                number of people in each frame and identifies all the clothes
+                worn by them and listes them, it also captues the a particular
+                frame we want from the video.
               </h5>
             </Feature>
             <Feature>
-              <img src={require("./images/speech.jpg")} alt="Test" style={{ width: 180, height:150 }}/>
+              <img
+                src={require("./images/speech.jpg")}
+                alt="Test"
+                style={{ width: 180, height: 150 }}
+              />
               <h2>SPEECH RECOGNITION</h2>
               <h5>
-                 This feature help us to operate faster ,insted of just clicking and selecting each and every person that we see on the videoframe,
-                we can just tell the program to select the particular person which list what he is attire wearing.
-
+                This feature help us to operate faster ,insted of just clicking
+                and selecting each and every person that we see on the
+                videoframe, we can just tell the program to select the
+                particular person which list what he is attire wearing.
               </h5>
             </Feature>
             <Feature>
               {/* <GiMiner size="90px" color="blue" /> */}
-              <img src={require("./images/visualization.png")} alt="Test" style={{ width: 150 }}/>
+              <img
+                src={require("./images/visualization.png")}
+                alt="Test"
+                style={{ width: 150 }}
+              />
               <h2>ANALYTICS</h2>
               <h5>
-                It helps to visualise the different aspects of the video by ploting the different parameters 
-                recognized in the following video on the graph to get a better understanding.
+                It helps to visualise the different aspects of the video by
+                ploting the different parameters recognized in the following
+                video on the graph to get a better understanding.
               </h5>
             </Feature>
-          
           </Grid>
         </div>
       </div>

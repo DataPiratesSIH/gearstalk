@@ -37,6 +37,7 @@ import DynamicFeedIcon from "@material-ui/icons/DynamicFeed";
 import BookmarksIcon from "@material-ui/icons/Bookmarks";
 import CameraEnhanceIcon from "@material-ui/icons/CameraEnhance";
 import CancelPresentationIcon from "@material-ui/icons/CancelPresentation";
+import AccessTimeIcon from '@material-ui/icons/AccessTime';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -322,6 +323,12 @@ const Play: React.FC = () => {
         }
       );
       console.log(responseData);
+      setVideo(v => {
+        return {
+          ...v,
+          processing: true
+        }
+      })
       setWillProcess(true);
     } catch (err) {
       console.log(err);
@@ -670,20 +677,38 @@ const Play: React.FC = () => {
                       </Typography>
                     </Grid>
                   ) : (
-                    <Grid
-                      id="process"
-                      className={classes.mainOption}
-                      item
-                      md={2}
-                      sm={2}
-                      xs={6}
-                      onClick={optionHandler}
-                    >
-                      <ImageIcon fontSize="large" />
-                      <Typography className={classes.optionTitle}>
-                        Process Video
-                      </Typography>
-                    </Grid>
+                    <>
+                      {video.processing ? (
+                        <Grid
+                          id="process"
+                          className={classes.mainOption}
+                          item
+                          md={2}
+                          sm={2}
+                          xs={6}
+                        >
+                          <AccessTimeIcon fontSize="large" />
+                          <Typography className={classes.optionTitle}>
+                            Under Processing
+                          </Typography>
+                        </Grid>
+                      ) : (
+                        <Grid
+                          id="process"
+                          className={classes.mainOption}
+                          item
+                          md={2}
+                          sm={2}
+                          xs={6}
+                          onClick={optionHandler}
+                        >
+                          <ImageIcon fontSize="large" />
+                          <Typography className={classes.optionTitle}>
+                            Process Video
+                          </Typography>
+                        </Grid>
+                      )}
+                    </>
                   )}
                   <Grid
                     id="enhance"

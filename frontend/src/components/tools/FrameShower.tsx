@@ -5,7 +5,7 @@ import { Grid, Chip, Avatar, Typography } from "@material-ui/core";
 import { MetaData, Person } from "../../types";
 import PlayCircleFilledIcon from "@material-ui/icons/PlayCircleFilled";
 import Dot from "../utils/Dot";
-import { md } from "../utils/utils";
+// import { md } from "../utils/utils";
 import { useInterval } from "../hooks/time-hook";
 import { useHttpClient } from "../hooks/http-hook";
 import { AuthContext } from "../context/auth-context";
@@ -41,6 +41,12 @@ const useStyles = makeStyles((theme) => ({
     fontWeight: 500,
     fontSize: "17px",
   },
+  drawer: {
+    [theme.breakpoints.up("md")]: {
+      width: "50vw",
+    },
+    width: "80vw"
+  }
 }));
 
 interface Props {
@@ -111,7 +117,7 @@ const FrameShower: React.FC<Props> = ({ video }) => {
           }
         );
         console.log(responseData);
-        setMetadata(JSON.parse(responseData.metadata).metadata);
+        setMetadata(responseData.metadata);
       } catch (err) {
         console.log(err);
       }
@@ -141,7 +147,7 @@ const FrameShower: React.FC<Props> = ({ video }) => {
     }
   }, 500);
   return (
-    <Grid container style={{ width: "40vw" }}>
+    <Grid container className={classes.drawer}>
       <Grid style={{ padding: "30px" }} item xs={12}>
         <div className={classes.container}>
           <canvas

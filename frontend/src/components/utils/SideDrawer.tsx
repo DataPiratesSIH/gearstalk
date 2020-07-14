@@ -12,7 +12,6 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import AppsIcon from '@material-ui/icons/Apps';
 import DashboardIcon from '@material-ui/icons/Dashboard';
-import AccessibilityIcon from '@material-ui/icons/Accessibility';
 import VideoLibraryIcon from '@material-ui/icons/VideoLibrary';
 import CameraEnhanceIcon from '@material-ui/icons/CameraEnhance';
 import AddPhotoAlternateIcon from '@material-ui/icons/AddPhotoAlternate';
@@ -69,7 +68,7 @@ const SideDrawer = props => {
 
     const drawer = (
         <div style={{ background: 'linear-gradient(90deg, rgba(45,55,90,1) 4%, rgba(37,47,80,1) 18%, rgba(33,40,66,1) 38%, rgba(28,35,62,1) 82%)'}}>
-            <ListItem classes={{root: classes.root}} button>
+            <ListItem classes={{root: classes.root}} button onClick={() => {pushLink('/')}}>
                 <ListItemIcon><AppsIcon color="primary" fontSize="large" /></ListItemIcon>
                 <Typography color="primary" style={{ fontSize: '25px', fontWeight: 500 }}>
                     Console
@@ -77,13 +76,9 @@ const SideDrawer = props => {
               </ListItem>
           <Divider className={classes.divider} />
           <List>
-            <ListItem button onClick={() => {pushLink('/')}}>
+            <ListItem button onClick={() => {pushLink('/console')}}>
                 <ListItemIcon><Avatar><DashboardIcon fontSize='small' /></Avatar></ListItemIcon>
                 <ListItemText primary="Dashboard" />
-              </ListItem>
-              <ListItem button>
-                <ListItemIcon><Avatar><AccessibilityIcon fontSize='small' /></Avatar></ListItemIcon>
-                <ListItemText primary="Activity" />
               </ListItem>
           </List>
           <Divider className={classes.divider} />

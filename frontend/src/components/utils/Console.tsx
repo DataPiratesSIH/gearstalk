@@ -137,6 +137,16 @@ const Console: React.FC = () => {
               sm={12}
             >
               <div className={classes.paper}>
+                <div
+                  style={{
+                    wordSpacing: "8px",
+                    fontSize: "19px",
+                    fontWeight: 400,
+                    padding: "15px",
+                  }}
+                >
+                  DOMINANT COLORS
+                </div>
                 <Donut />
               </div>
             </Grid>

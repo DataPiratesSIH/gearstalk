@@ -57,16 +57,16 @@ const Donut: React.FC = () => {
     // Add and configure Series
     let pieSeries = chart.series.push(new am4charts.PieSeries());
     pieSeries.colors.list = [
-        am4core.color('#fc1722'), // red
-        am4core.color('#260ceb'), // blue
-        am4core.color('#48b811'), // green
-        am4core.color('#fcef30'), // yellow
-        am4core.color('#fa8b1b'), // orange
-        am4core.color('#000000'), // light blue
-        am4core.color('#19e6fc'), // light blue
-        am4core.color('#36ff33'), // light green
-        am4core.color('#e838ff'), // purple
-    ]
+      am4core.color("#fc1722"), // red
+      am4core.color("#260ceb"), // blue
+      am4core.color("#48b811"), // green
+      am4core.color("#fcef30"), // yellow
+      am4core.color("#fa8b1b"), // orange
+      am4core.color("#000000"), // light blue
+      am4core.color("#19e6fc"), // light blue
+      am4core.color("#36ff33"), // light green
+      am4core.color("#e838ff"), // purple
+    ];
     pieSeries.dataFields.value = "amount";
     pieSeries.dataFields.category = "label";
     // pieSeries.alignLabels = false;
@@ -84,18 +84,12 @@ const Donut: React.FC = () => {
   }, []);
 
   return (
-      <div>
-          <div style={{ wordSpacing: "8px", fontSize: "19px", fontWeight: 400, padding: "15px" }}>
-              DOMINANT COLORS
-          </div>
-          <div style={{ maxWidth: "100%", overflowX: "auto", textAlign: "center" }}>
+    <div style={{ maxWidth: "80vw", overflowX: "auto", textAlign: "center" }}>
       <div
         style={{ width: "400px", height: "300px", display: "inline-block" }}
         id="donutChart"
       />
     </div>
-      </div>
-
   );
 };
 

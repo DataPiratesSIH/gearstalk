@@ -7,8 +7,10 @@ import Header from "./Header";
 import { PieChart, WorldMap } from "./Charts";
 import TechStack from "./Techstack";
 import Footer from "./Footer";
+import Mockup from "./Mockup";
 
 import "./Landing.css";
+
 
 interface FeatureProps {
   children: React.ReactNode;
@@ -104,11 +106,12 @@ const Landing: React.FC = () => {
             xs={12}
           >
             <FadeIn>
-              <img
+              {/* <img
                 src={require("./images/start.png")}
                 className="start-img"
                 alt="Start_image"
-              />
+              /> */}
+              <Mockup />
             </FadeIn>
           </Grid>
         </Grid>

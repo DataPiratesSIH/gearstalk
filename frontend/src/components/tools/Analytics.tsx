@@ -7,13 +7,14 @@ import { Grid, IconButton, Drawer } from "@material-ui/core";
 
 import AccessAlarmIcon from "@material-ui/icons/AccessAlarm";
 import AirplayIcon from "@material-ui/icons/Airplay";
-import { piedata, toggledata } from "../utils/utils";
+import { toggledata } from "../utils/utils";
 import Line from "../charts/Line";
 import Pie from "../charts/Pie";
 import Flower from "../charts/Flower";
 import Toggle from "../charts/Toggle";
 import Tick from "../utils/Tick";
 import FrameShower from "./FrameShower";
+import LoadingSpinner from "../utils/LoadingSpinner";
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
@@ -38,10 +39,10 @@ const Analytics: React.FC = () => {
   const { oid } = useParams();
   const auth = useContext(AuthContext);
   const [video, setVideo] = useState<{ [key: string]: any }>({});
-  const { sendRequest } = useHttpClient();
+  const { isLoading, sendRequest } = useHttpClient();
   const [lineData, setLineData] = useState<any[]>([]); // linedata
   const [flowerData, setFlowerData] = useState<any[]>([]); // flowerdata
-  const [pieData, setPieData] = useState<any[]>(piedata);
+  const [pieData, setPieData] = useState<any[]>([]);
 
   // eslint-disable-next-line
   const [toggleData, setToggleData] = useState<any[]>(toggledata);
@@ -132,22 +133,46 @@ const Analytics: React.FC = () => {
         </Grid>
         <Grid className={classes.chartContainer} item xs={12}>
           <div className={classes.chartDiv}>
-            {lineData.length > 0 && <Line data={lineData} />}
+            {isLoading ? (
+              <div style={{ padding: "60px 0px" }}>
+                <LoadingSpinner />
+              </div>
+            ) : (
+              <> {lineData.length > 0 && <Line data={lineData} />}</>
+            )}
           </div>
         </Grid>
         <Grid className={classes.chartContainer} item sm={6} xs={12}>
           <div className={classes.chartDiv}>
-            {flowerData.length > 0 && <Flower data={flowerData} />}
+            {isLoading ? (
+              <div style={{ padding: "60px 0px" }}>
+                <LoadingSpinner />
+              </div>
+            ) : (
+              <> {flowerData.length > 0 && <Flower data={flowerData} />}</>
+            )}
           </div>
         </Grid>
         <Grid className={classes.chartContainer} item sm={6} xs={12}>
           <div className={classes.chartDiv}>
-            {pieData.length > 0 && <Pie data={pieData} />}
+            {isLoading ? (
+              <div style={{ padding: "60px 0px" }}>
+                <LoadingSpinner />
+              </div>
+            ) : (
+              <> {pieData.length > 0 && <Pie data={pieData} />} </>
+            )}
           </div>
         </Grid>
         <Grid className={classes.chartContainer} item sm={6} xs={12}>
           <div className={classes.chartDiv}>
-            {toggleData.length > 0 && <Toggle data={toggleData} />}
+            {isLoading ? (
+              <div style={{ padding: "60px 0px" }}>
+                <LoadingSpinner />
+              </div>
+            ) : (
+              <> {toggleData.length > 0 && <Toggle data={toggleData} />} </>
+            )}
           </div>
         </Grid>
       </Grid>

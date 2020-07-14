@@ -3,7 +3,6 @@ import FadeIn from "../utils/FadeIn";
 import { useHistory } from "react-router-dom";
 import { AuthContext } from "../context/auth-context";
 import { Button, Grid } from "@material-ui/core";
-import { GiMiner, GiMiningHelmet } from "react-icons/gi";
 import Header from "./Header";
 import { PieChart, WorldMap } from "./Charts";
 import TechStack from "./Techstack";

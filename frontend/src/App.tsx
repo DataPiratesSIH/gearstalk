@@ -97,7 +97,7 @@ const App = () => {
             <Camera />
           </ResponsiveDrawer>
         </Route>
-        <Redirect to="/search" />
+        <Redirect to="/console" />
       </Switch>
     );
   // } else {

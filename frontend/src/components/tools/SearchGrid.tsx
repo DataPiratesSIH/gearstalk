@@ -1,4 +1,5 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useContext, useEffect, useRef } from "react";
+
 import { useLocation } from "react-router-dom";
 import { AuthContext } from "../context/auth-context";
 import { useAttribute } from "../context/attribute-context";
@@ -12,7 +13,10 @@ import ChooseDialog from "./ChooseDialog";
 import qualityIcon from "./quality.svg";
 import ReactPlayer from "react-player";
 import PlayCircleFilledIcon from "@material-ui/icons/PlayCircleFilled";
-import SearchIcon from '@material-ui/icons/Search';
+import SearchIcon from "@material-ui/icons/Search";
+import LoadingSpinner from "../utils/LoadingSpinner";
+import TimeStamp from "./TimeStamp";
+import { searchdata } from "../utils/utils";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -76,7 +80,10 @@ const SearchGrid: React.FC<Props> = ({ video, setVideo }) => {
   const [videoTag, setVideoTag] = useState<string>("");
   const handleClose = () => setOpen(false);
   const auth = useContext(AuthContext);
-  const { sendRequest } = useHttpClient();
+  const { isLoading, sendRequest } = useHttpClient();
+  const [results, setResults] = useState<any[]>(searchdata);
+  const resultRef = useRef<HTMLDivElement>(null);
+
   useEffect(() => {
     if (location.state) setVideoTag(String(location.state[0]));
   }, [location]);
@@ -106,17 +113,17 @@ const SearchGrid: React.FC<Props> = ({ video, setVideo }) => {
     }
   }, [videoTag, setVideo, auth.token, sendRequest]);
 
+  const scrollToRef = (ref) => window.scrollTo(0, ref.current.offsetTop);
   const searchHandler = async () => {
-    if (attributes.length === 0 || Object.keys(video).length === 0)
-      return;
-    console.log(attributes)
+    if (attributes.length === 0 || Object.keys(video).length === 0) return;
+    console.log(attributes);
     try {
       const responseData = await sendRequest(
         process.env.REACT_APP_BACKEND_URL + "/query/search",
         "POST",
         JSON.stringify({
           attributes: attributes,
-          video_id: video._id.$oid
+          video_id: video._id.$oid,
         }),
         {
           "Content-Type": "application/json",
@@ -124,10 +131,12 @@ const SearchGrid: React.FC<Props> = ({ video, setVideo }) => {
         }
       );
       console.log(responseData);
+      setResults(responseData);
+      scrollToRef(resultRef);
     } catch (err) {
       console.log(err);
     }
-  }
+  };
 
   return (
     <div className={classes.root}>
@@ -211,7 +220,9 @@ const SearchGrid: React.FC<Props> = ({ video, setVideo }) => {
                 <Button
                   className={classes.tryButton}
                   startIcon={<SearchIcon />}
-                  disabled={attributes.length === 0 || Object.keys(video).length === 0}
+                  disabled={
+                    attributes.length === 0 || Object.keys(video).length === 0
+                  }
                   onClick={searchHandler}
                 >
                   Search
@@ -222,6 +233,15 @@ const SearchGrid: React.FC<Props> = ({ video, setVideo }) => {
         </Grid>
         <Grid item xl={6} lg={6} md={6} xs={12} sm={12}>
           <SearchTabs />
+        </Grid>
+        <Grid item xs={12} ref={resultRef}>
+          {isLoading ? (
+            <div>
+              <LoadingSpinner />
+            </div>
+          ) : (
+            <>{results && <TimeStamp results={results} />}</>
+          )}
         </Grid>
       </Grid>
     </div>

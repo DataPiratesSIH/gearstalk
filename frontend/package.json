@@ -1,6 +1,6 @@
 {
-  "homepage": "/",
-  "name": "frontend",
+  "homepage": "http://DataPiratesSIH.github.io",
+  "name": "gearstak",
   "version": "0.1.0",
   "private": true,
   "dependencies": {

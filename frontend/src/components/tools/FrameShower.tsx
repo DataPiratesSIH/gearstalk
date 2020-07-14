@@ -111,7 +111,7 @@ const FrameShower: React.FC<Props> = ({ video }) => {
           }
         );
         console.log(responseData);
-        setMetadata(JSON.parse(responseData.metadata).metadata);
+        setMetadata(responseData.metadata);
       } catch (err) {
         console.log(err);
       }

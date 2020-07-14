@@ -234,3 +234,74 @@ export const toggledata:any[] = [
   {'from': 'Blazer', 'to': 'sienna', 'value': 1
   }
 ];
+
+
+export const searchdata:any[] = [
+  [
+    {
+      'last_seen': {
+        'date': '2020-07-11',
+        'time': '00:51:29'
+      }, 
+      'labels': ['jeans', 'Scarf'], 
+      'colors': ['darkslategray', 'darkslategray'], 
+      'coord': {'latitude': 12.9718871, 'longitude': 77.59367089999999},
+      'location_type': 'GEOMETRIC_CENTER',
+      'street': 'Kasturba Road', 
+      'city': 'Bengaluru', 
+      'county': 'Bangalore Urban', 
+      'country': 'India', 'state': 'Karnataka', 
+      'sublocality': 'Sampangi Rama Nagar'
+    }, 
+    {
+      'last_seen': {
+        'date': '2020-07-11', 
+        'time': '00:51:32'
+      }, 
+      'labels': ['Sweater', 'jeans'], 
+      'colors': ['darkslategray', 'dimgray'], 
+      'coord': {'latitude': 12.9718871, 'longitude': 77.59367089999999}, 
+      'location_type': 'GEOMETRIC_CENTER', 'street': 'Kasturba Road', 
+      'city': 'Bengaluru', 
+      'county': 'Bangalore Urban', 
+      'country': 'India', 
+      'state': 'Karnataka', 
+      'sublocality': 'Sampangi Rama Nagar'
+    }
+  ], 
+  [
+    {
+      'last_seen': {
+        'date': '2020-07-11', 
+        'time': '00:51:29'
+      }, 
+      'labels': ['jeans', 'Scarf'], 
+      'colors': ['darkslategray', 'darkslategray'], 
+      'coord': {'latitude': 12.9718871, 'longitude': 77.59367089999999}, 
+      'location_type': 'GEOMETRIC_CENTER', 
+      'street': 'Kasturba Road', 
+      'city': 'Bengaluru', 
+      'county': 'Bangalore Urban', 
+      'country': 'India', 
+      'state': 'Karnataka', 
+      'sublocality': 'Sampangi Rama Nagar'
+    }, 
+    {
+      'last_seen': {
+        'date': '2020-07-11', 
+        'time': '00:51:32'
+      }, 
+      'labels': ['Sweater', 'jeans'], 
+      'colors': ['darkslategray', 'dimgray'], 
+      'coord': {'latitude': 12.9718871, 'longitude': 77.59367089999999}, 
+      'location_type': 'GEOMETRIC_CENTER', 
+      'street': 'Kasturba Road', 
+      'city': 'Bengaluru', 
+      'county': 'Bangalore Urban', 
+      'country': 'India', 
+      'state': 'Karnataka', 
+      'sublocality': 'Sampangi Rama Nagar'
+    }
+  ],
+  []
+]

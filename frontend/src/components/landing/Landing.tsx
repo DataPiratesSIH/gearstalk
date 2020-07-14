@@ -155,7 +155,15 @@ const Landing: React.FC = () => {
                 it also captues the a particular frame we want from the video.
               </h5>
             </Feature>
-            
+            <Feature>
+              <img src={require("./images/speech.jpg")} alt="Test" style={{ width: 180, height:150 }}/>
+              <h2>SPEECH RECOGNITION</h2>
+              <h5>
+                 This feature help us to operate faster ,insted of just clicking and selecting each and every person that we see on the videoframe,
+                we can just tell the program to select the particular person which list what he is attire wearing.
+
+              </h5>
+            </Feature>
             <Feature>
               {/* <GiMiner size="90px" color="blue" /> */}
               <img src={require("./images/visualization.png")} alt="Test" style={{ width: 150 }}/>

@@ -4,6 +4,7 @@ import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import Typography from "@material-ui/core/Typography";
 import Box from "@material-ui/core/Box";
+import CardSearch from "../utils/CardSearch";
 
 function a11yProps(index: number) {
   return {
@@ -16,7 +17,7 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
     backgroundColor: theme.palette.background.paper,
     display: "flex",
-    height: 224,
+    height: 370,
   },
   tabs: {
     borderRight: `1px solid ${theme.palette.divider}`,
@@ -71,7 +72,8 @@ const TimeStamp: React.FC<Props> = ({ results }) => {
       </Tabs>
       {results.map((r, i) => (
         <TabPanel key={i} value={value} index={i}>
-          Person {i}
+          {/* Person {i} */}
+          <CardSearch />
         </TabPanel>
       ))}
     </div>

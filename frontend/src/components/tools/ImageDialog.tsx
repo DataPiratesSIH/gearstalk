@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useRef, useContext } from "react";
 import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
@@ -20,6 +20,7 @@ const ImageDialog: React.FC<Props> = ({ timestamp, video_id }) => {
   const auth = useContext(AuthContext);
   const { isLoading, sendRequest } = useHttpClient();
   const [video, setVideo] = useState<{ [key: string]: any }>({});
+  const playerRef = useRef(null);
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -51,6 +52,20 @@ const ImageDialog: React.FC<Props> = ({ timestamp, video_id }) => {
     }
   }, [auth.token, sendRequest, open, timestamp, video_id]);
 
+  const getSeconds = (timestamp: string) => {
+    const h = parseInt(timestamp.slice(0, 2));
+    const m = parseInt(timestamp.slice(3, 5));
+    const s = parseInt(timestamp.slice(6, 8));
+    return h * 3600 + m * 60 + s;
+  };
+
+  useEffect(() => {
+    if (Object.keys(video).length > 0 && playerRef && playerRef.current) {
+      console.log(getSeconds(timestamp))
+      playerRef.current.seekTo(3, "seconds");
+    }
+  }, [video, timestamp]);
+
   return (
     <>
       <Button
@@ -77,10 +92,13 @@ const ImageDialog: React.FC<Props> = ({ timestamp, video_id }) => {
                   controls
                   style={{ boxShadow: "-3px 6px 34px 6px rgba(18,25,41,1)" }}
                   url={`${process.env.REACT_APP_BACKEND_URL}/helpers/video/${video.file_id}`}
-                  light={`${process.env.REACT_APP_BACKEND_URL}/helpers/file/${video.thumbnail_id}`}
+                  // light={`${process.env.REACT_APP_BACKEND_URL}/helpers/file/${video.thumbnail_id}`}
                   playing
                   pip
                   width="100%"
+                  ref={(player) => {
+                    playerRef.current = player;
+                  }}
                 />
               )}
             </>

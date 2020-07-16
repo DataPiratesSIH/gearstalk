@@ -1,6 +1,6 @@
 {
-  "homepage": "http://DataPiratesSIH.github.io",
-  "name": "gearstak",
+  "homepage": "http://DataPiratesSIH.github.io/app",
+  "name": "gearstalk",
   "version": "0.1.0",
   "private": true,
   "dependencies": {

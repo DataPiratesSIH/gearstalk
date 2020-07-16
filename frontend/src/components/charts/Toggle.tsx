@@ -115,8 +115,8 @@ const Toggle: React.FC<Props> = ({ data }) => {
         return fill;
       }
 
-      let count = 0;
-      let color;
+      // let count = 0;
+      // let color;
       let biggest = 0;
       let biggestName;
 

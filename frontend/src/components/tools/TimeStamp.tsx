@@ -2,9 +2,8 @@ import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
-import Typography from "@material-ui/core/Typography";
 import Box from "@material-ui/core/Box";
-import CardSearch from "../utils/CardSearch";
+import TimeLine from "./TimeLine";
 
 function a11yProps(index: number) {
   return {
@@ -17,7 +16,6 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
     backgroundColor: theme.palette.background.paper,
     display: "flex",
-    height: 370,
   },
   tabs: {
     borderRight: `1px solid ${theme.palette.divider}`,
@@ -38,8 +36,8 @@ const TabPanel: React.FC<TabPanelProps> = ({ children, value, index }) => {
       aria-labelledby={`vertical-tab-${index}`}
     >
       {value === index && (
-        <Box p={3}>
-          <Typography>{children}</Typography>
+        <Box p={1}>
+          <div>{children}</div>
         </Box>
       )}
     </div>
@@ -72,8 +70,7 @@ const TimeStamp: React.FC<Props> = ({ results }) => {
       </Tabs>
       {results.map((r, i) => (
         <TabPanel key={i} value={value} index={i}>
-          {/* Person {i} */}
-          <CardSearch />
+          <TimeLine data={r} />
         </TabPanel>
       ))}
     </div>

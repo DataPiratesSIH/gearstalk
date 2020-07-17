@@ -43,9 +43,9 @@ const TimeLine: React.FC<Props> = ({ data }) => {
                 <PlayCircleFilledIcon fontSize="large" />
               </IconButton>
             </i>
-            <div className="date">{d.last_seen.time}</div>
+            <div className="date">{d.time}</div>
             <div className="timestamp-content">
-              <h2>{toDateString(d.last_seen.date)}</h2>
+              <h2>{toDateString(d.date)}</h2>
               <div style={{ color: "#fff", marginBottom: "10px" }}>
                 {d.sublocality}
               </div>
@@ -71,7 +71,7 @@ const TimeLine: React.FC<Props> = ({ data }) => {
               </div>
               <span style={{ padding: "10px 5px" }}>
                 <SpotDialog latitude={d.coord.latitude} longitude={d.coord.longitude} address={d.sublocality} />
-                <ImageDialog timestamp={d.last_seen.time} video_id={d.video_id} /> 
+                <ImageDialog timestamp={d.time} video_id={d.video_id} /> 
               </span>
             </div>
           </div>

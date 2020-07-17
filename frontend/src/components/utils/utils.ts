@@ -1,6 +1,29 @@
 import { MetaData } from "../../types";
 
-export const stopwords = ['blazer', 'burkha', 'headwear', 'long pants', 'scarf', 'sweater', 'vest', 'bags', 'chudidar', 'hoddie', 'jeans', 'jersey', 'kurta', 'saree', 'shirt', 'shoes', 'skirt', 'strip-dress', 'sunglasses', 'tops', 'trousers', 'tshirt'];
+export const stopwords = [
+  "blazer",
+  "burkha",
+  "headwear",
+  "long pants",
+  "scarf",
+  "sweater",
+  "vest",
+  "bags",
+  "chudidar",
+  "hoddie",
+  "jeans",
+  "jersey",
+  "kurta",
+  "saree",
+  "shirt",
+  "shoes",
+  "skirt",
+  "strip-dress",
+  "sunglasses",
+  "tops",
+  "trousers",
+  "tshirt",
+];
 
 export const newColor = {
   hex: "#000000",
@@ -9,59 +32,62 @@ export const newColor = {
   oldHue: 0,
   rgb: { r: 0, g: 0, b: 0, a: 1 },
   source: "rgb",
-}
+};
 
 export function captureVideoFrame(vid, format, quality) {
-    if (typeof vid === "string") {
-      vid = document.getElementById(vid);
-    }
-
-    format = format || "jpeg";
-    quality = quality || 0.92;
-
-    if (!vid || (format !== "png" && format !== "jpeg")) {
-      return false;
-    }
-
-    const canvas = document.createElement("canvas");
-
-    canvas.width = vid.videoWidth;
-    canvas.height = vid.videoHeight;
-
-    canvas.getContext("2d").drawImage(vid, 0, 0);
-
-    let dataUri = canvas.toDataURL("image/" + format, quality);
-    let data = dataUri.split(",")[1];
-    let mimeType = dataUri.split(";")[0].slice(5);
-
-    let bytes = window.atob(data);
-    let buf = new ArrayBuffer(bytes.length);
-    let arr = new Uint8Array(buf);
-
-    for (let i = 0; i < bytes.length; i++) {
-      arr[i] = bytes.charCodeAt(i);
-    }
-
-    let blob = new Blob([arr], { type: mimeType });
-    return { blob: blob, dataUri: dataUri, format: format };
+  if (typeof vid === "string") {
+    vid = document.getElementById(vid);
   }
 
-  export const md:MetaData[] = [
-    {
-      frame_sec: 0,
-      persons: '[{box: [0, 0, 0.3, 0.3],labels: ["shirt"],colors: ["#fff222", "#fff222"],},{box: [0, 0, 0.3, 0.3],labels: ["shirt"],colors: ["#fff222", "#fff222"],},]',
-    },
-    {
-      frame_sec: 1,
-      persons: '[{box: [0, 0, 0.3, 0.3],labels: ["shirt"],colors: ["#fff222", "#fff222"],},{box: [0, 0, 0.3, 0.3],labels: ["shirt"],colors: ["#fff222", "#fff222"],},]',
-    },
-    {
-      frame_sec: 2,
-      persons: '[{box: [0, 0, 0.3, 0.3],labels: ["shirt"],colors: ["#fff222", "#fff222"],},{box: [0, 0, 0.3, 0.3],labels: ["shirt"],colors: ["#fff222", "#fff222"],},]',
-    },
-  ]
+  format = format || "jpeg";
+  quality = quality || 0.92;
 
-export const piedata:any[] = [
+  if (!vid || (format !== "png" && format !== "jpeg")) {
+    return false;
+  }
+
+  const canvas = document.createElement("canvas");
+
+  canvas.width = vid.videoWidth;
+  canvas.height = vid.videoHeight;
+
+  canvas.getContext("2d").drawImage(vid, 0, 0);
+
+  let dataUri = canvas.toDataURL("image/" + format, quality);
+  let data = dataUri.split(",")[1];
+  let mimeType = dataUri.split(";")[0].slice(5);
+
+  let bytes = window.atob(data);
+  let buf = new ArrayBuffer(bytes.length);
+  let arr = new Uint8Array(buf);
+
+  for (let i = 0; i < bytes.length; i++) {
+    arr[i] = bytes.charCodeAt(i);
+  }
+
+  let blob = new Blob([arr], { type: mimeType });
+  return { blob: blob, dataUri: dataUri, format: format };
+}
+
+export const md: MetaData[] = [
+  {
+    frame_sec: 0,
+    persons:
+      '[{box: [0, 0, 0.3, 0.3],labels: ["shirt"],colors: ["#fff222", "#fff222"],},{box: [0, 0, 0.3, 0.3],labels: ["shirt"],colors: ["#fff222", "#fff222"],},]',
+  },
+  {
+    frame_sec: 1,
+    persons:
+      '[{box: [0, 0, 0.3, 0.3],labels: ["shirt"],colors: ["#fff222", "#fff222"],},{box: [0, 0, 0.3, 0.3],labels: ["shirt"],colors: ["#fff222", "#fff222"],},]',
+  },
+  {
+    frame_sec: 2,
+    persons:
+      '[{box: [0, 0, 0.3, 0.3],labels: ["shirt"],colors: ["#fff222", "#fff222"],},{box: [0, 0, 0.3, 0.3],labels: ["shirt"],colors: ["#fff222", "#fff222"],},]',
+  },
+];
+
+export const piedata: any[] = [
   {
     country: "Lithuania",
     litres: 500,
@@ -119,7 +145,7 @@ export const piedata:any[] = [
   },
 ];
 
-export const flowerdata:any[] = [
+export const flowerdata: any[] = [
   {
     category: "One",
     value1: 8,
@@ -162,7 +188,7 @@ export const flowerdata:any[] = [
   },
 ];
 
-export const linedata:any[] = [
+export const linedata: any[] = [
   {
     date: 1.0,
     value: 13,
@@ -205,107 +231,102 @@ export const linedata:any[] = [
   },
 ];
 
-
-export const toggledata:any[] = [
-  {'from': 'jeans', 'to': 'darkslategray', 'value': 4},
-  {'from': 'Scarf', 'to': 'darkslategray', 'value': 5},
-  {'from': 'Sweater', 'to': 'darkslategray', 'value': 13},
-  {'from': 'Blazer', 'to': 'darkslategray', 'value': 2},
-  {'from': 'jeans', 'to': 'dimgray', 'value': 5},
-  {'from': 'Sweater', 'to': 'rosybrown', 'value': 1},
-  {'from': 'skirt', 'to': 'darkslategray', 'value': 1},
-  {'from': 'skirt', 'to': 'dimgray', 'value': 1},
-  {'from': 'Scarf', 'to': 'darkslateblue', 'value': 1},
-  {'from': 'Scarf', 'to': 'slategray', 'value': 1},
-  {'from': 'skirt', 'to': 'darkslateblue', 'value': 1},
-  {'from': 'Long pants', 'to': 'rosybrown', 'value': 1},
-  {'from': 'jeans', 'to': 'darkgray', 'value': 1},
-  {'from': 'Scarf', 'to': 'dimgray', 'value': 1},
-  {'from': 'Sweater', 'to': 'silver', 'value': 2},
-  {'from': 'jersey', 'to': 'dimgray', 'value': 1},
-  {'from': 'jeans', 'to': 'gray', 'value': 2},
-  {'from': 'Scarf', 'to': 'silver', 'value': 1},
-  {'from': 'Sweater', 'to': 'lightgray', 'value': 1},
-  {'from': 'Scarf', 'to': 'gray', 'value': 1},
-  {'from': 'Blazer', 'to': 'silver', 'value': 1},
-  {'from': 'jersey', 'to': 'silver', 'value': 1},
-  {'from': 'shirt', 'to': 'darkgray', 'value': 1},
-  {'from': 'Blazer', 'to': 'saddlebrown', 'value': 1},
-  {'from': 'Blazer', 'to': 'sienna', 'value': 1
-  }
+export const toggledata: any[] = [
+  { from: "jeans", to: "darkslategray", value: 4 },
+  { from: "Scarf", to: "darkslategray", value: 5 },
+  { from: "Sweater", to: "darkslategray", value: 13 },
+  { from: "Blazer", to: "darkslategray", value: 2 },
+  { from: "jeans", to: "dimgray", value: 5 },
+  { from: "Sweater", to: "rosybrown", value: 1 },
+  { from: "skirt", to: "darkslategray", value: 1 },
+  { from: "skirt", to: "dimgray", value: 1 },
+  { from: "Scarf", to: "darkslateblue", value: 1 },
+  { from: "Scarf", to: "slategray", value: 1 },
+  { from: "skirt", to: "darkslateblue", value: 1 },
+  { from: "Long pants", to: "rosybrown", value: 1 },
+  { from: "jeans", to: "darkgray", value: 1 },
+  { from: "Scarf", to: "dimgray", value: 1 },
+  { from: "Sweater", to: "silver", value: 2 },
+  { from: "jersey", to: "dimgray", value: 1 },
+  { from: "jeans", to: "gray", value: 2 },
+  { from: "Scarf", to: "silver", value: 1 },
+  { from: "Sweater", to: "lightgray", value: 1 },
+  { from: "Scarf", to: "gray", value: 1 },
+  { from: "Blazer", to: "silver", value: 1 },
+  { from: "jersey", to: "silver", value: 1 },
+  { from: "shirt", to: "darkgray", value: 1 },
+  { from: "Blazer", to: "saddlebrown", value: 1 },
+  { from: "Blazer", to: "sienna", value: 1 },
 ];
 
-
-export const searchdata:any[] = [
+export const searchdata: any[] = [
   [
     {
-      'video_id' : "5f05d0f814e6a15bdc797d12",
-      'last_seen': {
-        'date': '2020-07-11',
-        'time': '00:51:29'
-      }, 
-      'labels': ['jeans', 'Scarf'], 
-      'colors': ['darkslategray', 'darkslategray'], 
-      'coord': {'latitude': 12.9718871, 'longitude': 77.59367089999999},
-      'location_type': 'GEOMETRIC_CENTER',
-      'street': 'Kasturba Road', 
-      'city': 'Bengaluru', 
-      'county': 'Bangalore Urban', 
-      'country': 'India', 'state': 'Karnataka', 
-      'sublocality': 'Sampangi Rama Nagar'
-    }, 
+      video_id: "5f05d0f814e6a15bdc797d12",
+      date: "2020-07-11",
+      frame_sec: 3,
+      time: "00:51:29",
+      labels: ["jeans", "Scarf"],
+      colors: ["darkslategray", "darkslategray"],
+      coord: { latitude: 12.9718871, longitude: 77.59367089999999 },
+      location_type: "GEOMETRIC_CENTER",
+      street: "Kasturba Road",
+      city: "Bengaluru",
+      county: "Bangalore Urban",
+      country: "India",
+      state: "Karnataka",
+      sublocality: "Sampangi Rama Nagar",
+    },
     {
-      'video_id' : "5f05d0f814e6a15bdc797d12",
-      'last_seen': {
-        'date': '2020-07-11', 
-        'time': '00:51:32'
-      }, 
-      'labels': ['Sweater', 'jeans'], 
-      'colors': ['darkslategray', 'dimgray'], 
-      'coord': {'latitude': 12.9718871, 'longitude': 77.59367089999999}, 
-      'location_type': 'GEOMETRIC_CENTER', 'street': 'Kasturba Road', 
-      'city': 'Bengaluru', 
-      'county': 'Bangalore Urban', 
-      'country': 'India', 
-      'state': 'Karnataka', 
-      'sublocality': 'Sampangi Rama Nagar'
-    }
-  ], 
-  [
-    {
-      'video_id' : "5f05d0f814e6a15bdc797d12",
-      'last_seen': {
-        'date': '2020-07-11', 
-        'time': '00:51:29'
-      }, 
-      'labels': ['jeans', 'Scarf'], 
-      'colors': ['darkslategray', 'darkslategray'], 
-      'coord': {'latitude': 12.9718871, 'longitude': 77.59367089999999}, 
-      'location_type': 'GEOMETRIC_CENTER', 
-      'street': 'Kasturba Road', 
-      'city': 'Bengaluru', 
-      'county': 'Bangalore Urban', 
-      'country': 'India', 
-      'state': 'Karnataka', 
-      'sublocality': 'Sampangi Rama Nagar'
-    }, 
-    {
-      'video_id' : "5f05d0f814e6a15bdc797d12",
-      'last_seen': {
-        'date': '2020-07-11', 
-        'time': '00:51:32'
-      }, 
-      'labels': ['Sweater', 'jeans'], 
-      'colors': ['darkslategray', 'dimgray'], 
-      'coord': {'latitude': 12.9718871, 'longitude': 77.59367089999999}, 
-      'location_type': 'GEOMETRIC_CENTER', 
-      'street': 'Kasturba Road', 
-      'city': 'Bengaluru', 
-      'county': 'Bangalore Urban', 
-      'country': 'India', 
-      'state': 'Karnataka', 
-      'sublocality': 'Sampangi Rama Nagar'
-    }
+      video_id: "5f05d0f814e6a15bdc797d12",
+      date: "2020-07-11",
+      time: "00:51:32",
+      frame_sec: 3,
+      labels: ["Sweater", "jeans"],
+      colors: ["darkslategray", "dimgray"],
+      coord: { latitude: 12.9718871, longitude: 77.59367089999999 },
+      location_type: "GEOMETRIC_CENTER",
+      street: "Kasturba Road",
+      city: "Bengaluru",
+      county: "Bangalore Urban",
+      country: "India",
+      state: "Karnataka",
+      sublocality: "Sampangi Rama Nagar",
+    },
   ],
-  []
-]
+  [
+    {
+      video_id: "5f05d0f814e6a15bdc797d12",
+      date: "2020-07-11",
+      frame_sec: 3,
+      time: "00:51:29",
+      labels: ["jeans", "Scarf"],
+      colors: ["darkslategray", "darkslategray"],
+      coord: { latitude: 12.9718871, longitude: 77.59367089999999 },
+      location_type: "GEOMETRIC_CENTER",
+      street: "Kasturba Road",
+      city: "Bengaluru",
+      county: "Bangalore Urban",
+      country: "India",
+      state: "Karnataka",
+      sublocality: "Sampangi Rama Nagar",
+    },
+    {
+      video_id: "5f05d0f814e6a15bdc797d12",
+      date: "2020-07-11",
+      time: "00:51:32",
+      frame_sec: 3,
+      labels: ["Sweater", "jeans"],
+      colors: ["darkslategray", "dimgray"],
+      coord: { latitude: 12.9718871, longitude: 77.59367089999999 },
+      location_type: "GEOMETRIC_CENTER",
+      street: "Kasturba Road",
+      city: "Bengaluru",
+      county: "Bangalore Urban",
+      country: "India",
+      state: "Karnataka",
+      sublocality: "Sampangi Rama Nagar",
+    },
+  ],
+  [],
+];

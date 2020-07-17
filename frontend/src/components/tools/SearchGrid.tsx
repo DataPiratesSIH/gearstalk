@@ -14,7 +14,6 @@ import qualityIcon from "./quality.svg";
 import SearchIcon from "@material-ui/icons/Search";
 import LoadingSpinner from "../utils/LoadingSpinner";
 import TimeStamp from "./TimeStamp";
-import { searchdata } from "../utils/utils";
 import CancelIcon from "@material-ui/icons/Cancel";
 
 const useStyles = makeStyles((theme) => ({
@@ -86,7 +85,7 @@ const SearchGrid: React.FC<Props> = ({ videos, setVideos }) => {
   const handleClose = () => setOpen(false);
   const auth = useContext(AuthContext);
   const { isLoading, sendRequest } = useHttpClient();
-  const [results, setResults] = useState<any[]>(searchdata);
+  const [results, setResults] = useState<any[]>(null);
   const resultRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {

@@ -11,7 +11,7 @@ import { useHttpClient } from "../hooks/http-hook";
 import LoadingSpinner from "../utils/LoadingSpinner";
 
 interface Props {
-  timestamp: string;
+  timestamp: number;
   video_id: string;
 }
 
@@ -52,17 +52,11 @@ const ImageDialog: React.FC<Props> = ({ timestamp, video_id }) => {
     }
   }, [auth.token, sendRequest, open, timestamp, video_id]);
 
-  const getSeconds = (timestamp: string) => {
-    const h = parseInt(timestamp.slice(0, 2));
-    const m = parseInt(timestamp.slice(3, 5));
-    const s = parseInt(timestamp.slice(6, 8));
-    return h * 3600 + m * 60 + s;
-  };
 
   useEffect(() => {
     if (Object.keys(video).length > 0 && playerRef && playerRef.current) {
-      console.log(getSeconds(timestamp))
-      playerRef.current.seekTo(3, "seconds");
+      console.log(timestamp);
+      playerRef.current.seekTo(timestamp, "seconds");
     }
   }, [video, timestamp]);
 
@@ -70,7 +64,7 @@ const ImageDialog: React.FC<Props> = ({ timestamp, video_id }) => {
     <>
       <Button
         startIcon={<ImageIcon />}
-        style={{ width: "45%" }}
+        style={{ width: "60%" }}
         onClick={handleClickOpen}
       >
         Image

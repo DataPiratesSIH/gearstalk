@@ -39,7 +39,7 @@ const SpotDialog: React.FC<Props> = ({ latitude, longitude, address }) => {
     <>
       <Button
         startIcon={<LocationOnIcon />}
-        style={{ width: "45%" }}
+        style={{ width: "60%" }}
         onClick={handleClickOpen}
       >
         Location

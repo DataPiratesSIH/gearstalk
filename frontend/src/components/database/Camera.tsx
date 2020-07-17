@@ -665,7 +665,7 @@ const Camera: React.FC = () => {
           history.push("/");
           break;
         case "video":
-          history.push("/");
+          history.push(`/search/cctv/${camera._id.$oid}`);
           break;
         default:
           setErrorText(
@@ -924,10 +924,10 @@ const Camera: React.FC = () => {
               <LiveTvIcon />
               <Typography className={classes.optionTitle}>Live Feed</Typography>
             </Grid>
-            <Grid id="video" className={classes.option} item xs={6}>
+            <Grid id="video" className={classes.option} item xs={6} onClick={optionHandler}>
               <VideoLibraryIcon />
               <Typography className={classes.optionTitle}>
-                View All Videos
+                Search All Videos
               </Typography>
             </Grid>
           </Grid>

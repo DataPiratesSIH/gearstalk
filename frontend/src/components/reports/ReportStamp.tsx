@@ -3,13 +3,14 @@ import { makeStyles } from "@material-ui/core/styles";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import Box from "@material-ui/core/Box";
-import TimeLine from "./TimeLine";
+import TimeLine from "../tools/TimeLine";
 import { Container, Grid, Button, Link } from "@material-ui/core";
 import SaveIcon from "@material-ui/icons/Save";
 import SaveAltIcon from "@material-ui/icons/SaveAlt";
 import { useHttpClient } from "../hooks/http-hook";
 import { AuthContext } from "../context/auth-context";
 import LoadingSpinner from "../utils/LoadingSpinner";
+import DeleteIcon from "@material-ui/icons/Delete";
 function a11yProps(index: number) {
   return {
     id: `vertical-tab-${index}`,
@@ -50,9 +51,10 @@ const TabPanel: React.FC<TabPanelProps> = ({ children, value, index }) => {
 };
 interface Props {
   results: any[];
+  deleteReport: (report_id: string) => Promise<void>;
 }
 
-const TimeStamp: React.FC<Props> = ({ results }) => {
+const ReportStamp: React.FC<Props> = ({ results, deleteReport }) => {
   const classes = useStyles();
   const [value, setValue] = useState<number>(0);
   const [report, setReport] = useState<string>(null);
@@ -62,11 +64,11 @@ const TimeStamp: React.FC<Props> = ({ results }) => {
   const saveReport = async () => {
     try {
       const responseData = await sendRequest(
-        process.env.REACT_APP_BACKEND_URL + "/report/addreport",
+        process.env.REACT_APP_BACKEND_URL + "/report/createreport/",
         "POST",
         JSON.stringify({
           results: results,
-          userId: auth.userId
+          userId: auth.userId,
         }),
         {
           "Content-Type": "application/json",
@@ -139,7 +141,7 @@ const TimeStamp: React.FC<Props> = ({ results }) => {
             <Grid
               style={{ textAlign: "center", margin: "20px 0px" }}
               item
-              sm={6}
+              sm={4}
               xs={12}
             >
               <Button
@@ -150,13 +152,13 @@ const TimeStamp: React.FC<Props> = ({ results }) => {
                 onClick={saveReport}
                 disabled={!!report}
               >
-                SAVE & GENERATE REPORT
+                GENERATE REPORT
               </Button>
             </Grid>
             <Grid
               style={{ textAlign: "center", margin: "20px 0px" }}
               item
-              sm={6}
+              sm={4}
               xs={12}
             >
               <Link
@@ -175,6 +177,21 @@ const TimeStamp: React.FC<Props> = ({ results }) => {
                   VIEW REPORT
                 </Button>
               </Link>
+            </Grid>
+            <Grid
+              style={{ textAlign: "center", margin: "20px 0px" }}
+              item
+              sm={4}
+              xs={12}
+            >
+              <Button
+                style={{ width: "90%", backgroundColor: "#910a0a", color: "#fff" }}
+                variant="contained"
+                startIcon={<DeleteIcon />}
+                onClick={() => deleteReport("dad")}
+              >
+                DELETE REPORT
+              </Button>
             </Grid>
           </Grid>
         </Container>
@@ -200,4 +217,4 @@ const TimeStamp: React.FC<Props> = ({ results }) => {
   );
 };
 
-export default TimeStamp;
+export default ReportStamp;

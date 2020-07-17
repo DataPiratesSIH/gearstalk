@@ -71,7 +71,7 @@ const TimeLine: React.FC<Props> = ({ data }) => {
               </div>
               <span style={{ padding: "10px 5px" }}>
                 <SpotDialog latitude={d.coord.latitude} longitude={d.coord.longitude} address={d.sublocality} />
-                <ImageDialog timestamp={d.last_seen.time} video_id={`5f05d0f814e6a15bdc797d12`} /> 
+                <ImageDialog timestamp={d.last_seen.time} video_id={d.video_id} /> 
               </span>
             </div>
           </div>

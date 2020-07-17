@@ -11,7 +11,7 @@ import SearchGrid from "./SearchGrid";
 
 
 const Search: React.FC = () => {
-  const [video, setVideo] = useState<{ [key: string]: any }>({});
+  const [videos, setVideos] = useState<{ [key: string]: any }[]>([]);
   const initialAttribute: AttributeState = {
     attributes: [
       {
@@ -127,7 +127,7 @@ const Search: React.FC = () => {
     <AttributeProvider initialAttribute={initialAttribute} reducer={reducer}>
       <CssBaseline />
       <Container maxWidth="xl">
-        <SearchGrid video={video} setVideo={setVideo} />
+        <SearchGrid videos={videos} setVideos={setVideos} />
       </Container>
     </AttributeProvider>
   );

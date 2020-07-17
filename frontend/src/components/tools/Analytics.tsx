@@ -3,7 +3,7 @@ import { AuthContext } from "../context/auth-context";
 import { useParams } from "react-router-dom";
 import { useHttpClient } from "../hooks/http-hook";
 import { makeStyles } from "@material-ui/core/styles";
-import { Grid, IconButton, Drawer } from "@material-ui/core";
+import { Grid, IconButton, Drawer, Button, Link } from "@material-ui/core";
 
 import AccessAlarmIcon from "@material-ui/icons/AccessAlarm";
 import AirplayIcon from "@material-ui/icons/Airplay";
@@ -15,6 +15,9 @@ import Toggle from "../charts/Toggle";
 import Tick from "../utils/Tick";
 import FrameShower from "./FrameShower";
 import LoadingSpinner from "../utils/LoadingSpinner";
+import CreateIcon from '@material-ui/icons/Create';
+import SaveAltIcon from "@material-ui/icons/SaveAlt";
+
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
@@ -43,6 +46,7 @@ const Analytics: React.FC = () => {
   const [lineData, setLineData] = useState<any[]>([]); // linedata
   const [flowerData, setFlowerData] = useState<any[]>([]); // flowerdata
   const [pieData, setPieData] = useState<any[]>([]);
+  const [report, setReport] = useState<string>("");
 
   // eslint-disable-next-line
   const [toggleData, setToggleData] = useState<any[]>(toggledata);
@@ -97,12 +101,70 @@ const Analytics: React.FC = () => {
     if (Object.keys(video).length > 0) fetchChartData();
   }, [sendRequest, auth.token, video]);
 
+  const generateReport = async () => {
+    try {
+      console.log(video);
+      const response = await sendRequest(
+        process.env.REACT_APP_BACKEND_URL + "/video/report/" + video._id.$oid, //
+        "GET",
+        null,
+        {
+          Authorization: "Bearer " + auth.token,
+        }
+      );
+      console.log(response);
+    } catch (err) {
+      console.log(err);
+      setReport("https://datapiratessih.github.io")
+    }
+  }
+
   return (
     <React.Fragment>
       <Drawer anchor="right" open={open} onClose={sidebarClose}>
         <FrameShower video={video} />
       </Drawer>
       <Grid className={classes.topContainer} container spacing={1}>
+      <Grid
+              style={{ textAlign: "center", margin: "20px 0px" }}
+              item
+              sm={6}
+              xs={12}
+            >
+              <Button
+                style={{ width: "90%" }}
+                variant="contained"
+                color="secondary"
+                startIcon={<CreateIcon />}
+                disabled={!!report}
+                onClick={generateReport}
+              >
+                GENERATE REPORT
+              </Button>
+            </Grid>
+            <Grid
+              style={{ textAlign: "center", margin: "20px 0px" }}
+              item
+              sm={6}
+              xs={12}
+            >
+              <Link
+                href={report}
+                target="_blank"
+                rel="noopener"
+                underline="none"
+              >
+                <Button
+                  style={{ width: "90%" }}
+                  variant="contained"
+                  color="secondary"
+                  startIcon={<SaveAltIcon />}
+                  disabled={!report}
+                >
+                  VIEW REPORT
+                </Button>
+              </Link>
+            </Grid>
         <Grid className={classes.chartContainer} item sm={4} xs={12}>
           <div className={classes.chartDiv}>
             <Tick />

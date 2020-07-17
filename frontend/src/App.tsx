@@ -28,6 +28,7 @@ import Visualization from "./components/tools/Visualization";
 import Enhance from "./components/tools/Enhance";
 import Analytics from "./components/tools/Analytics";
 import FAQs from "./components/tools/FAQs"
+import Reports from "./components/reports/Reports";
 
 const theme = createMuiTheme(customTheme);
 
@@ -67,7 +68,17 @@ const App = () => {
             <Analytics />
           </ResponsiveDrawer>
         </Route>
+        <Route path="/reports" exact>
+          <ResponsiveDrawer>
+            <Reports />
+          </ResponsiveDrawer>
+        </Route>
         <Route path="/search" exact>
+          <ResponsiveDrawer>
+            <Search />
+          </ResponsiveDrawer>
+        </Route>
+        <Route path="/search/:db/:oid" exact>
           <ResponsiveDrawer>
             <Search />
           </ResponsiveDrawer>

@@ -21,6 +21,7 @@ import InsertChartIcon from "@material-ui/icons/InsertChart";
 // import StreetviewIcon from '@material-ui/icons/Streetview';
 import ImageSearchIcon from "@material-ui/icons/ImageSearch";
 import VideocamIcon from "@material-ui/icons/Videocam";
+import FindInPageIcon from '@material-ui/icons/FindInPage';
 
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 import { Typography } from "@material-ui/core";
@@ -117,6 +118,19 @@ const SideDrawer = (props) => {
             </Avatar>
           </ListItemIcon>
           <ListItemText primary="Explore Video" />
+        </ListItem>
+        <ListItem
+          button
+          onClick={() => {
+            pushLink("/reports");
+          }}
+        >
+          <ListItemIcon>
+            <Avatar>
+              <FindInPageIcon fontSize="small" />
+            </Avatar>
+          </ListItemIcon>
+          <ListItemText primary="Browse Reports" />
         </ListItem>
       </List>
       <Divider className={classes.divider} />

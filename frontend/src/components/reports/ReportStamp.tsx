@@ -11,6 +11,8 @@ import { useHttpClient } from "../hooks/http-hook";
 import { AuthContext } from "../context/auth-context";
 import LoadingSpinner from "../utils/LoadingSpinner";
 import DeleteIcon from "@material-ui/icons/Delete";
+import UtilDialog from "../utils/UtilDialog";
+
 function a11yProps(index: number) {
   return {
     id: `vertical-tab-${index}`,
@@ -51,38 +53,19 @@ const TabPanel: React.FC<TabPanelProps> = ({ children, value, index }) => {
 };
 interface Props {
   results: any[];
+  reportId: string;
   deleteReport: (report_id: string) => Promise<void>;
 }
 
-const ReportStamp: React.FC<Props> = ({ results, deleteReport }) => {
+const ReportStamp: React.FC<Props> = ({ results, reportId, deleteReport }) => {
   const classes = useStyles();
   const [value, setValue] = useState<number>(0);
   const [report, setReport] = useState<string>(null);
   const { isLoading, sendRequest } = useHttpClient();
   const auth = useContext(AuthContext);
-
-  const saveReport = async () => {
-    try {
-      const responseData = await sendRequest(
-        process.env.REACT_APP_BACKEND_URL + "/report/createreport/",
-        "POST",
-        JSON.stringify({
-          results: results,
-          userId: auth.userId,
-        }),
-        {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + auth.token,
-        }
-      );
-      console.log(responseData);
-
-      setReport(responseData.report_link);
-    } catch (err) {
-      console.log(err);
-      setReport("https:datapiratessih.github.io");
-    }
-  };
+  const [open, setOpen] = useState<boolean>(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -97,8 +80,42 @@ const ReportStamp: React.FC<Props> = ({ results, deleteReport }) => {
     return f;
   };
 
+  const deleteReportHandler = () => {
+    deleteReport(reportId);
+    handleClose();
+  };
+
+  const generateReport = async () => {
+    try {
+      const responseData = await sendRequest(
+        process.env.REACT_APP_BACKEND_URL +
+          "/report/generatereport/" +
+          reportId,
+        "GET",
+        null,
+        {
+          Authorization: "Bearer " + auth.token,
+        }
+      );
+      console.log(responseData);
+      setReport(responseData.report_link);
+    } catch (err) {
+      console.log(err);
+      setReport("https:datapiratessih.github.io");
+    }
+  };
+
   return (
     <div className={classes.root}>
+      <UtilDialog
+        open={open}
+        title="Delete Report?"
+        handleClose={handleClose}
+        operationHandler={deleteReportHandler}
+      >
+        Please confirm if you want to delete this report from the database. This
+        is not recoverable.
+      </UtilDialog>
       <Tabs
         orientation="vertical"
         variant="scrollable"
@@ -149,7 +166,7 @@ const ReportStamp: React.FC<Props> = ({ results, deleteReport }) => {
                 variant="contained"
                 color="secondary"
                 startIcon={<SaveIcon />}
-                onClick={saveReport}
+                onClick={generateReport}
                 disabled={!!report}
               >
                 GENERATE REPORT
@@ -185,10 +202,14 @@ const ReportStamp: React.FC<Props> = ({ results, deleteReport }) => {
               xs={12}
             >
               <Button
-                style={{ width: "90%", backgroundColor: "#910a0a", color: "#fff" }}
+                style={{
+                  width: "90%",
+                  backgroundColor: "#910a0a",
+                  color: "#fff",
+                }}
                 variant="contained"
                 startIcon={<DeleteIcon />}
-                onClick={() => deleteReport("dad")}
+                onClick={handleOpen}
               >
                 DELETE REPORT
               </Button>

@@ -65,8 +65,8 @@ const TimeStamp: React.FC<Props> = ({ results }) => {
         process.env.REACT_APP_BACKEND_URL + "/report/addreport",
         "POST",
         JSON.stringify({
-          results: results,
-          userId: auth.userId
+            results: results,
+            userId: auth.userId ? auth.userId : "5f13132787be59a74d7a7c59",
         }),
         {
           "Content-Type": "application/json",
@@ -78,7 +78,7 @@ const TimeStamp: React.FC<Props> = ({ results }) => {
       setReport(responseData.report_link);
     } catch (err) {
       console.log(err);
-      setReport("https:datapiratessih.github.io");
+      // setReport("https:datapiratessih.github.io");
     }
   };
 

@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
 import { AuthContext } from "../context/auth-context";
 import { useHttpClient } from "../hooks/http-hook";
-import { searchdata } from "../utils/utils";
 import LoadingSpinner from "../utils/LoadingSpinner";
 import ReportStamp from "./ReportStamp";
 
@@ -10,30 +9,32 @@ const Reports: React.FC = () => {
   const { isLoading, sendRequest } = useHttpClient();
   const [reports, setReports] = useState<any[]>([]);
 
-  const deleteReport = async (report_id: string) => {
+  const deleteReport = async (reportId: string) => {
     try {
       const responseData = await sendRequest(
-        process.env.REACT_APP_BACKEND_URL + "/report/deletereport/",
-        "POST",
-        JSON.stringify({
-          report_id: report_id,
-          userId: auth.userId
-        }),
+        process.env.REACT_APP_BACKEND_URL + "/report/deletereport/" + reportId,
+        "DELETE",
+        null,
         {
-          "Content-Type": "application/json",
           Authorization: "Bearer " + auth.token,
         }
       );
-      setReports(responseData);
+      if (responseData.success) {
+        setReports((rep) => {
+          let newReports = rep.filter((r) => r._id.$oid !== reportId);
+          return newReports;
+        });
+      }
     } catch (err) {
       console.log(err);
     }
-  }
+  };
   useEffect(() => {
     const fetchReports = async () => {
       try {
+        let userId = auth.userId ? auth.userId : "5f13132787be59a74d7a7c59";
         const responseData = await sendRequest(
-          process.env.REACT_APP_BACKEND_URL + "/report/getreport/" + auth.userId ?? null,
+          process.env.REACT_APP_BACKEND_URL + "/report/getreport/" + userId,
           "GET",
           null,
           {
@@ -43,11 +44,11 @@ const Reports: React.FC = () => {
         setReports(responseData);
       } catch (err) {
         console.log(err);
-        setReports([searchdata, searchdata]);
       }
     };
     fetchReports();
   }, [sendRequest, auth.token, auth.userId]);
+  
   return (
     <div>
       {isLoading ? (
@@ -60,7 +61,12 @@ const Reports: React.FC = () => {
             <div>
               {reports.map((r, i) => (
                 <div key={i} style={{ padding: "10px" }}>
-                  <ReportStamp key={i} results={r} deleteReport={deleteReport} />
+                  <ReportStamp
+                    key={i}
+                    results={r.results}
+                    reportId={r._id.$oid}
+                    deleteReport={deleteReport}
+                  />
                 </div>
               ))}
             </div>

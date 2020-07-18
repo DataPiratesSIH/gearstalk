@@ -24,7 +24,7 @@ import VideocamIcon from "@material-ui/icons/Videocam";
 import FindInPageIcon from '@material-ui/icons/FindInPage';
 
 import { makeStyles, useTheme } from "@material-ui/core/styles";
-import { Typography } from "@material-ui/core";
+import { Typography, Theme } from "@material-ui/core";
 import { FaQuestion } from "react-icons/fa";
 
 const drawerWidth = 300;
@@ -57,7 +57,15 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const SideDrawer = (props) => {
+interface Props {
+  theme: Theme;
+  container: any;
+  handleDrawerToggle: () => void;
+  mobileOpen: boolean;
+  setMobileOpen: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+const SideDrawer: React.FC<Props> = (props) => {
   let history = useHistory();
   const classes = useStyles();
   const theme = useTheme();

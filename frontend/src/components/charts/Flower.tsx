@@ -14,53 +14,41 @@ const Flower: React.FC<Props> = ({ data }) => {
     am4core.useTheme(am4themes_animated);
     // Themes end
 
-    let chart = am4core.create("flowerDiv", am4charts.RadarChart);
-    chart.hiddenState.properties.opacity = 0; // this creates initial fade-in
+    // Create chart instance
+    var chart = am4core.create("ChartDiv", am4charts.XYChart);
 
+    // Add data
     chart.data = data
-    // chart.data = flower_data;
 
-    chart.padding(20, 20, 20, 20);
+    // Create axes
 
-    let categoryAxis = chart.xAxes.push(new am4charts.CategoryAxis() as any);
+    var categoryAxis = chart.xAxes.push(new am4charts.CategoryAxis());
     categoryAxis.dataFields.category = "category";
-    categoryAxis.renderer.labels.template.location = 0.5;
-    categoryAxis.renderer.tooltipLocation = 0.5;
-    categoryAxis.renderer.cellStartLocation = 0.2;
-    categoryAxis.renderer.cellEndLocation = 0.8;
+    categoryAxis.renderer.grid.template.location = 0;
+    categoryAxis.renderer.minGridDistance = 30;
 
-    let valueAxis = chart.yAxes.push(new am4charts.ValueAxis() as any);
-    valueAxis.tooltip.disabled = true;
-    valueAxis.renderer.labels.template.horizontalCenter = "left";
-    valueAxis.minX = 0;
+    // categoryAxis.renderer.labels.template.adapter.add("dy", function(dy, target) {
+    //   if (target.dataItem && target.dataItem.index & 2 == 2) {
+    //     return dy + 25;
+    //   }
+    //   return dy;
+    // });
 
-    let series1 = chart.series.push(new am4charts.RadarColumnSeries());
-    series1.columns.template.tooltipText = "{name}: {valueY.value}";
-    series1.columns.template.width = am4core.percent(100);
-    series1.name = "Series 1";
-    series1.dataFields.categoryX = "category";
-    series1.dataFields.valueY = "value1";
+    chart.yAxes.push(new am4charts.ValueAxis());
 
-    let series2 = chart.series.push(new am4charts.RadarColumnSeries());
-    series2.columns.template.width = am4core.percent(100);
-    series2.columns.template.tooltipText = "{name}: {valueY.value}";
-    series2.name = "Series 2";
-    series2.dataFields.categoryX = "category";
-    series2.dataFields.valueY = "value2";
+    // Create series
+    var series = chart.series.push(new am4charts.ColumnSeries());
+    series.dataFields.valueY = "value1";
+    series.dataFields.categoryX = "category";
+    series.name = "Lables";
+    series.columns.template.tooltipText = "{categoryX}: [bold]{valueY}[/]";
+    series.columns.template.fillOpacity = .8;
 
-    chart.seriesContainer.zIndex = -1;
+    var columnTemplate = series.columns.template;
+    columnTemplate.strokeWidth = 2;
+    columnTemplate.strokeOpacity = 1;
 
-    chart.scrollbarX = new am4core.Scrollbar();
-    chart.scrollbarX.exportable = false;
-    chart.scrollbarY = new am4core.Scrollbar();
-    chart.scrollbarY.exportable = false;
-
-    chart.cursor = new am4charts.RadarCursor();
-    chart.cursor.xAxis = categoryAxis;
-    chart.cursor.fullWidthLineX = true;
-    chart.cursor.lineX.strokeOpacity = 0;
-    chart.cursor.lineX.fillOpacity = 0.1;
-    chart.cursor.lineX.fill = am4core.color("#000000");
+// }); // end am4core.ready()
 
     return () => {
       chart.dispose();
@@ -69,7 +57,7 @@ const Flower: React.FC<Props> = ({ data }) => {
 
   return (
     <div style={{ maxWidth: "100vw", overflowX: "auto", textAlign: "center" }}>
-      <div style={{ width: "600px", height: "400px", display: "inline-block" }} id="flowerDiv" />
+      <div style={{ width: "600px", height: "400px", display: "inline-block" }} id="ChartDiv" />
     </div>
   );
 };

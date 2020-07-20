@@ -58,7 +58,7 @@ const Line: React.FC<Props> = ({ data }) => {
       scrollbarX.series.push(series);
       chart.scrollbarX = scrollbarX;
       chart.scrollbarX.parent = chart.bottomAxesContainer;
-      valueAxis1.start = 0.79;
+      valueAxis1.start = 0.00;
       valueAxis1.keepSelection = true;
   
       return () => {

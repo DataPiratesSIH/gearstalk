@@ -21,7 +21,9 @@ const Line: React.FC<Props> = ({ data }) => {
       // Create axes
       let valueAxis1 = chart.xAxes.push(new am4charts.ValueAxis());
       // eslint-disable-next-line
-      chart.yAxes.push(new am4charts.ValueAxis());
+      let valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
+      valueAxis1.title.text = "Total Frames";
+      valueAxis.title.text = "Total Number Of People In Each Frame";
       // Create series
       let series = chart.series.push(new am4charts.LineSeries());
       series.dataFields.valueY = "value";

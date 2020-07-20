@@ -26,7 +26,7 @@ const Flower: React.FC<Props> = ({ data }) => {
     categoryAxis.dataFields.category = "category";
     categoryAxis.renderer.grid.template.location = 0;
     categoryAxis.renderer.minGridDistance = 30;
-
+    categoryAxis.title.text = "Clothing";
     // categoryAxis.renderer.labels.template.adapter.add("dy", function(dy, target) {
     //   if (target.dataItem && target.dataItem.index & 2 == 2) {
     //     return dy + 25;
@@ -34,8 +34,8 @@ const Flower: React.FC<Props> = ({ data }) => {
     //   return dy;
     // });
 
-    chart.yAxes.push(new am4charts.ValueAxis());
-
+    var valueAxis =chart.yAxes.push(new am4charts.ValueAxis());
+    valueAxis.title.text = "Total Number Of Clothing";
     // Create series
     var series = chart.series.push(new am4charts.ColumnSeries());
     series.dataFields.valueY = "value1";

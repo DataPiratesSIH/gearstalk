@@ -50,7 +50,7 @@ const Search: React.FC = () => {
             {
               id: uuid(),
               labels: ["shirt"],
-              colors: [{ hex: "#000000" }],
+              colors: [newColor],
             },
           ],
         };

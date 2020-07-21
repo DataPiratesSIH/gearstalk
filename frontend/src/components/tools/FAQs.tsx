@@ -75,7 +75,7 @@ const FAQs: React.FC = () => {
         Frequently Asked Questions
       </div>
       <div style={{ width: "100%" }}>
-        {data.map((d, i) => (
+        {data.rows.map((d, i) => (
           <ExpansionPanel style={{ width: "100%" }} key={i}>
             <ExpansionPanelSummary
               expandIcon={<ExpandMoreIcon style={{ color: "#fff" }} />}

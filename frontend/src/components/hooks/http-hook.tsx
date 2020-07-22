@@ -7,7 +7,7 @@ export const useHttpClient = () => {
   const activeHttpRequests = useRef<AbortController[]>([]);
 
   const sendRequest = useCallback(
-    async (url, method = 'GET', body = null, headers = {}) => {
+    async (url, method = 'GET', body = null, headers = {}, jsonParse = true) => {
       setIsLoading(true);
       const httpAbortCtrl = new AbortController();
       activeHttpRequests.current.push(httpAbortCtrl);
@@ -21,8 +21,11 @@ export const useHttpClient = () => {
           signal: httpAbortCtrl.signal,
           redirect: 'follow'
         });
-
-        const responseData = await response.json();
+        let responseData;
+        if (jsonParse)
+          responseData = await response.json();
+        else
+          responseData = response
 
         activeHttpRequests.current = activeHttpRequests.current.filter(
           reqCtrl => reqCtrl !== httpAbortCtrl

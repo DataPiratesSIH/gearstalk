@@ -87,7 +87,7 @@ const ReportStamp: React.FC<Props> = ({ results, reportId, deleteReport }) => {
 
   const generateReport = async () => {
     try {
-      const responseData = await sendRequest(
+      const response = await sendRequest(
         process.env.REACT_APP_BACKEND_URL +
           "/report/generatereport/" +
           reportId,
@@ -97,8 +97,7 @@ const ReportStamp: React.FC<Props> = ({ results, reportId, deleteReport }) => {
           Authorization: "Bearer " + auth.token,
         }
       );
-      console.log(responseData);
-      setReport(responseData.report_link);
+      response.blob().then((blob: Blob) => URL.createObjectURL(blob)).then((url: string) => setReport(url))
     } catch (err) {
       console.log(err);
       setReport("https:datapiratessih.github.io");

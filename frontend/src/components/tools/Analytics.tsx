@@ -4,7 +4,8 @@ import { useParams } from "react-router-dom";
 import { useHttpClient } from "../hooks/http-hook";
 import { makeStyles } from "@material-ui/core/styles";
 import { Grid, IconButton, Drawer, Button, Link } from "@material-ui/core";
-
+import Snackbar from '@material-ui/core/Snackbar';
+import MuiAlert from '@material-ui/lab/Alert';
 import AccessAlarmIcon from "@material-ui/icons/AccessAlarm";
 import AirplayIcon from "@material-ui/icons/Airplay";
 import { toggledata } from "../utils/utils";
@@ -17,6 +18,10 @@ import FrameShower from "./FrameShower";
 import LoadingSpinner from "../utils/LoadingSpinner";
 import CreateIcon from '@material-ui/icons/Create';
 import SaveAltIcon from "@material-ui/icons/SaveAlt";
+
+function Alert(props) {
+  return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -42,7 +47,7 @@ const Analytics: React.FC = () => {
   const { oid } = useParams();
   const auth = useContext(AuthContext);
   const [video, setVideo] = useState<{ [key: string]: any }>({});
-  const { isLoading, sendRequest } = useHttpClient();
+  const { isLoading, sendRequest, error, clearError } = useHttpClient();
   const [lineData, setLineData] = useState<any[]>([]); // linedata
   const [flowerData, setFlowerData] = useState<any[]>([]); // flowerdata
   const [pieData, setPieData] = useState<any[]>([]);
@@ -105,22 +110,27 @@ const Analytics: React.FC = () => {
     try {
       console.log(video);
       const response = await sendRequest(
-        process.env.REACT_APP_BACKEND_URL + "/video/report/" + video._id.$oid, //
+        process.env.REACT_APP_BACKEND_URL + "/report/generatevideoreport/" + video._id.$oid, //
         "GET",
         null,
         {
           Authorization: "Bearer " + auth.token,
-        }
+        },
+        false
       );
-      console.log(response);
+      response.blob().then((blob: Blob) => URL.createObjectURL(blob)).then((url: string) => setReport(url))
     } catch (err) {
       console.log(err);
-      setReport("https://datapiratessih.github.io")
     }
   }
 
   return (
     <React.Fragment>
+      <Snackbar open={!!error} autoHideDuration={6000} onClose={clearError}>
+  <Alert onClose={clearError} severity="error">
+    An error has occurred. Please try again later!
+  </Alert>
+</Snackbar>
       <Drawer anchor="right" open={open} onClose={sidebarClose}>
         <FrameShower video={video} />
       </Drawer>

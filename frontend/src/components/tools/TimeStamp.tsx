@@ -61,7 +61,7 @@ const TimeStamp: React.FC<Props> = ({ results }) => {
 
   const saveReport = async () => {
     try {
-      const responseData = await sendRequest(
+      const response = await sendRequest(
         process.env.REACT_APP_BACKEND_URL + "/report/addreport",
         "POST",
         JSON.stringify({
@@ -73,9 +73,9 @@ const TimeStamp: React.FC<Props> = ({ results }) => {
           Authorization: "Bearer " + auth.token,
         }
       );
-      console.log(responseData);
 
-      setReport(responseData.report_link);
+      response.blob().then((blob: Blob) => URL.createObjectURL(blob)).then((url: string) => setReport(url))
+
     } catch (err) {
       console.log(err);
       // setReport("https:datapiratessih.github.io");

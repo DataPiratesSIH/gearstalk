@@ -22,9 +22,6 @@ import {
   DialogTitle,
   InputAdornment,
   TextField,
-  FormGroup,
-  FormControlLabel,
-  Switch,
 } from "@material-ui/core";
 import { Alert, AlertTitle } from "@material-ui/lab";
 import CancelIcon from "@material-ui/icons/Cancel";
@@ -370,7 +367,6 @@ const Upload: React.FC = () => {
   const auth = useContext(AuthContext);
   const [videoFile, setVideoFile] = useState<File | null>(null);
   const [progress, setProgress] = useState<number>(0);
-  const [processVideo, setProcessVideo] = useState<boolean>(false);
   const [uploading, setUploading] = useState<boolean>(false);
   const [success, setSuccess] = useState<boolean>(false);
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
@@ -384,10 +380,6 @@ const Upload: React.FC = () => {
 
   const handleClose = () => {
     setOpen(false);
-  };
-
-  const toggleProcess = () => {
-    setProcessVideo((p) => !p);
   };
 
   const onDrop = (accepted, rejected, links) => {
@@ -410,8 +402,7 @@ const Upload: React.FC = () => {
     if (
       videoFile &&
       selectedDate &&
-      location &&
-      typeof processVideo === "boolean"
+      location
     ) {
       setUploading(true);
       setProgress(0);
@@ -435,7 +426,6 @@ const Upload: React.FC = () => {
       data.append("video", videoFile);
       data.append("time", String(selectedDate));
       data.append("location", location.oid);
-      data.append("process", String(processVideo));
 
       axios
         .post(
@@ -444,12 +434,12 @@ const Upload: React.FC = () => {
           config
         )
         .then((res) => {
+          console.log("Video Uploaded")
           console.log(res);
           clearError();
           setLocation(undefined);
           setVideoFile(null);
           setSuccess(true);
-          setProcessVideo(false);
         })
         .catch((err) => {
           setErrorText(err.message);
@@ -593,19 +583,6 @@ const Upload: React.FC = () => {
                     </Paper>
                   </Grid>
                 </Grid>
-                <FormGroup style={{ padding: "20px", paddingTop: "0px" }} row>
-                  <FormControlLabel
-                    control={
-                      <Switch
-                        checked={processVideo}
-                        onChange={toggleProcess}
-                        name="process"
-                        color="primary"
-                      />
-                    }
-                    label="Process video after uploading"
-                  />
-                </FormGroup>
               </div>
               <div style={{ paddingLeft: "20px", paddingRight: "20px" }}>
                 {error && (

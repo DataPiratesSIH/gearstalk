@@ -37,7 +37,7 @@ const App = () => {
 
   let routes;
 
-  // if (token) {
+  if (token) {
     routes = (
       <Switch>
         <Route path="/" exact>
@@ -111,22 +111,22 @@ const App = () => {
         <Redirect to="/console" />
       </Switch>
     );
-  // } else {
-  //   routes = (
-  //     <Switch>
-  //       <Route path="/" exact>
-  //         <Landing />
-  //       </Route>
-  //       <Route path="/signin" exact>
-  //         <Signin />
-  //       </Route>
-  //       <Route path="/signup" exact>
-  //         <Signup />
-  //       </Route>
-  //       <Redirect to="/" />
-  //     </Switch>
-  //   );
-  // }
+  } else {
+    routes = (
+      <Switch>
+        <Route path="/" exact>
+          <Landing />
+        </Route>
+        <Route path="/signin" exact>
+          <Signin />
+        </Route>
+        <Route path="/signup" exact>
+          <Signup />
+        </Route>
+        <Redirect to="/" />
+      </Switch>
+    );
+  }
 
   return (
     <ThemeProvider theme={theme}>

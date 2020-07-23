@@ -32,9 +32,8 @@ const Reports: React.FC = () => {
   useEffect(() => {
     const fetchReports = async () => {
       try {
-        let userId = auth.userId ? auth.userId : "5f13132787be59a74d7a7c59";
         const responseData = await sendRequest(
-          process.env.REACT_APP_BACKEND_URL + "/report/getreport/" + userId,
+          process.env.REACT_APP_BACKEND_URL + "/report/getreport/" + auth.userId,
           "GET",
           null,
           {

@@ -95,12 +95,12 @@ const ReportStamp: React.FC<Props> = ({ results, reportId, deleteReport }) => {
         null,
         {
           Authorization: "Bearer " + auth.token,
-        }
+        },
+        false
       );
       response.blob().then((blob: Blob) => URL.createObjectURL(blob)).then((url: string) => setReport(url))
     } catch (err) {
       console.log(err);
-      setReport("https:datapiratessih.github.io");
     }
   };
 

@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { useHistory, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { Formik } from "formik";
 
 import { useHttpClient } from "../hooks/http-hook";
@@ -54,7 +54,6 @@ const useStyles = makeStyles((theme) => ({
 const Signup = () => {
   const auth = useContext(AuthContext);
   const { isLoading, error, sendRequest, clearError } = useHttpClient();
-  let history = useHistory();
 
   const classes = useStyles();
 
@@ -135,7 +134,6 @@ const Signup = () => {
                     }
                   );
                   auth.login(responseData.userId, responseData.token, null);
-                  history.push("/");
                 } catch (err) {
                   setSubmitting(false);
                   console.log(err);

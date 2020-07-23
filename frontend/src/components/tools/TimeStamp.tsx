@@ -66,19 +66,19 @@ const TimeStamp: React.FC<Props> = ({ results }) => {
         "POST",
         JSON.stringify({
             results: results,
-            userId: auth.userId ? auth.userId : "5f13132787be59a74d7a7c59",
+            userId: auth.userId,
         }),
         {
           "Content-Type": "application/json",
           Authorization: "Bearer " + auth.token,
-        }
+        },
+        false
       );
 
       response.blob().then((blob: Blob) => URL.createObjectURL(blob)).then((url: string) => setReport(url))
 
     } catch (err) {
       console.log(err);
-      // setReport("https:datapiratessih.github.io");
     }
   };
 

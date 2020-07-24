@@ -45,7 +45,7 @@ const DownloadButton: React.FC = () => {
         >
           DOWNLOAD FOR WINDOWS
         </Button>
-      </Link>{" "}
+      </Link>
       <Link
         href="https://github.com/DataPiratesSIH/gearstalk-electron-app/releases/download/v0.2.0/gearstalk-0.2.0.pkg"
         underline="none"
@@ -57,7 +57,7 @@ const DownloadButton: React.FC = () => {
         >
           DOWNLOAD FOR IOS
         </Button>
-      </Link>{" "}
+      </Link>
       <Link
         href="https://github.com/DataPiratesSIH/gearstalk-electron-app/releases/download/v0.2.0/gearstalk-0.2.0.AppImage"
         underline="none"

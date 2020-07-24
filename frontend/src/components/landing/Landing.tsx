@@ -8,8 +8,8 @@ import { PieChart, WorldMap } from "./Charts";
 import TechStack from "./Techstack";
 import Footer from "./Footer";
 import Mockup from "./Mockup";
-
 import "./Landing.css";
+import DownloadButton from "./DownloadButton";
 
 interface FeatureProps {
   children: React.ReactNode;
@@ -67,7 +67,11 @@ const Landing: React.FC = () => {
               {auth.isLoggedIn ? (
                 <Button
                   variant="contained"
-                  color="primary"
+                  style={{
+                    color: "#060124",
+                    backgroundColor: "#2db1e1",
+                    fontWeight: 500,
+                  }}
                   onClick={() => history.push("/console")}
                 >
                   Go to Console
@@ -76,7 +80,11 @@ const Landing: React.FC = () => {
                 <>
                   <Button
                     variant="contained"
-                    style={{ color: "#060124", backgroundColor: "#2db1e1", fontWeight: 500 }}
+                    style={{
+                      color: "#060124",
+                      backgroundColor: "#2db1e1",
+                      fontWeight: 500,
+                    }}
                     onClick={() => history.push("/signup")}
                   >
                     Sign Up
@@ -84,7 +92,11 @@ const Landing: React.FC = () => {
                   &nbsp;
                   <Button
                     variant="contained"
-                    style={{ color: "#060124", backgroundColor: "#2db1e1", fontWeight: 500 }}
+                    style={{
+                      color: "#060124",
+                      backgroundColor: "#2db1e1",
+                      fontWeight: 500,
+                    }}
                     onClick={() => history.push("/signin")}
                   >
                     Log In
@@ -95,6 +107,9 @@ const Landing: React.FC = () => {
               <Button variant="outlined" color="primary">
                 Github
               </Button>
+              <div style={{ marginTop: "20px" }}>
+<DownloadButton />
+              </div>
             </FadeIn>
           </Grid>
           <Grid

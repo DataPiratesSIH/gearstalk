@@ -12,7 +12,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-  /* Scroll Bar suck me*/
+  /* Scroll Bar*/
   ::-webkit-scrollbar {
     width: 4px;
     height: 0px;

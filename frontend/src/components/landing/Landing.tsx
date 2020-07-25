@@ -72,7 +72,7 @@ const Landing: React.FC = () => {
                     backgroundColor: "#2db1e1",
                     fontWeight: 500,
                   }}
-                  onClick={() => history.push("/console")}
+                  onClick={() => history.push("/")}
                 >
                   Go to Console
                 </Button>

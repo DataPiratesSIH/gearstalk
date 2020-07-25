@@ -86,7 +86,7 @@ const SideDrawer: React.FC<Props> = (props) => {
         classes={{ root: classes.root }}
         button
         onClick={() => {
-          pushLink("/");
+          pushLink("/landing");
         }}
       >
         <ListItemIcon>
@@ -104,7 +104,7 @@ const SideDrawer: React.FC<Props> = (props) => {
         <ListItem
           button
           onClick={() => {
-            pushLink("/console");
+            pushLink("/");
           }}
         >
           <ListItemIcon>

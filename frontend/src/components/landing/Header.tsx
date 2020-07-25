@@ -199,7 +199,7 @@ const TopMenu: React.FC<TopMenuProps> = ({ onClose, isLoggedIn }) => {
           <>
             <Button
               className={classes.tryButton}
-              onClick={() => history.push("/console")}
+              onClick={() => history.push("/")}
             >
               Go to Console
             </Button>
@@ -267,7 +267,7 @@ const Header: React.FC<HeaderProps> = (props) => {
               <>
                 <Button
                   className={classes.tryButton}
-                  onClick={() => history.push("/console")}
+                  onClick={() => history.push("/")}
                 >
                   Go to Console
                 </Button>

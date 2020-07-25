@@ -27,7 +27,7 @@ import Landing from "./components/landing/Landing";
 import Visualization from "./components/tools/Visualization";
 import Enhance from "./components/tools/Enhance";
 import Analytics from "./components/tools/Analytics";
-import FAQs from "./components/tools/FAQs"
+import FAQs from "./components/tools/FAQs";
 import Reports from "./components/reports/Reports";
 
 const theme = createMuiTheme(customTheme);
@@ -41,12 +41,12 @@ const App = () => {
     routes = (
       <Switch>
         <Route path="/" exact>
-          <Landing />
-        </Route>
-        <Route path="/console" exact>
           <ResponsiveDrawer>
             <Console />
           </ResponsiveDrawer>
+        </Route>
+        <Route path="/landing" exact>
+          <Landing />
         </Route>
         <Route path="/library" exact>
           <ResponsiveDrawer>
@@ -108,7 +108,7 @@ const App = () => {
             <Camera />
           </ResponsiveDrawer>
         </Route>
-        <Redirect to="/console" />
+        <Redirect to="/" />
       </Switch>
     );
   } else {

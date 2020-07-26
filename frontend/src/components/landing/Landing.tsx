@@ -56,12 +56,7 @@ const Landing: React.FC = () => {
               <h1 style={{ padding: "10px", fontSize: "50px" }}>
                 Textile Detection
               </h1>
-              <h3 style={{ padding: "10px" }}>
-                To configure this component to work with your existing app,
-                you’ll need to import and call initImages, passing an object for
-                configuration. imageResolver is where you will take the
-                processed image object with calculated dimensions and generate a
-                URL that conforms to how your CMS resizes images.
+              <h3 style={{ padding: "10px" }}>The system focuses on capturing and saving various attributes of fabrics worn by targeted persons captured from various CCTV cameras through distributed intelligence along with time and location stamps over the period in a database. The database is compiled to be used in identification of suspects from video clips of crime related CCTV footages captured in a series of CCTV cameras located on routes and close to scene of crime.
               </h3>
               <br />
               {auth.isLoggedIn ? (

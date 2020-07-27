@@ -139,9 +139,7 @@ const Landing: React.FC = () => {
               />
               <h2>VIDEO LIBRARY</h2>
               <h5>
-                It is a library where all the cctv video is stored.We can search
-                and filter the videos on different aspects stored in the
-                database.
+                A library wherein all the uploaded content is stored. The videos are categorically arranged according to the clothing attributes obtained during classification.   
               </h5>
             </Feature>
             <Feature>
@@ -152,7 +150,7 @@ const Landing: React.FC = () => {
                 style={{ width: 150 }}
               />
               <h2>ADD VIDEO</h2>
-              <h5>Adds video to the current database.</h5>
+              <h5> A button, which when clicked upon allows the user to upload and store a video to the current database while also giving a choice to add a location specific to the video.</h5>
             </Feature>
             <Feature>
               <img
@@ -162,10 +160,7 @@ const Landing: React.FC = () => {
               />
               <h2>SCALABLE ARCHITECTURE</h2>
               <h5>
-                The program can handle more than just one functionality, such as
-                we can detect more than one person in the video timeframe and
-                can list the mulitple cloths they are wearing on by selection a
-                perticular persons in that timeframe.
+                The program can handle more than just one functionality, meaning more than one person can be detected in a particular timeframe while simultaneously listing multiple clothing attributes of everyone in the frame.
               </h5>
             </Feature>
             <Feature>
@@ -177,11 +172,8 @@ const Landing: React.FC = () => {
               />
               <h2>SEARCH</h2>
               <h5>
-                A video is chooses from the database to be processed, the video
-                gets processed frame by frame in which it identifies the total
-                number of people in each frame and identifies all the clothes
-                worn by them and listes them, it also captues the a particular
-                frame we want from the video.
+                A video is chosen from the database to be processed frame by frame in which the total
+                number of people in each frame along with their clothing attributes are identified.
               </h5>
             </Feature>
             <Feature>
@@ -192,10 +184,7 @@ const Landing: React.FC = () => {
               />
               <h2>SPEECH RECOGNITION</h2>
               <h5>
-                This feature help us to operate faster ,insted of just clicking
-                and selecting each and every person that we see on the
-                videoframe, we can just tell the program to select the
-                particular person which list what he is attire wearing.
+                This feature speeds up the process by traslating speech to text wherever possible to reduce manual entering of information. 
               </h5>
             </Feature>
             <Feature>
@@ -207,9 +196,8 @@ const Landing: React.FC = () => {
               />
               <h2>ANALYTICS</h2>
               <h5>
-                It helps to visualise the different aspects of the video by
-                ploting the different parameters recognized in the following
-                video on the graph to get a better understanding.
+                It is visual representation of different aspects of the video by
+                plotting the information recieved after classification on a graph to get an accurate sense of understanding.
               </h5>
             </Feature>
           </Grid>
@@ -233,13 +221,7 @@ const Landing: React.FC = () => {
               </h1>
               <h4>(Resnet Architechture)</h4>
               <h3>
-                To configure this component to work with your existing app,
-                you’ll need to import and call initImages, passing an object for
-                configuration. imageResolver is where you will take the
-                processed image object with calculated dimensions and generate a
-                URL that conforms to how your CMS resizes images.<br></br>The
-                example below connects to a local instance of image-steam and
-                will resize image based on the users viewport and pixel density.
+              This is a type of classification in which an object can be categorized into more than one class. Here the clothing attributes are classsified on the basis of both type and color. The various types that can be identified include blazers, burkhas, sarees, shirts, trousers,etc.
               </h3>
             </FadeIn>
           </Grid>
@@ -270,13 +252,7 @@ const Landing: React.FC = () => {
                 CCTV Cameras at<br></br>various Locations.
               </h1>
               <h3 style={{ padding: "0px 15px", color: "white" }}>
-                To configure this component to work with your existing app,
-                you’ll need to import and call initImages, passing an object for
-                configuration. imageResolver is where you will take the
-                processed image object with calculated dimensions and generate a
-                URL that conforms to how your CMS resizes images.<br></br>The
-                example below connects to a local instance of image-steam and
-                will resize image based on the users viewport and pixel density.
+               The videos can be pulled from various CCTV cameras installed all across the globe. The cameras available at various locatons can be accessed by simply navigating in the map integrated using Mapbox API.The CCTV systems which are available to view in a particular area are highlighted during navigation on the map. 
               </h3>
             </FadeIn>
           </Grid>

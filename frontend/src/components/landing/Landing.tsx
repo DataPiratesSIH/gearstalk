@@ -56,7 +56,14 @@ const Landing: React.FC = () => {
               <h1 style={{ padding: "10px", fontSize: "50px" }}>
                 Textile Detection
               </h1>
-              <h3 style={{ padding: "10px" }}>The system focuses on capturing and saving various attributes of fabrics worn by targeted persons captured from various CCTV cameras through distributed intelligence along with time and location stamps over the period in a database. The database is compiled to be used in identification of suspects from video clips of crime related CCTV footages captured in a series of CCTV cameras located on routes and close to scene of crime.
+              <h3 style={{ padding: "10px" }}>
+                The system focuses on capturing and saving various attributes of
+                fabrics worn by targeted persons captured from various CCTV
+                cameras through distributed intelligence along with time and
+                location stamps over the period in a database. The database is
+                compiled to be used in identification of suspects from video
+                clips of crime related CCTV footages captured in a series of
+                CCTV cameras located on routes and close to scene of crime.
               </h3>
               <br />
               {auth.isLoggedIn ? (
@@ -103,7 +110,7 @@ const Landing: React.FC = () => {
                 Github
               </Button>
               <div style={{ marginTop: "20px" }}>
-<DownloadButton />
+                <DownloadButton />
               </div>
             </FadeIn>
           </Grid>
@@ -139,7 +146,9 @@ const Landing: React.FC = () => {
               />
               <h2>VIDEO LIBRARY</h2>
               <h5>
-                A library wherein all the uploaded content is stored. The videos are categorically arranged according to the clothing attributes obtained during classification.   
+                A library wherein all the uploaded content is stored. The videos
+                are categorically arranged according to the clothing attributes
+                obtained during classification.
               </h5>
             </Feature>
             <Feature>
@@ -150,7 +159,12 @@ const Landing: React.FC = () => {
                 style={{ width: 150 }}
               />
               <h2>ADD VIDEO</h2>
-              <h5> A button, which when clicked upon allows the user to upload and store a video to the current database while also giving a choice to add a location specific to the video.</h5>
+              <h5>
+                {" "}
+                A button, which when clicked upon allows the user to upload and
+                store a video to the current database while also giving a choice
+                to add a location specific to the video.
+              </h5>
             </Feature>
             <Feature>
               <img
@@ -160,7 +174,10 @@ const Landing: React.FC = () => {
               />
               <h2>SCALABLE ARCHITECTURE</h2>
               <h5>
-                The program can handle more than just one functionality, meaning more than one person can be detected in a particular timeframe while simultaneously listing multiple clothing attributes of everyone in the frame.
+                The program can handle more than just one functionality, meaning
+                more than one person can be detected in a particular timeframe
+                while simultaneously listing multiple clothing attributes of
+                everyone in the frame.
               </h5>
             </Feature>
             <Feature>
@@ -172,8 +189,9 @@ const Landing: React.FC = () => {
               />
               <h2>SEARCH</h2>
               <h5>
-                A video is chosen from the database to be processed frame by frame in which the total
-                number of people in each frame along with their clothing attributes are identified.
+                A video is chosen from the database to be processed frame by
+                frame in which the total number of people in each frame along
+                with their clothing attributes are identified.
               </h5>
             </Feature>
             <Feature>
@@ -184,7 +202,8 @@ const Landing: React.FC = () => {
               />
               <h2>SPEECH RECOGNITION</h2>
               <h5>
-                This feature speeds up the process by traslating speech to text wherever possible to reduce manual entering of information. 
+                This feature speeds up the process by traslating speech to text
+                wherever possible to reduce manual entering of information.
               </h5>
             </Feature>
             <Feature>
@@ -197,7 +216,8 @@ const Landing: React.FC = () => {
               <h2>ANALYTICS</h2>
               <h5>
                 It is visual representation of different aspects of the video by
-                plotting the information recieved after classification on a graph to get an accurate sense of understanding.
+                plotting the information recieved after classification on a
+                graph to get an accurate sense of understanding.
               </h5>
             </Feature>
           </Grid>
@@ -221,7 +241,11 @@ const Landing: React.FC = () => {
               </h1>
               <h4>(Resnet Architechture)</h4>
               <h3>
-              This is a type of classification in which an object can be categorized into more than one class. Here the clothing attributes are classsified on the basis of both type and color. The various types that can be identified include blazers, burkhas, sarees, shirts, trousers,etc.
+                This is a type of classification in which an object can be
+                categorized into more than one class. Here the clothing
+                attributes are classsified on the basis of both type and color.
+                The various types that can be identified include blazers,
+                burkhas, sarees, shirts, trousers,etc.
               </h3>
             </FadeIn>
           </Grid>
@@ -252,7 +276,11 @@ const Landing: React.FC = () => {
                 CCTV Cameras at<br></br>various Locations.
               </h1>
               <h3 style={{ padding: "0px 15px", color: "white" }}>
-               The videos can be pulled from various CCTV cameras installed all across the globe. The cameras available at various locatons can be accessed by simply navigating in the map integrated using Mapbox API.The CCTV systems which are available to view in a particular area are highlighted during navigation on the map. 
+                The videos can be pulled from various CCTV cameras installed all
+                across the globe. The cameras available at various locatons can
+                be accessed by simply navigating in the map integrated using
+                Mapbox API.The CCTV systems which are available to view in a
+                particular area are highlighted during navigation on the map.
               </h3>
             </FadeIn>
           </Grid>

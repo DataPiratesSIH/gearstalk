@@ -142,13 +142,11 @@ const Landing: React.FC = () => {
               <img
                 src={require("./images/videolibrary.png")}
                 alt="Test"
-                style={{ width: 150 }}
+                style={{ width: 150,position: 'relative' }}
               />
               <h2>VIDEO LIBRARY</h2>
-              <h5>
-                A library wherein all the uploaded content is stored. The videos
-                are categorically arranged according to the clothing attributes
-                obtained during classification.
+              <h5 style={{ position: 'relative'  }}>
+                A library where all the cctv videos are stored.
               </h5>
             </Feature>
             <Feature>
@@ -156,28 +154,24 @@ const Landing: React.FC = () => {
               <img
                 src={require("./images/addvideo.png")}
                 alt="Test"
-                style={{ width: 150 }}
+                style={{ width: 150 ,position: 'relative' }}
               />
               <h2>ADD VIDEO</h2>
-              <h5>
+              <h5 style={{ position: 'relative'  }}>
                 {" "}
-                A button, which when clicked upon allows the user to upload and
-                store a video to the current database while also giving a choice
-                to add a location specific to the video.
+                It allows the user to upload and
+                store a video to the database along wit its location and timestamp.
               </h5>
             </Feature>
             <Feature>
               <img
                 src={require("./images/scable.jpg")}
                 alt="Test"
-                style={{ width: 180, height: 150 }}
+                style={{ width: 180, height: 150,position: 'relative'  }}
               />
               <h2>SCALABLE ARCHITECTURE</h2>
-              <h5>
-                The program can handle more than just one functionality, meaning
-                more than one person can be detected in a particular timeframe
-                while simultaneously listing multiple clothing attributes of
-                everyone in the frame.
+              <h5 style={{ position: 'relative' }}>
+                The program can handle more than just one functionality.
               </h5>
             </Feature>
             <Feature>
@@ -185,36 +179,34 @@ const Landing: React.FC = () => {
               <img
                 src={require("./images/search1.jpg")}
                 alt="Test"
-                style={{ width: 150 }}
+                style={{ width: 150 ,position: 'relative' }}
               />
               <h2>SEARCH</h2>
-              <h5>
+              <h5 style={{ position: 'relative' }}>
                 A video is chosen from the database to be processed frame by
-                frame in which the total number of people in each frame along
-                with their clothing attributes are identified.
+                frame in which people and their clothing are identified.
               </h5>
             </Feature>
             <Feature>
               <img
                 src={require("./images/speech.jpg")}
                 alt="Test"
-                style={{ width: 180, height: 150 }}
+                style={{ width: 180, height: 150 ,position: 'relative' }}
               />
               <h2>SPEECH RECOGNITION</h2>
-              <h5>
-                This feature speeds up the process by traslating speech to text
-                wherever possible to reduce manual entering of information.
+              <h5 style={{ position: 'relative' }}>
+                This feature speeds up the process by traslating speech to text.
               </h5>
             </Feature>
-            <Feature>
+            <Feature >
               {/* <GiMiner size="90px" color="blue" /> */}
               <img
                 src={require("./images/visualization.png")}
                 alt="Test"
-                style={{ width: 150 }}
+                style={{ width: 150 ,position: 'relative' }}
               />
               <h2>ANALYTICS</h2>
-              <h5>
+              <h5 style={{ position: 'relative'  }}>
                 It is visual representation of different aspects of the video by
                 plotting the information recieved after classification on a
                 graph to get an accurate sense of understanding.

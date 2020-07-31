@@ -4,7 +4,7 @@ import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import Box from "@material-ui/core/Box";
 import TimeLine from "./TimeLine";
-import { Container, Grid, Button, Link } from "@material-ui/core";
+import { Container, Grid, Button, Link, TextField } from "@material-ui/core";
 import SaveIcon from "@material-ui/icons/Save";
 import SaveAltIcon from "@material-ui/icons/SaveAlt";
 import { useHttpClient } from "../hooks/http-hook";
@@ -67,6 +67,7 @@ const TimeStamp: React.FC<Props> = ({ results }) => {
         JSON.stringify({
             results: results,
             userId: auth.userId,
+            name: name,
         }),
         {
           "Content-Type": "application/json",
@@ -94,6 +95,9 @@ const TimeStamp: React.FC<Props> = ({ results }) => {
     });
     return f;
   };
+
+  const [name, setName] = useState<string>("");
+  const handleName= (event) => setName(event.target.value);
 
   return (
     <div className={classes.root}>
@@ -136,10 +140,13 @@ const TimeStamp: React.FC<Props> = ({ results }) => {
                 </div>
               </Grid>
             )}
+            <Grid item sm={4} xs={12}>
+              <TextField fullWidth id="standard-basic" value={name} label="Type Report Name" onChange={handleName} />
+            </Grid>
             <Grid
               style={{ textAlign: "center", margin: "20px 0px" }}
               item
-              sm={6}
+              sm={4}
               xs={12}
             >
               <Button
@@ -148,7 +155,7 @@ const TimeStamp: React.FC<Props> = ({ results }) => {
                 color="secondary"
                 startIcon={<SaveIcon />}
                 onClick={saveReport}
-                disabled={!!report}
+                disabled={!!report || !name}
               >
                 SAVE & GENERATE REPORT
               </Button>
@@ -156,7 +163,7 @@ const TimeStamp: React.FC<Props> = ({ results }) => {
             <Grid
               style={{ textAlign: "center", margin: "20px 0px" }}
               item
-              sm={6}
+              sm={4}
               xs={12}
             >
               <Link

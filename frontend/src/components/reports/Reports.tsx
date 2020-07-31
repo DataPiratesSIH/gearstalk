@@ -64,6 +64,9 @@ const Reports: React.FC = () => {
                     key={i}
                     results={r.results}
                     reportId={r._id.$oid}
+                    name={r.name}
+                    Date={r.Date}
+                    Time={r.Time}
                     deleteReport={deleteReport}
                   />
                 </div>

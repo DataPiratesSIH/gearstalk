@@ -54,10 +54,13 @@ const TabPanel: React.FC<TabPanelProps> = ({ children, value, index }) => {
 interface Props {
   results: any[];
   reportId: string;
+  name: string;
+  Date: string;
+  Time: string;
   deleteReport: (report_id: string) => Promise<void>;
 }
 
-const ReportStamp: React.FC<Props> = ({ results, reportId, deleteReport }) => {
+const ReportStamp: React.FC<Props> = ({ results, reportId, name, Date, Time, deleteReport }) => {
   const classes = useStyles();
   const [value, setValue] = useState<number>(0);
   const [report, setReport] = useState<string>(null);
@@ -131,6 +134,15 @@ const ReportStamp: React.FC<Props> = ({ results, reportId, deleteReport }) => {
       <TabPanel value={value} index={0}>
         <Container>
           <Grid style={{ marginTop: "20px" }} container>
+            <Grid style={{ fontSize: "30px" }} item xs={12}>
+              {name}
+            </Grid>
+            <Grid style={{ fontSize: "20px" }} item xs={12}>
+              {Date}
+            </Grid>
+            <Grid style={{ fontSize: "20px", marginBottom: "30px" }} item xs={12}>
+              {Time}
+            </Grid>
             <Grid item sm={6} xs={12}>
               <div style={{ fontSize: "17px", textAlign: "center" }}>
                 Number of persons searched

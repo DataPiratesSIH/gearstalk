@@ -29,6 +29,7 @@ const DownloadButton: React.FC = () => {
           <Link
             href="https://github.com/DataPiratesSIH/gearstalk-electron-app/releases/download/v0.2.0/gearstalk-0.2.0.exe"
             underline="none"
+            target="_blank"
           >
             <Button
               variant="contained"
@@ -43,13 +44,14 @@ const DownloadButton: React.FC = () => {
           <Link
             href="https://github.com/DataPiratesSIH/gearstalk-electron-app/releases/download/v0.2.0/gearstalk-0.2.0.pkg"
             underline="none"
+            target="_blank"
           >
             <Button
               variant="contained"
               className={classes.Button}
               startIcon={<FaApple size={40} />}
             >
-              IOS
+              MAC OS
             </Button>
           </Link>
         </Grid>
@@ -57,6 +59,7 @@ const DownloadButton: React.FC = () => {
           <Link
             href="https://github.com/DataPiratesSIH/gearstalk-electron-app/releases/download/v0.2.0/gearstalk-0.2.0.AppImage"
             underline="none"
+            target="_blank"
           >
             <Button
               variant="contained"

@@ -46,6 +46,8 @@ const SpotDialog: React.FC<Props> = ({ latitude, longitude, address }) => {
       </Button>
       <Dialog
         open={open}
+        fullWidth={true}
+        maxWidth={"md"}
         onClose={handleClose}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
@@ -54,8 +56,8 @@ const SpotDialog: React.FC<Props> = ({ latitude, longitude, address }) => {
         <DialogContent>
 
             <CamMap
-              width="300px"
-              height="30vh"
+              width="100%"
+              height="50vh"
               viewState={viewState}
               onViewStateChange={handleChangeViewState}
               libraries={[

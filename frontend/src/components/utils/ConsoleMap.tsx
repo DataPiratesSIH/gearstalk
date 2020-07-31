@@ -30,7 +30,6 @@ const ConsoleMap: React.FC = () => {
             Authorization: "Bearer " + auth.token,
           }
         );
-        console.log(responseData);
         let newData = responseData.map((r) => {
           return {
             title: r.sublocality,

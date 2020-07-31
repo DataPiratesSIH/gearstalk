@@ -3,6 +3,8 @@ import { AuthContext } from "../context/auth-context";
 import { useHttpClient } from "../hooks/http-hook";
 import { makeStyles } from "@material-ui/core/styles";
 import LoadingSpinner from "../utils/LoadingSpinner";
+import DateFnsUtils from "@date-io/date-fns"; // choose your lib
+import { MuiPickersUtilsProvider, KeyboardDatePicker } from "@material-ui/pickers";
 import {
   Grid,
   Button,
@@ -48,10 +50,10 @@ const useStyles = makeStyles((theme) => ({
     paddingBottom: "50px",
   },
   selector: {
-      background: "#2db1e1",
-      color: "#0a045e",
-      fontWeight: 600
-  }
+    background: "#2db1e1",
+    color: "#0a045e",
+    fontWeight: 600,
+  },
 }));
 
 interface ChooseItemProps {
@@ -72,22 +74,26 @@ interface ChooseItemProps {
 }
 
 const ChooseItem: React.FC<ChooseItemProps> = (props) => {
-    const classes = useStyles();
+  const classes = useStyles();
   return (
-        <Grid
-          item
-          xl={4}
-          lg={4}
-          md={4}
-          xs={12}
-          sm={12}
-          onClick={() => props.setVideo(props.oid)}
-          style= {{ cursor: 'pointer' }}
-          className={props.video === props.oid ? classes.selector : ""}
-        >
-            <img style={{ width: '100%'}} src={`${process.env.REACT_APP_BACKEND_URL}/helpers/file/${props.thumbnail_id}`} alt="thumbnail" />
-          {props.name}
-        </Grid>
+    <Grid
+      item
+      xl={4}
+      lg={4}
+      md={4}
+      xs={12}
+      sm={12}
+      onClick={() => props.setVideo(props.oid)}
+      style={{ cursor: "pointer" }}
+      className={props.video === props.oid ? classes.selector : ""}
+    >
+      <img
+        style={{ width: "100%" }}
+        src={`${process.env.REACT_APP_BACKEND_URL}/helpers/file/${props.thumbnail_id}`}
+        alt="thumbnail"
+      />
+      {props.name}
+    </Grid>
   );
 };
 interface ChooseDialogProps {
@@ -97,7 +103,12 @@ interface ChooseDialogProps {
   prepared: boolean;
 }
 
-const ChooseDialog: React.FC<ChooseDialogProps> = ({ open, setVideoTag, handleClose, prepared }) => {
+const ChooseDialog: React.FC<ChooseDialogProps> = ({
+  open,
+  setVideoTag,
+  handleClose,
+  prepared,
+}) => {
   const { isLoading, error, sendRequest, clearError } = useHttpClient();
   const classes = useStyles();
   const [videoData, setVideoData] = useState<{ [key: string]: any }[]>([]);
@@ -105,6 +116,7 @@ const ChooseDialog: React.FC<ChooseDialogProps> = ({ open, setVideoTag, handleCl
   const [searchData, setSearchData] = useState<{ [key: string]: any }[]>([]);
   const [searchText, setSearchText] = useState<string>("");
   const [video, setVideo] = useState<string>("");
+  const [selectedDate, setSelectedDate] = useState(null);
 
   useEffect(() => {
     const fetchVideos = async () => {
@@ -118,7 +130,10 @@ const ChooseDialog: React.FC<ChooseDialogProps> = ({ open, setVideoTag, handleCl
           }
         );
         if (prepared)
-          responseData = responseData.filter((video) => video.prepared === true)
+          responseData = responseData.filter(
+            (video) => video.prepared === true
+          );
+        console.log(responseData);
         setVideoData(responseData);
         setSearchData(responseData);
       } catch (err) {
@@ -150,9 +165,28 @@ const ChooseDialog: React.FC<ChooseDialogProps> = ({ open, setVideoTag, handleCl
     }
   };
 
-  const videoSetter = () => {
-      video && setVideoTag(video);
+  const handleDateChange = (date) => {
+    setSelectedDate(date);
+    if (date && String(date)!=="Invalid Date") {
+      let d = new Date(date),
+        month = '' + (d.getMonth() + 1),
+        day = '' + d.getDate(),
+        year = d.getFullYear();
+
+    if (month.length < 2) 
+        month = '0' + month;
+    if (day.length < 2) 
+        day = '0' + day;
+
+    const formattedDate = [year, month, day].join('-');
+    setSearchData(videoData.filter((s) => s.date === formattedDate))
+    } else if (date === null) 
+      setSearchData(videoData);
   }
+
+  const videoSetter = () => {
+    video && setVideoTag(video);
+  };
 
   return (
     <Dialog
@@ -175,7 +209,7 @@ const ChooseDialog: React.FC<ChooseDialogProps> = ({ open, setVideoTag, handleCl
         )}
         <Grid container>
           <Divider style={{ color: "#ffffff" }} />
-          <Grid item md={6} xs={12}>
+          <Grid item md={3} xs={12}>
             <div>
               <Typography
                 style={{ fontSize: "20px", color: "#ffffff" }}
@@ -185,6 +219,18 @@ const ChooseDialog: React.FC<ChooseDialogProps> = ({ open, setVideoTag, handleCl
                 Choose a Video
               </Typography>
             </div>
+          </Grid>
+          <Grid item md={3} xs={12}>
+            <MuiPickersUtilsProvider utils={DateFnsUtils}>
+              <KeyboardDatePicker
+                disableFuture
+                clearable
+                format="yyyy/MM/dd"
+                label="Date"
+                value={selectedDate}
+                onChange={handleDateChange}
+              />
+            </MuiPickersUtilsProvider>
           </Grid>
           <Grid item md={6} xs={12}>
             <TextField
@@ -237,7 +283,12 @@ const ChooseDialog: React.FC<ChooseDialogProps> = ({ open, setVideoTag, handleCl
         </Grid>
       </DialogContent>
       <DialogActions>
-        <Button onClick={videoSetter} autoFocus color="primary" disabled={!video}>
+        <Button
+          onClick={videoSetter}
+          autoFocus
+          color="primary"
+          disabled={!video}
+        >
           Ok
         </Button>
         <Button autoFocus color="primary" onClick={clearVideo}>

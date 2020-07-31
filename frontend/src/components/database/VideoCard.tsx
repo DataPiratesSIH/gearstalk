@@ -134,7 +134,7 @@ const VideoCard: React.FC<Props> = (props) => {
         <div className={classes.details}>
           <CardContent className={classes.content}>
             <Typography component="h5" variant="h5">
-              Footage #{props.index}
+              {props.name.length > 10 ? `${props.name.substr(0,10)}...` : props.name}
             </Typography>
             <Typography variant="subtitle1" color="textSecondary">
               {props.duration}

@@ -3,6 +3,7 @@ import * as am4core from "@amcharts/amcharts4/core";
 import * as am4charts from "@amcharts/amcharts4/charts";
 import am4themes_dark from "@amcharts/amcharts4/themes/dark";
 import am4themes_animated from "@amcharts/amcharts4/themes/animated";
+import ChartLabel from "./ChartLabel";
 
 interface Props {
   data: any[]
@@ -69,6 +70,9 @@ const Line: React.FC<Props> = ({ data }) => {
     }, [data]);
     return (
       <div style={{ maxWidth: "100vw", overflowX: "auto", textAlign: "center" }}>
+        <ChartLabel>
+          Line char t sfsdgs gsefsfdsfsfsfdfs f sfs fsfs fsfdsf
+        </ChartLabel>
         <div style={{ width: "1200px", height: "400px", display: "inline-block" }} id="lineDiv" />
       </div>
     );

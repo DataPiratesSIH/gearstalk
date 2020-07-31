@@ -3,8 +3,9 @@ import * as am4core from "@amcharts/amcharts4/core";
 import * as am4charts from "@amcharts/amcharts4/charts";
 import am4themes_dark from "@amcharts/amcharts4/themes/dark";
 import am4themes_animated from "@amcharts/amcharts4/themes/animated";
+import ChartLabel from "./ChartLabel";
 interface Props {
-  data: any[]
+  data: any[];
 }
 const Flower: React.FC<Props> = ({ data }) => {
   useEffect(() => {
@@ -18,7 +19,7 @@ const Flower: React.FC<Props> = ({ data }) => {
     var chart = am4core.create("ChartDiv", am4charts.XYChart);
 
     // Add data
-    chart.data = data
+    chart.data = data;
 
     // Create axes
 
@@ -34,7 +35,7 @@ const Flower: React.FC<Props> = ({ data }) => {
     //   return dy;
     // });
 
-    var valueAxis =chart.yAxes.push(new am4charts.ValueAxis());
+    var valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
     valueAxis.title.text = "Total Number Of Clothing";
     // Create series
     var series = chart.series.push(new am4charts.ColumnSeries());
@@ -42,13 +43,13 @@ const Flower: React.FC<Props> = ({ data }) => {
     series.dataFields.categoryX = "category";
     series.name = "Lables";
     series.columns.template.tooltipText = "{categoryX}: [bold]{valueY}[/]";
-    series.columns.template.fillOpacity = .8;
+    series.columns.template.fillOpacity = 0.8;
 
     var columnTemplate = series.columns.template;
     columnTemplate.strokeWidth = 2;
     columnTemplate.strokeOpacity = 1;
 
-// }); // end am4core.ready()
+    // }); // end am4core.ready()
 
     return () => {
       chart.dispose();
@@ -57,7 +58,13 @@ const Flower: React.FC<Props> = ({ data }) => {
 
   return (
     <div style={{ maxWidth: "100vw", overflowX: "auto", textAlign: "center" }}>
-      <div style={{ width: "600px", height: "400px", display: "inline-block" }} id="ChartDiv" />
+      <ChartLabel>
+        Line char t sfsdgs gsefsfdsfsfsfdfs f sfs fsfs fsfdsf
+      </ChartLabel>
+      <div
+        style={{ width: "600px", height: "400px", display: "inline-block" }}
+        id="ChartDiv"
+      />
     </div>
   );
 };

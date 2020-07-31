@@ -59,7 +59,6 @@ const Console: React.FC = () => {
             Authorization: "Bearer " + auth.token,
           }
         );
-        console.log(responseData);
         setStats({
           count: responseData.count,
           prepared: responseData.prepared,

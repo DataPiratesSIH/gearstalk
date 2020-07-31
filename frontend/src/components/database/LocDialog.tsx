@@ -139,7 +139,12 @@ const LocDialog: React.FC<LocDialogProps> = (props) => {
     const fetchLocations = async () => {
       try {
         const responseData = await sendRequest(
-          process.env.REACT_APP_BACKEND_URL + "/cctv/getcctv"
+          process.env.REACT_APP_BACKEND_URL + "/cctv/getcctv",
+          "GET",
+        null,
+        {
+          Authorization: 'Bearer ' + auth.token
+        }
         );
         setLocationData(responseData);
         setSearchData(responseData);
@@ -150,7 +155,7 @@ const LocDialog: React.FC<LocDialogProps> = (props) => {
     if (props.open) {
       fetchLocations();
     }
-  }, [props.open, sendRequest]);
+  }, [auth.token, props.open, sendRequest]);
 
   const clearLocation = () => {
     setLocation(null);

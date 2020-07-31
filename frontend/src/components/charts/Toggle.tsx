@@ -3,6 +3,7 @@ import * as am4core from "@amcharts/amcharts4/core";
 import * as am4charts from "@amcharts/amcharts4/charts";
 import am4themes_dark from "@amcharts/amcharts4/themes/dark";
 import am4themes_animated from "@amcharts/amcharts4/themes/animated";
+import ChartLabel from "./ChartLabel";
 interface Props {
   data: any[];
 }
@@ -153,8 +154,7 @@ const Toggle: React.FC<Props> = ({ data }) => {
     creditLabel.verticalCenter = "bottom";
 
     var titleImage = chart.chartContainer.createChild(am4core.Image);
-    titleImage.href =
-      "";
+    titleImage.href = "";
     titleImage.x = 30;
     titleImage.y = 30;
     titleImage.width = 200;
@@ -167,7 +167,13 @@ const Toggle: React.FC<Props> = ({ data }) => {
 
   return (
     <div style={{ maxWidth: "90vw", overflowX: "auto", textAlign: "center" }}>
-      <div style={{ width: "600px", height: "400px", display: "inline-block" }} id="toggleDiv" />
+      <ChartLabel>
+        Line char t sfsdgs gsefsfdsfsfsfdfs f sfs fsfs fsfdsf
+      </ChartLabel>
+      <div
+        style={{ width: "600px", height: "400px", display: "inline-block" }}
+        id="toggleDiv"
+      />
     </div>
   );
 };

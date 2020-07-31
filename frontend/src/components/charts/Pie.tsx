@@ -3,9 +3,10 @@ import * as am4core from "@amcharts/amcharts4/core";
 import * as am4charts from "@amcharts/amcharts4/charts";
 import am4themes_dark from "@amcharts/amcharts4/themes/dark";
 import am4themes_animated from "@amcharts/amcharts4/themes/animated";
+import ChartLabel from "./ChartLabel";
 interface Props {
-    data: any[]
-  }
+  data: any[];
+}
 const Pie: React.FC<Props> = ({ data }) => {
   useEffect(() => {
     // Themes begin
@@ -21,7 +22,7 @@ const Pie: React.FC<Props> = ({ data }) => {
     let chart = container.createChild(am4charts.PieChart);
 
     // Add data
-    chart.data = data
+    chart.data = data;
     // chart.data = pie_data;
     // Add and configure Series
     let pieSeries = chart.series.push(new am4charts.PieSeries());
@@ -151,7 +152,13 @@ const Pie: React.FC<Props> = ({ data }) => {
   }, [data]);
   return (
     <div style={{ maxWidth: "100vw", overflowX: "auto", textAlign: "center" }}>
-      <div style={{ width: "600px", height: "400px", display: "inline-block" }} id="pieDiv" />
+      <ChartLabel>
+        Line char t sfsdgs gsefsfdsfsfsfdfs f sfs fsfs fsfdsf
+      </ChartLabel>
+      <div
+        style={{ width: "600px", height: "400px", display: "inline-block" }}
+        id="pieDiv"
+      />
     </div>
   );
 };

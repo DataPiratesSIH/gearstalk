@@ -101,8 +101,8 @@ const useStyles = makeStyles((theme) => ({
 const menu = [
   { text: "Home", section: "section1" },
   { text: "Features", section: "section2" },
+  { text: "Downloads", section: "downloads" },
   { text: "Model", section: "section3" },
-  { text: "Database", section: "section4" },
   { text: "Techstack", section: "section5" },
 ];
 

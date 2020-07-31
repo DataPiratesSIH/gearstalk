@@ -109,9 +109,6 @@ const Landing: React.FC = () => {
               <Button variant="outlined" color="primary">
                 Github
               </Button>
-              <div style={{ marginTop: "20px" }}>
-                <DownloadButton />
-              </div>
             </FadeIn>
           </Grid>
           <Grid
@@ -131,6 +128,9 @@ const Landing: React.FC = () => {
             </FadeIn>
           </Grid>
         </Grid>
+      </div>
+      <div style={{ backgroundColor: "#111111" }} className="downloads">
+        <DownloadButton />
       </div>
 
       <div className="section-content section2" style={{ background: "#111" }}>

@@ -153,7 +153,7 @@ const Pie: React.FC<Props> = ({ data }) => {
   return (
     <div style={{ maxWidth: "100vw", overflowX: "auto", textAlign: "center" }}>
       <ChartLabel>
-        Line char t sfsdgs gsefsfdsfsfsfdfs f sfs fsfs fsfdsf
+        The graph shows the overall overview of the footage with labels and their colors at a specific time frame.
       </ChartLabel>
       <div
         style={{ width: "600px", height: "400px", display: "inline-block" }}

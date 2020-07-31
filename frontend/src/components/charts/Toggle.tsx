@@ -168,7 +168,7 @@ const Toggle: React.FC<Props> = ({ data }) => {
   return (
     <div style={{ maxWidth: "90vw", overflowX: "auto", textAlign: "center" }}>
       <ChartLabel>
-        Line char t sfsdgs gsefsfdsfsfsfdfs f sfs fsfs fsfdsf
+        The chart illustrates the correlation between a particular type of clothing and their respective colors.
       </ChartLabel>
       <div
         style={{ width: "600px", height: "400px", display: "inline-block" }}

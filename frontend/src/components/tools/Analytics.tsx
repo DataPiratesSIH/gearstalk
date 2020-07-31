@@ -11,7 +11,7 @@ import AirplayIcon from "@material-ui/icons/Airplay";
 import { toggledata } from "../utils/utils";
 import Line from "../charts/Line";
 import Pie from "../charts/Pie";
-import Flower from "../charts/Flower";
+import Bar from "../charts/Bar";
 import Toggle from "../charts/Toggle";
 import Tick from "../utils/Tick";
 import FrameShower from "./FrameShower";
@@ -49,7 +49,7 @@ const Analytics: React.FC = () => {
   const [video, setVideo] = useState<{ [key: string]: any }>({});
   const { isLoading, sendRequest, error, clearError } = useHttpClient();
   const [lineData, setLineData] = useState<any[]>([]); // linedata
-  const [flowerData, setFlowerData] = useState<any[]>([]); // flowerdata
+  const [barData, setBarData] = useState<any[]>([]); // bardata
   const [pieData, setPieData] = useState<any[]>([]);
   const [report, setReport] = useState<string>("");
 
@@ -97,7 +97,7 @@ const Analytics: React.FC = () => {
         );
         setLineData(response.linechart);
         setPieData(response.big_data);
-        setFlowerData(response.labels_array);
+        setBarData(response.labels_array);
         console.log(response);
       } catch (err) {
         console.log(err);
@@ -221,7 +221,7 @@ const Analytics: React.FC = () => {
                 <LoadingSpinner />
               </div>
             ) : (
-              <> {flowerData.length > 0 && <Flower data={flowerData} />}</>
+              <> {barData.length > 0 && <Bar data={barData} />}</>
             )}
           </div>
         </Grid>

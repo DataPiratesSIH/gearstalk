@@ -7,7 +7,7 @@ import ChartLabel from "./ChartLabel";
 interface Props {
   data: any[];
 }
-const Flower: React.FC<Props> = ({ data }) => {
+const Bar: React.FC<Props> = ({ data }) => {
   useEffect(() => {
     /* Chart code */
     // Themes begin
@@ -59,7 +59,7 @@ const Flower: React.FC<Props> = ({ data }) => {
   return (
     <div style={{ maxWidth: "100vw", overflowX: "auto", textAlign: "center" }}>
       <ChartLabel>
-        Line char t sfsdgs gsefsfdsfsfsfdfs f sfs fsfs fsfdsf
+          The chart illustrates the number of people wearing a particular type of clothing
       </ChartLabel>
       <div
         style={{ width: "600px", height: "400px", display: "inline-block" }}
@@ -69,4 +69,4 @@ const Flower: React.FC<Props> = ({ data }) => {
   );
 };
 
-export default Flower;
+export default Bar;

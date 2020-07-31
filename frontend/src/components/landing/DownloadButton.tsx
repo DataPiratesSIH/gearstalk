@@ -27,7 +27,7 @@ const DownloadButton: React.FC = () => {
       <Grid container spacing={4}>
         <Grid item md={4} sm={12} xs={12}>
           <Link
-            href="https://github.com/DataPiratesSIH/gearstalk-electron-app/releases/download/v3.0.0/gearstalk-3.0.0.exe"
+            href="https://github.com/DataPiratesSIH/gearstalk-electron-app/releases/download/v3.0.0/gearstalk-Setup-3.0.0.exe"
             underline="none"
             target="_blank"
           >

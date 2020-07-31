@@ -31,6 +31,7 @@ const Landing: React.FC = () => {
     <div className="landing">
       <Header isLoggedIn={auth.isLoggedIn} />
       <div className="section-content rowC section1">
+     
         <Grid container>
           <Grid
             style={{ paddingLeft: "0px", textAlign: "left", color: "white" }}
@@ -38,9 +39,21 @@ const Landing: React.FC = () => {
             md={6}
             xs={12}
           >
+            
             <br />
             <FadeIn>
-              <button
+            <img
+                src={require("./images/mplogo.png")}
+                alt="Start_image"
+                style={{ width:75,position:'relative'}}
+              />
+            <img
+                src={require("./images/sihlogo.png")}
+                style={{ width: 150,position: 'relative' }}
+                alt="Start_image"
+              />
+             <br></br>
+            <button
                 style={{
                   background:
                     "linear-gradient(90deg, rgba(29, 36, 63, 1) 5%, rgba(35, 46, 79, 1) 96%)",
@@ -50,7 +63,7 @@ const Landing: React.FC = () => {
                   fontSize: "15px",
                 }}
               >
-                Smart India Hackathon Project
+                Problem Statement Id: MS332
               </button>
               <br />
               <h1 style={{ padding: "10px", fontSize: "50px" }}>
@@ -119,7 +132,7 @@ const Landing: React.FC = () => {
             xs={12}
           >
             <FadeIn>
-              {/* <img
+              {/*<img
                 src={require("./images/start.png")}
                 className="start-img"
                 alt="Start_image"
@@ -129,9 +142,7 @@ const Landing: React.FC = () => {
           </Grid>
         </Grid>
       </div>
-      <div style={{ backgroundColor: "#111111" }} className="downloads">
-        <DownloadButton />
-      </div>
+      
 
       <div className="section-content section2" style={{ background: "#111" }}>
         <div className="inner-content">
@@ -216,6 +227,10 @@ const Landing: React.FC = () => {
         </div>
       </div>
 
+      <div style={{ backgroundColor: "#111111" }} className="downloads">
+        <DownloadButton />
+            </div>
+      
       <div className="section-content section3">
         <h1 className="Headers">About the Model</h1>
         <br />

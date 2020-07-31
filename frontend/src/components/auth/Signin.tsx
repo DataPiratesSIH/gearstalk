@@ -18,6 +18,7 @@ import {
   Typography,
 } from "@material-ui/core";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
+import GoBack from "./GoBack";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -63,7 +64,9 @@ const Signin: React.FC = () => {
       <CssBaseline />
       <Grid item xs={false} sm={4} md={7} className={classes.image} />
       <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
+      <GoBack />
         <div className={classes.paper}>
+
           <Avatar className={classes.avatar}>
             <LockOutlinedIcon />
           </Avatar>
@@ -186,14 +189,7 @@ const Signin: React.FC = () => {
                   Sign In
                 </Button>
                 <Grid container>
-                  <Grid item xs>
-                    <Link
-                      style={{ color: "#3f51b5", textDecoration: "none" }}
-                      to="/"
-                    >
-                      Forgot password?
-                    </Link>
-                  </Grid>
+                  <Grid item xs />
                   <Grid item>
                     <Link
                       style={{ color: "#3f51b5", textDecoration: "none" }}

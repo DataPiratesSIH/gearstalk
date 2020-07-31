@@ -59,7 +59,7 @@ const Techstack: React.FC = () => {
             <CardActions>
               {/* <Link to="https://www.tensorflow.org/js" > */}
               <Button size="small" color="default">
-                <Link className={classes.Link} href="https://www.tensorflow.org/js">See More</Link>
+                <Link className={classes.Link} target="_blank" href="https://www.tensorflow.org/js">See More</Link>
               </Button>
               {/* </Link>  */}
             </CardActions>
@@ -86,7 +86,7 @@ const Techstack: React.FC = () => {
             <CardActions>
               {/* <Link to="https://www.tensorflow.org/js" > */}
               <Button size="small" color="default">
-                <Link className={classes.Link} href="https://reactjs.org/">See More</Link>
+                <Link className={classes.Link} target="_blank" href="https://reactjs.org/">See More</Link>
               </Button>
               {/* </Link>  */}
             </CardActions>
@@ -112,7 +112,7 @@ const Techstack: React.FC = () => {
             </CardActionArea>
             <CardActions>
               <Button size="small" color="default">
-                <Link className={classes.Link} href="https://d3js.org/">See More</Link>
+                <Link className={classes.Link} target="_blank" href="https://d3js.org/">See More</Link>
               </Button>
             </CardActions>
           </Card>
@@ -138,7 +138,7 @@ const Techstack: React.FC = () => {
             <CardActions>
               {/* <Link to="https://www.tensorflow.org/js" > */}
               <Button size="small" color="default">
-                <Link className={classes.Link} href="https://material-ui.com/">See More</Link>
+                <Link className={classes.Link} target="_blank" href="https://material-ui.com/">See More</Link>
               </Button>
               {/* </Link>  */}
             </CardActions>
@@ -157,7 +157,7 @@ const Techstack: React.FC = () => {
                   MongoDB Atlas
                 </Typography>
                 <Typography variant="body2" component="p">
-                  Material UI provides React components implementing <Link className={classes.Link} href="https://material.io/">Google's Material Design</Link>
+                  Material UI provides React components implementing <Link className={classes.Link} target="_blank" href="https://material.io/">Google's Material Design</Link>
                   specification
                 </Typography>
               </CardContent>
@@ -165,7 +165,7 @@ const Techstack: React.FC = () => {
             <CardActions>
               {/* <Link to="https://www.tensorflow.org/js" > */}
               <Button size="small" color="default">
-                <Link className={classes.Link} href="https://material-ui.com/">See More</Link>
+                <Link className={classes.Link} target="_blank" href="https://material-ui.com/">See More</Link>
               </Button>
               {/* </Link>  */}
             </CardActions>
@@ -184,7 +184,7 @@ const Techstack: React.FC = () => {
                   Grid FS
                 </Typography>
                 <Typography variant="body2" component="p">
-                  Material UI provides React components implementing <Link className={classes.Link} href="https://material.io/">Google's Material Design</Link>
+                  Material UI provides React components implementing <Link className={classes.Link} target="_blank" href="https://material.io/">Google's Material Design</Link>
                   specification
                 </Typography>
               </CardContent>
@@ -192,7 +192,7 @@ const Techstack: React.FC = () => {
             <CardActions>
               {/* <Link to="https://www.tensorflow.org/js" > */}
               <Button size="small" color="default">
-                <Link className={classes.Link} href="https://material-ui.com/">See More</Link>
+                <Link className={classes.Link} target="_blank" href="https://material-ui.com/">See More</Link>
               </Button>
               {/* </Link>  */}
             </CardActions>
@@ -211,7 +211,7 @@ const Techstack: React.FC = () => {
                   AMcharts
                 </Typography>
                 <Typography variant="body2" component="p">
-                  Material UI provides React components implementing <Link className={classes.Link} href="https://material.io/">Google's Material Design</Link>
+                  Material UI provides React components implementing <Link className={classes.Link} target="_blank"  href="https://material.io/">Google's Material Design</Link>
                   specification
                 </Typography>
               </CardContent>
@@ -219,7 +219,7 @@ const Techstack: React.FC = () => {
             <CardActions>
               {/* <Link to="https://www.tensorflow.org/js" > */}
               <Button size="small" style={{ color: '#ffffff'}}>
-                <Link className={classes.Link} href="https://material-ui.com/">See More</Link>
+                <Link className={classes.Link} target="_blank" href="https://material-ui.com/">See More</Link>
               </Button>
               {/* </Link>  */}
             </CardActions>

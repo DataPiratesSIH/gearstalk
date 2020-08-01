@@ -6,7 +6,7 @@ import { useAttribute } from "../context/attribute-context";
 import { useHttpClient } from "../hooks/http-hook";
 import AttributeList from "./AttributeList";
 import { makeStyles } from "@material-ui/core/styles";
-import { Button, Paper, Grid, IconButton } from "@material-ui/core";
+import { Button, Paper, Grid } from "@material-ui/core";
 import SearchTabs from "./SearchTabs";
 import PersonAddIcon from "@material-ui/icons/PersonAdd";
 import ChooseDialog from "./ChooseDialog";
@@ -14,7 +14,7 @@ import qualityIcon from "./quality.svg";
 import SearchIcon from "@material-ui/icons/Search";
 import LoadingSpinner from "../utils/LoadingSpinner";
 import TimeStamp from "./TimeStamp";
-import CancelIcon from "@material-ui/icons/Cancel";
+import VideoSearch from "./VideoSearch";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -112,6 +112,29 @@ const SearchGrid: React.FC<Props> = ({ videos, setVideos }) => {
   }, [db, oid, auth.token, sendRequest, setVideos]);
 
   useEffect(() => {
+    const createMinDate = (date: string, time: string) => {
+      let d = new Date(
+        parseInt(date.substr(0, 4)),
+        parseInt(date.substr(5, 7)) - 1,
+        parseInt(date.substr(8, 10)),
+        parseInt(time.substr(0, 2)),
+        parseInt(time.substr(3, 5)),
+        parseInt(time.substr(6, 8))
+      );
+      return d;
+    };
+  
+    const getSeconds = (duration: string) =>
+      parseInt(duration.substr(0, 2)) * 3600 +
+      parseInt(duration.substr(3, 5)) * 60 +
+      parseInt(duration.substr(6, 8));
+  
+    const createMaxDate = (date: string, time: string, duration: string) => {
+      let d = createMinDate(date, time);
+      d.setSeconds(d.getSeconds() + getSeconds(duration));
+      return d;
+    };
+
     const containsTag = (vid) => {
       for (let i = 0; i < videos.length; i++) {
         if (videos[i]._id.$oid === vid) return true;
@@ -128,8 +151,14 @@ const SearchGrid: React.FC<Props> = ({ videos, setVideos }) => {
             Authorization: "Bearer " + auth.token,
           }
         );
-        console.log(responseData);
-        setVideos((v) => [...v, responseData]);
+
+        let newvid = responseData;
+        newvid['minDate'] = createMinDate(newvid.date, newvid.time);
+        newvid['maxDate'] = createMaxDate(newvid.date, newvid.time, newvid.duration);
+        newvid['startDate'] = newvid['minDate'];
+        newvid['endDate'] = newvid['maxDate'];
+        console.log(newvid);
+        setVideos((v) => [...v, newvid]);
       } catch (err) {
         console.log(err);
       }
@@ -146,9 +175,10 @@ const SearchGrid: React.FC<Props> = ({ videos, setVideos }) => {
   }, [videos, videoTag, setVideos, auth.token, sendRequest]);
 
   const scrollToRef = (ref) => window.scrollTo(0, ref.current.offsetTop);
+
   const searchHandler = async () => {
     if (attributes.length === 0 || videos.length === 0) return;
-    console.log(attributes);
+    console.log(videos);
     try {
       const responseData = await sendRequest(
         process.env.REACT_APP_BACKEND_URL + "/query/search",
@@ -184,33 +214,21 @@ const SearchGrid: React.FC<Props> = ({ videos, setVideos }) => {
             {videos.length > 0 ? (
               <Grid container>
                 {videos.map((v, i) => (
-                  <Grid key={i} item sm={4} xs={6}>
-                    <Grid style={{ padding: "10px" }} container>
-                      <Grid item xs={12}>
-                        <img
-                          className={classes.thumbnailImg}
-                          src={`${process.env.REACT_APP_BACKEND_URL}/helpers/file/${v.thumbnail_id}`}
-                          alt="thumbnail"
-                        />
-                      </Grid>
-                      <Grid style={{ overflowWrap: "break-word" }} item xs={9}>
-                        {v.name}
-                      </Grid>
-                      <Grid item xs={3}>
-                        <IconButton
-                          aria-label="delete"
-                          color="primary"
-                          onClick={() => {
-                            setVideos((vids) =>
-                              vids.filter((vid) => vid._id.$oid !== v._id.$oid)
-                            );
-                          }}
-                        >
-                          <CancelIcon />
-                        </IconButton>
-                      </Grid>
-                    </Grid>
-                  </Grid>
+                  <VideoSearch 
+                    key={v._id.$oid}
+                    setVideos={setVideos}
+                    thumbnail_id={v.thumbnail_id}
+                    thumbnailClass={classes.thumbnailImg}
+                    name={v.name} 
+                    id={v._id.$oid}
+                    time={v.time}
+                    date={v.date}
+                    duration={v.duration}
+                    minDate={v.minDate}
+                    maxDate={v.maxDate}
+                    startDate={v.startDate}
+                    endDate={v.endDate}
+                  />
                 ))}
               </Grid>
             ) : (

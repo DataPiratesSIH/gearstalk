@@ -185,7 +185,27 @@ const SearchGrid: React.FC<Props> = ({ videos, setVideos }) => {
         "POST",
         JSON.stringify({
           attributes: attributes,
-          video_id: videos.map((v) => v._id.$oid),
+          videos: videos.map((v) => {
+            return {
+              id: v._id.$oid,
+              start: {
+                y: v.startDate.getFullYear(),
+                M: v.startDate.getMonth(),
+                d: v.startDate.getDate(),
+                h: v.startDate.getHours(),
+                m: v.startDate.getMinutes(),
+                s: v.startDate.getSeconds(),
+              },
+              end: {
+                y: v.endDate.getFullYear(),
+                M: v.endDate.getMonth(),
+                d: v.endDate.getDate(),
+                h: v.endDate.getHours(),
+                m: v.endDate.getMinutes(),
+                s: v.endDate.getSeconds(),
+              }
+            }
+          }),
         }),
         {
           "Content-Type": "application/json",

@@ -34,7 +34,6 @@ import CameraAltIcon from "@material-ui/icons/CameraAlt";
 import DeleteIcon from "@material-ui/icons/Delete";
 import RoomIcon from "@material-ui/icons/Room";
 import InfoOutlinedIcon from "@material-ui/icons/InfoOutlined";
-import LiveTvIcon from "@material-ui/icons/LiveTv";
 import VideoLibraryIcon from "@material-ui/icons/VideoLibrary";
 
 declare global {
@@ -668,9 +667,6 @@ const Camera: React.FC = () => {
         case "delete":
           handleDeleteOpen();
           break;
-        case "live":
-          history.push("/");
-          break;
         case "video":
           history.push(`/search/cctv/${camera._id.$oid}`);
           break;
@@ -931,11 +927,7 @@ const Camera: React.FC = () => {
             )}
           </Grid>
           <Grid style={{ paddingBottom: "20px" }} container>
-            <Grid id="live" className={classes.option} item xs={6}>
-              <LiveTvIcon />
-              <Typography className={classes.optionTitle}>Live Feed</Typography>
-            </Grid>
-            <Grid id="video" className={classes.option} item xs={6} onClick={optionHandler}>
+            <Grid id="video" className={classes.option} item xs={12} onClick={optionHandler}>
               <VideoLibraryIcon />
               <Typography className={classes.optionTitle}>
                 Search All Videos

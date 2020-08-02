@@ -155,13 +155,20 @@ const LocationItem: React.FC<LocationItemProps> = (props) => {
           </div>
         </Grid>
         <Grid item xs={6}>
-          <div style={{ fontSize: "12px" }}>Latitude</div>
-          <div style={{ color: "#fff" }}>
-            {parseFloat(props.latitude).toFixed(3)}
+        <div style={{ fontSize: "12px", wordWrap: "break-word" }}>
+            {props.name}
           </div>
-          <div style={{ fontSize: "12px" }}>Longitude</div>
-          <div style={{ color: "#fff" }}>
-            {parseFloat(props.longitude).toFixed(3)}
+          <div style={{ marginTop: "5px" }}>
+            <span style={{ fontSize: "12px" }}>Lat{" "}:{" "}</span>
+            <span style={{ color: "#fff" }}>
+              {parseFloat(props.latitude).toFixed(3)}
+            </span>
+          </div>
+          <div>
+            <span style={{ fontSize: "12px" }}>Lon{" "}:{" "}</span>
+            <span style={{ color: "#fff" }}>
+              {parseFloat(props.longitude).toFixed(3)}
+            </span>
           </div>
         </Grid>
       </Grid>
@@ -694,7 +701,11 @@ const Camera: React.FC = () => {
           process.env.REACT_APP_BACKEND_URL +
             "/cctv/deletecctv/" +
             camera._id.$oid,
-          "DELETE"
+          "DELETE",
+          null,
+          {
+            Authorization: 'Bearer ' + auth.token
+          }
         );
         let items = locationData;
         items = items.filter((item) => item._id.$oid !== camera._id.$oid);

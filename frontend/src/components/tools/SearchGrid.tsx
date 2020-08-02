@@ -78,10 +78,17 @@ interface Props {
 
 const SearchGrid: React.FC<Props> = ({ videos, setVideos }) => {
   const { db, oid } = useParams();
+
+  const tagChecker = () => {
+    if (db === "vid")
+      return String(oid);
+    else
+      return ""
+  }
   const [{ attributes }, dispatch] = useAttribute();
   const classes = useStyles();
   const [open, setOpen] = useState<boolean>(false);
-  const [videoTag, setVideoTag] = useState<string>("");
+  const [videoTag, setVideoTag] = useState<string>(tagChecker());
   const handleClose = () => setOpen(false);
   const auth = useContext(AuthContext);
   const { isLoading, sendRequest } = useHttpClient();
@@ -106,8 +113,8 @@ const SearchGrid: React.FC<Props> = ({ videos, setVideos }) => {
       }
     };
     if (oid) {
-      if (db === "vid") setVideoTag(oid);
-      else if (db === "cctv") fetchCctvVideos();
+      if (db === "cctv") 
+        fetchCctvVideos();
     }
   }, [db, oid, auth.token, sendRequest, setVideos]);
 

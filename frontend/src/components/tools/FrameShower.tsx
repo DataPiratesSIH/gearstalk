@@ -73,10 +73,10 @@ const FrameShower: React.FC<Props> = ({ video }) => {
     ctx.font = font;
     ctx.textBaseline = "top";
     persons.forEach((person) => {
-      const x = Math.floor(ctx.canvas.width * person.box[0] + 0.5);
-      const y = Math.floor(ctx.canvas.height * person.box[1] + 0.5);
-      const width = ctx.canvas.width * person.box[2];
-      const height = ctx.canvas.height * person.box[3];
+      const x = Math.floor(  (person.box[0]/ 1750 ) * ctx.canvas.width );
+      const y = Math.floor( (person.box[1]/ 1750 ) * ctx.canvas.height );
+      const width = Math.floor(  (person.box[2]/ 1750 ) * ctx.canvas.width);
+      const height = Math.floor( (person.box[3]/ 1750 ) * ctx.canvas.height);
       console.log(x, y, width, height);
       // Draw the bounding box.
       ctx.strokeStyle = "#2db1e1";
@@ -88,8 +88,8 @@ const FrameShower: React.FC<Props> = ({ video }) => {
       person.labels.forEach((label: string) => (text = text + ", " + label));
       const textWidth = ctx.measureText(text).width;
       const textHeight = parseInt(font, 10); // base 10
-      // ctx.fillRect(x, y, textWidth + 1, textHeight + 1)
-      ctx.fillRect(0, 0, textWidth - 1, textHeight - 1);
+      ctx.fillRect(x, y, width, height)
+      // ctx.fillRect(0, 0, textWidth - 1, textHeight - 1);
     });
 
     persons.forEach((person) => {

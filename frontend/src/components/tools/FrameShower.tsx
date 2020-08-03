@@ -73,17 +73,17 @@ const FrameShower: React.FC<Props> = ({ video }) => {
     ctx.font = font;
     ctx.textBaseline = "top";
     persons.forEach((person) => {
-      const x = Math.floor(  (person.box[0]/ 1750 ) * ctx.canvas.width );
-      const y = Math.floor( (person.box[1]/ 1750 ) * ctx.canvas.height );
-      const width = Math.floor(  (person.box[2]/ 1750 ) * ctx.canvas.width);
-      const height = Math.floor( (person.box[3]/ 1750 ) * ctx.canvas.height);
+      const x = Math.floor(  (person.box[0]/ 2000 ) * ctx.canvas.width );
+      const y = Math.floor( (person.box[1]/ 1900 ) * ctx.canvas.height );
+      const width = Math.floor(  (person.box[2]/ 2000 ) * ctx.canvas.width);
+      const height = Math.floor( (person.box[3]/ 1900 ) * ctx.canvas.height);
       console.log(x, y, width, height);
       // Draw the bounding box.
       ctx.strokeStyle = "#2db1e1";
       ctx.lineWidth = 1;
       ctx.strokeRect(x, y, width, height);
       // Draw the label background.
-      ctx.fillStyle = "#00FFFF";
+      ctx.fillStyle = "#0634a477";
       let text: string = "";
       person.labels.forEach((label: string) => (text = text + ", " + label));
       const textWidth = ctx.measureText(text).width;

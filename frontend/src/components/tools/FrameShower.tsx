@@ -87,6 +87,7 @@ const FrameShower: React.FC<Props> = ({ video }) => {
   const classes = useStyles();
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
+
   const [videoLoaded, setVideoLoaded] = useState<boolean>(false);
 
   useEffect(() => {

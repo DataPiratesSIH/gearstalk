@@ -62,7 +62,7 @@ export const useDimension = () => {
 
         window.addEventListener('resize', handleResize)
 
-        return _ => {
+        return () => {
             window.removeEventListener('resize', handleResize)
         }
     });

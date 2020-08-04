@@ -209,7 +209,7 @@ const FrameShower: React.FC<Props> = ({ video }) => {
                   <div className={classes.personInfo}>Person {index + 1}</div>
                   <div>
                     {cd.colors.map((color, index) => (
-                      <Dot key={index} color={color} />
+                      <Dot key={index} color={color === "gray" ? "blue" : color} />
                     ))}
                   </div>
                   <div>
